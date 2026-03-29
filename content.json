@@ -1,0 +1,129 @@
+{
+  "_meta": {
+    "version": "1.2.0",
+    "lastUpdated": "2026-03-29",
+    "description": "欣晨工業網站內容管理檔案 — 修改此檔案可即時更新網站 FAQ 與 SEO 關鍵文字，無需改動 HTML/JS",
+    "howToUpdate": "直接編輯此 JSON 後存檔，重新整理網頁即可看到更新"
+  },
+
+  "seo": {
+    "siteUrl": "https://www.hsinchan.com",
+    "siteName": "欣晨工業有限公司",
+    "defaultTitle": "欣晨工業有限公司 | Hsin-Chan Industrial Co., Ltd.",
+    "defaultDescription": "欣晨工業有限公司 — 以豐田生產哲學為核心的精密自動化設備製造商。提供加熱器、熱電偶、一體式料管等高溫耗材，以及數位雙生、機械手臂應用、視覺檢測等自動化服務。自1975年成立，超過51年製造經驗。",
+    "defaultKeywords": [
+      "自動化設備", "加熱器", "熱電偶", "一體式料管", "機械手臂", "改善",
+      "JIT", "豐田生產方式", "TPS", "欣晨工業", "Hsin-Chan Industrial",
+      "桃園自動化設備", "工業加熱元件", "視覺檢測", "數位雙生", "預測性維護",
+      "射出成型加熱器", "溫控系統", "AOI", "Kaizen", "Jidoka"
+    ],
+    "ogImage": "https://www.hsinchan.com/og-image.jpg",
+    "twitterHandle": ""
+  },
+
+  "company": {
+    "nameZh": "欣晨工業有限公司",
+    "nameEn": "Hsin-Chan Industrial Co., Ltd.",
+    "foundedYear": 1975,
+    "yearsOfExperience": 51,
+    "address": {
+      "street": "中正東路三段490號",
+      "district": "大園區",
+      "city": "桃園市",
+      "postalCode": "33841",
+      "country": "台灣",
+      "countryCode": "TW",
+      "full": "桃園市大園區中正東路三段490號"
+    },
+    "tel": "03-381-4497",
+    "telE164": "+886-3-381-4497",
+    "fax": "03-381-4536",
+    "email": "hc3814497@gmail.com",
+    "facebook": "https://www.facebook.com/people/%E6%AC%A3%E6%99%A8%E5%B7%A5%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/100069099361989/",
+    "businessHours": "週一至週五 08:00–17:30",
+    "responseTime": "1-2 個工作日",
+    "tagline": {
+      "zh": "精密驅動，智造未來",
+      "en": "Precision Driven. Smart Manufacturing.",
+      "ja": "精密駆動、スマート製造の未来へ"
+    }
+  },
+
+  "faq": [
+    {
+      "id": "what-is-hsinchan",
+      "question": "欣晨工業有限公司是做什麼的？",
+      "answer": "欣晨工業有限公司是台灣桃園的精密自動化設備製造商，自1975年成立，擁有超過51年工業製造經驗。核心業務分兩大方向：一是提供加熱器、熱電偶、一體式料管、溫控系統等工業高溫耗材；二是提供機械手臂整合、視覺檢測（AOI）、數位雙生、預測性維護等智慧製造服務。以豐田生產方式（TPS）為核心哲學，協助客戶實現持續改善（Kaizen）。",
+      "category": "公司介紹"
+    },
+    {
+      "id": "location",
+      "question": "欣晨工業在哪裡？如何拜訪？",
+      "answer": "欣晨工業位於台灣桃園市大園區中正東路三段490號（郵遞區號33841）。大園區緊鄰桃園國際機場，交通便利。歡迎事先來電 03-381-4497 或 Email hc3814497@gmail.com 預約參觀。",
+      "category": "聯絡資訊"
+    },
+    {
+      "id": "contact",
+      "question": "如何聯絡欣晨工業詢價？",
+      "answer": "可透過以下方式聯絡：電話 03-381-4497（服務時間：週一至週五 08:00–17:30）、Email hc3814497@gmail.com、或填寫官網聯絡頁面的線上詢問表單。我們承諾於 1-2 個工作日內回覆，緊急需求請來電。",
+      "category": "聯絡資訊"
+    },
+    {
+      "id": "products-heater",
+      "question": "欣晨工業的加熱器可以客製化嗎？",
+      "answer": "可以。欣晨工業可依照客戶需求的規格（外徑、長度、電壓、功率、材質）設計製造客製化加熱元件，包括加熱圈、加熱棒、加熱管、陶瓷加熱器等，最高工作溫度可達1200°C，適用於射出成型機、鋁鑄造、工業爐等多種應用場景。",
+      "category": "產品"
+    },
+    {
+      "id": "services-robot",
+      "question": "欣晨工業提供機械手臂整合服務嗎？",
+      "answer": "是的。欣晨工業提供 FANUC、ABB、KUKA 等主流品牌機械手臂的系統整合服務，應用涵蓋上下料自動化、焊接、搬運、視覺引導等。同時承接協作機器人（Cobot）導入規劃，以及機械手臂第七軸線性走行軸的設計與製作。",
+      "category": "服務"
+    },
+    {
+      "id": "services-vision",
+      "question": "欣晨工業有提供視覺檢測（AOI）服務嗎？",
+      "answer": "有。欣晨工業提供完整的 AOI 自動光學檢測系統建置服務，包括瑕疵分類 AI 模型訓練、尺寸量測、表面品質判定，並可整合 PLC 實現自動排除不良品，大幅提升生產線品質與效率。",
+      "category": "服務"
+    },
+    {
+      "id": "multilingual",
+      "question": "欣晨工業有提供日文或英文服務嗎？",
+      "answer": "有。欣晨工業官網提供中文、日文、英文三語介面，業務團隊亦可提供多語言溝通支援。歡迎日本及海外客戶直接以慣用語言洽詢，我們將安排合適的業務窗口服務。",
+      "category": "服務"
+    },
+    {
+      "id": "minimum-order",
+      "question": "欣晨工業的最低訂購量（MOQ）是多少？",
+      "answer": "視產品類型而異。標準規格品（如常規型號熱電偶、溫控器）通常有現貨，無最低訂購量限制；客製化產品（如特殊規格加熱器、客製料管）請聯絡業務確認最低訂購量與交期，我們會依需求提供最合適的採購方案。",
+      "category": "採購"
+    },
+    {
+      "id": "tps-philosophy",
+      "question": "欣晨工業如何實踐豐田生產方式（TPS）？",
+      "answer": "欣晨工業將 TPS 三大支柱落實於每個服務環節：「改善（Kaizen）」—— 提供現場 VSM 價值流分析、5S 輔導、防呆設計等顧問服務；「即時生產（JIT）」—— 協助客戶建立拉式生產系統，減少庫存浪費；「自働化（Jidoka）」—— 透過視覺檢測與 AOI 系統讓品質問題即時被發現並阻斷，不讓不良品流入下游製程。",
+      "category": "公司介紹"
+    },
+    {
+      "id": "digital-twin",
+      "question": "什麼是數位雙生服務？欣晨工業如何實施？",
+      "answer": "數位雙生（Digital Twin）是透過 IoT 感測器為實體設備建立即時虛擬模型，讓企業可以在不停機的情況下模擬、監控與優化生產流程。欣晨工業的數位雙生服務涵蓋感測器選型與安裝、資料採集系統建置、即時監控儀表板、預測性維護分析，可協助客戶減少最多 30% 的非計畫停機時間。",
+      "category": "服務"
+    }
+  ],
+
+  "announcements": [],
+
+  "pages": {
+    "home": {
+      "heroTitle": { "line1": "精密驅動，", "line2": "智造未來" },
+      "heroBadge": "以豐田生產哲學淬鍊的製造夥伴 · Since 1975",
+      "heroSubtitle": "以改善、即時生產與自働化為核心，提供精密自動化解決方案",
+      "metrics": {
+        "years": { "value": "51", "label": "年經驗" },
+        "products": { "value": "6", "label": "大產品線" },
+        "services": { "value": "6", "label": "大服務項目" }
+      }
+    }
+  }
+}

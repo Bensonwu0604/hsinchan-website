@@ -1,0 +1,32 @@
+# ── 系統檔案 ──────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── 日誌與暫存 ────────────────────────────────────
+*.log
+*.tmp
+*.bak
+
+# ── 環境變數（絕對不能上傳到 GitHub）──────────────
+.env
+.env.local
+.env.production
+
+# ── Node.js（若未來升級為 Node 專案）──────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Vercel 本地快取 ───────────────────────────────
+.vercel
+
+# ── 開發工具 ──────────────────────────────────────
+.vscode/settings.json
+*.sublime-workspace
+
+# ── 內部 Prompt 文件（不公開） ────────────────────
+prompts/
+CLAUDE.md
+BRIEF.md

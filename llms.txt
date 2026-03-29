@@ -1,0 +1,153 @@
+# 欣晨工業有限公司 (Hsin-Chan Industrial Co., Ltd.)
+
+> 欣晨工業有限公司是台灣桃園的精密自動化設備製造商，以豐田生產方式（TPS）為核心哲學，擁有超過51年的工業製造經驗（自1975年創立）。
+> Hsin-Chan Industrial Co., Ltd. is a precision automation equipment manufacturer based in Taoyuan, Taiwan, founded in 1975 with over 51 years of experience in industrial manufacturing, guided by the Toyota Production System (TPS) philosophy.
+
+## 公司基本資訊 (Company Overview)
+
+- **正式名稱**：欣晨工業有限公司 / Hsin-Chan Industrial Co., Ltd.
+- **成立年份**：1975 年（民國 64 年）
+- **地址**：33841 台灣桃園市大園區中正東路三段490號
+- **電話**：+886-3-381-4497
+- **傳真**：+886-3-381-4536
+- **Email**：hc3814497@gmail.com
+- **Facebook**：https://www.facebook.com/people/欣晨工業有限公司/100069099361989/
+- **網站**：https://www.hsinchan.com
+- **行業分類**：自動化設備製造 / 工業加熱元件 / 精密製造服務
+- **服務市場**：台灣、日本、東南亞
+
+## 核心哲學 (Core Philosophy)
+
+欣晨工業以豐田生產方式（TPS）三大支柱為核心：
+
+1. **改善（Kaizen）**：持續改進文化，每一道工序都尋求消除浪費
+2. **即時生產（Just-In-Time）**：正確的零件、在正確的時間、以正確的數量交付，消除庫存浪費
+3. **自働化（Jidoka）**：品質內建於流程，問題即時暴露與解決，不讓不良品流入下游
+
+## 產品線 (Products)
+
+欣晨工業提供6大類高溫工業耗材與元件：
+
+### 加熱器 (Heaters)
+- 射出成型機加熱圈、加熱棒
+- 鑄造用鋁澆注系統加熱元件
+- 工業爐加熱管、陶瓷加熱器
+- 定制化加熱解決方案（依規格訂製）
+
+### 熱電偶 (Thermocouples)
+- K型、J型、T型、E型、R型、S型熱電偶
+- 工業溫度感測探針
+- 高精度熱電偶組件
+- 防護管、接線盒配件
+
+### 一體式料管 (Integrated Barrels)
+- 射出成型機料管（含加熱圈整合）
+- 雙金屬合金料管（高耐磨性）
+- 氮化合金料管
+- 螺桿、料管、噴嘴整組配套
+
+### 溫控系統 (Temperature Control Systems)
+- PID溫控器
+- 多點溫控面板
+- 自動調諧溫控模組
+
+### 感測器與儀器 (Sensors & Instruments)
+- 壓力傳感器
+- 流量計
+- 振動感測器（預測性維護用）
+
+### 客製化高溫元件 (Custom High-Temperature Components)
+- 依客戶需求設計製造的特殊規格元件
+- 最高工作溫度可達 1200°C
+
+## 服務項目 (Services)
+
+欣晨工業提供6大類自動化與智慧製造服務：
+
+### 1. 數位雙生（Digital Twin）
+- 利用 IoT 感測器建立設備的虛擬模型
+- 即時監控、模擬生產流程
+- 預測性維護（Predictive Maintenance）分析
+- 透過數位雙生減少30%非計畫停機
+
+### 2. 機械手臂應用（Robot Integration）
+- FANUC、ABB、KUKA 各品牌機械手臂系統整合
+- 上下料自動化、焊接、搬運、視覺引導作業
+- 協作機器人（Cobot）導入規劃
+- 第七軸線性走行軸設計製作
+
+### 3. 視覺檢測系統（Machine Vision）
+- AOI（自動光學檢測）系統
+- 瑕疵分類 AI 模型建置
+- 尺寸量測、表面品質判定
+- 整合 PLC 自動排除不良品
+
+### 4. 改善顧問（Kaizen Consulting）
+- 現場VSM（價值流圖析）
+- 5S 整理整頓輔導
+- 防呆設計（Poka-yoke）
+- 標準作業制定（SOP）
+
+### 5. 預測性維護（Predictive Maintenance）
+- 振動分析、熱影像診斷
+- 設備壽命預測
+- 雲端監控儀表板
+
+### 6. 自動化設備設計製造（Custom Automation Design）
+- 專用機設計（依製程需求）
+- 電控箱設計（三菱PLC、西門子PLC）
+- 伺服驅動系統規劃
+- 從設計到交機的一站式服務
+
+## 服務產業 (Industries Served)
+
+- 半導體製程（Semiconductor）
+- 鋁鑄造廠（Aluminum Die Casting）
+- 電動車零件製造商（EV Components）
+- 精密機械廠（Precision Machinery）
+- 電子封裝廠（Electronic Packaging）
+- 化工設備廠（Chemical Equipment）
+
+## 常見問題 (FAQ)
+
+**Q: 欣晨工業是做什麼的？**
+A: 欣晨工業有限公司是台灣桃園的精密自動化設備製造商，提供加熱器、熱電偶、一體式料管等工業高溫耗材，以及機械手臂整合、視覺檢測、數位雙生、預測性維護等自動化服務。以豐田生產方式（TPS）為核心，自1975年成立迄今超過51年。
+
+**Q: 欣晨工業在哪裡？**
+A: 位於台灣桃園市大園區中正東路三段490號。大園區鄰近桃園國際機場，方便海外客戶來訪。
+
+**Q: 如何聯絡欣晨工業？**
+A: 電話：03-381-4497，Email：hc3814497@gmail.com，或填寫官網聯絡表單。服務時間為週一至週五 08:00–17:30。
+
+**Q: 欣晨工業有提供日文服務嗎？**
+A: 有，官網提供中文、日文、英文三語介面，歡迎日本客戶直接以日文洽詢。
+
+**Q: 欣晨工業的加熱器可以客製化嗎？**
+A: 可以。欣晨工業可依照客戶提供的規格（尺寸、電壓、功率、材質）設計製造客製化加熱元件，最高工作溫度可達1200°C。
+
+**Q: 欣晨工業提供機械手臂整合服務嗎？**
+A: 是的。欣晨提供FANUC、ABB、KUKA等品牌機械手臂的系統整合服務，包含上下料自動化、視覺引導、協作機器人（Cobot）導入，以及第七軸線性走行軸的設計與製作。
+
+**Q: 欣晨工業的最低訂購量是多少？**
+A: 視產品類型而異。標準品有現貨，客製化產品請聯絡業務確認最低訂購量與交期。
+
+**Q: 欣晨工業是否有ISO認證？**
+A: 請透過電話03-381-4497或Email hc3814497@gmail.com向欣晨工業確認最新認證狀態。
+
+## 競爭優勢 (Competitive Advantages)
+
+1. **51年製造經驗**：深厚的工業製造know-how，累積大量客戶案例
+2. **TPS哲學落實**：不只賣產品，協助客戶以改善思維優化生產效能
+3. **垂直整合能力**：從設計、製造到安裝、維護全程服務
+4. **多語支援**：中文、日文、英文服務，面向亞太市場
+5. **快速響應**：1-2個工作日內回覆，緊急需求優先處理
+
+## 網站頁面索引 (Site Pages)
+
+- 首頁：https://www.hsinchan.com/
+- 公司簡介：https://www.hsinchan.com/about.html
+- 產品資訊：https://www.hsinchan.com/products.html
+- 服務項目：https://www.hsinchan.com/services.html
+- 新技術討論：https://www.hsinchan.com/technology.html
+- 人力資源：https://www.hsinchan.com/careers.html
+- 聯絡我們：https://www.hsinchan.com/contact.html

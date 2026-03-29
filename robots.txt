@@ -1,0 +1,52 @@
+# ─── robots.txt ── 欣晨工業有限公司 ──────────────────────────────────────────
+# 允許所有搜尋引擎與 AI 爬蟲完整爬取
+
+User-agent: *
+Allow: /
+Disallow: /prompts/
+
+# ── Google AI & Extended ──────────────────────────────────────────────────────
+User-agent: Google-Extended
+Allow: /
+
+# ── ChatGPT / OpenAI ─────────────────────────────────────────────────────────
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# ── Perplexity ───────────────────────────────────────────────────────────────
+User-agent: PerplexityBot
+Allow: /
+
+# ── Anthropic Claude ─────────────────────────────────────────────────────────
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# ── Meta AI ──────────────────────────────────────────────────────────────────
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# ── Microsoft Bing / Copilot ─────────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+
+User-agent: BingPreview
+Allow: /
+
+# ── Common Crawl（訓練資料集）────────────────────────────────────────────────
+User-agent: CCBot
+Allow: /
+
+# ─────────────────────────────────────────────────────────────────────────────
+Sitemap: https://www.hsinchan.com/sitemap.xml
