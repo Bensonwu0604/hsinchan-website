@@ -1,46 +1,46 @@
 @echo off
-chcp 65001 >nul
-cd /d "d:\CLAUDE\欣晨網頁"
+cd /d "d:\CLAUDE\XINCHAN-WEB"
+if not exist ".git" cd /d "d:\CLAUDE\欣晨網頁"
 
 echo.
 echo ======================================
-echo   欣晨工業網站 — 一鍵部署
+echo   Hsin-Chan Website - Deploy
 echo ======================================
 echo.
 
-:: 檢查是否有修改
-git status --short > temp_status.txt 2>&1
-for %%A in (temp_status.txt) do set FILESIZE=%%~zA
-del temp_status.txt
+set HAS_CHANGES=0
+for /f "tokens=*" %%i in ('git status --porcelain 2^>nul') do set HAS_CHANGES=1
 
-if "%FILESIZE%"=="0" (
-  echo 沒有任何修改，無需部署。
+if "%HAS_CHANGES%"=="0" (
+  echo [OK] Nothing to deploy. No changes detected.
   echo.
   pause
   exit /b 0
 )
 
-:: 顯示修改的檔案
-echo 偵測到以下修改：
+echo [INFO] Changes detected:
 git status --short
 echo.
 
-:: 詢問部署說明
-set /p MSG=請輸入這次修改的說明（例如：更新FAQ、修改產品介紹）：
+set MSG=
+set /p MSG=Commit message (e.g. update FAQ):
+if "%MSG%"=="" set MSG=update website
 
-if "%MSG%"=="" set MSG=更新網站內容
-
-:: 執行部署
 echo.
-echo 正在部署中...
+echo [INFO] Pushing to GitHub...
 git add -A
 git commit -m "%MSG%"
 git push origin main
 
-echo.
-echo ======================================
-echo   部署完成！約 30 秒後網站自動更新
-echo   網址：https://www.hsinchan.com
-echo ======================================
+if %ERRORLEVEL%==0 (
+  echo.
+  echo ======================================
+  echo   [DONE] Site updates in ~30 seconds
+  echo   https://www.hsinchan.com
+  echo ======================================
+) else (
+  echo.
+  echo [ERROR] Push failed. Check network.
+)
 echo.
 pause
