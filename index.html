@@ -35,7 +35,7 @@
 
   <title>欣晨工業有限公司 | 加熱器・熱電偶・自動化設備 | Hsin-Chan Industrial</title>
 
-  <!-- JSON-LD 結構化資料 ── Organization + LocalBusiness + WebSite + FAQPage -->
+  <!-- JSON-LD 結構化資料 ── Organization + LocalBusiness + WebSite + WebPage -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -73,7 +73,30 @@
         "faxNumber": "+886-3-381-4536",
         "email": "hc3814497@gmail.com",
         "sameAs": [
-          "https://www.facebook.com/people/%E6%AC%A3%E6%99%A8%E5%B7%A5%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/100069099361989/"
+          "https://www.facebook.com/people/%E6%AC%A3%E6%99%A8%E5%B7%A5%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/100069099361989/",
+          "https://www.hsinchan.com/"
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+886-3-381-4497",
+            "contactType": "customer service",
+            "areaServed": ["TW", "JP", "SG", "MY"],
+            "availableLanguage": ["Chinese", "Japanese", "English"],
+            "hoursAvailable": {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+              "opens": "08:00",
+              "closes": "17:30"
+            }
+          },
+          {
+            "@type": "ContactPoint",
+            "email": "hc3814497@gmail.com",
+            "contactType": "sales",
+            "areaServed": ["TW", "JP", "SG", "MY"],
+            "availableLanguage": ["Chinese", "Japanese", "English"]
+          }
         ],
         "openingHoursSpecification": [
           {
@@ -133,6 +156,79 @@
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "首頁", "item": "https://www.hsinchan.com/" }
           ]
+        }
+      }
+    ]
+  }
+  </script>
+  <!-- FAQPage Schema（靜態，確保所有爬蟲都能讀取，包含不執行 JS 的 AI 爬蟲） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "欣晨工業有限公司是做什麼的？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "欣晨工業有限公司是台灣桃園的精密自動化設備製造商，自1975年成立，擁有超過51年工業製造經驗。核心業務分兩大方向：一是提供加熱器、熱電偶、一體式料管、溫控系統等工業高溫耗材；二是提供機械手臂整合、視覺檢測（AOI）、數位雙生、預測性維護等智慧製造服務。以豐田生產方式（TPS）為核心哲學，協助客戶實現持續改善（Kaizen）。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "欣晨工業在哪裡？如何拜訪？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "欣晨工業位於台灣桃園市大園區中正東路三段490號（郵遞區號33841）。大園區緊鄰桃園國際機場，交通便利。歡迎事先來電 03-381-4497 或 Email hc3814497@gmail.com 預約參觀。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "如何聯絡欣晨工業詢價？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "可透過以下方式聯絡：電話 03-381-4497（服務時間：週一至週五 08:00–17:30）、Email hc3814497@gmail.com、或填寫官網聯絡頁面的線上詢問表單。我們承諾於 1-2 個工作日內回覆，緊急需求請來電。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "欣晨工業的加熱器可以客製化嗎？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "可以。欣晨工業可依照客戶需求的規格（外徑、長度、電壓、功率、材質）設計製造客製化加熱元件，包括加熱圈、加熱棒、加熱管、陶瓷加熱器等，最高工作溫度可達1200°C，適用於射出成型機、鋁鑄造、工業爐等多種應用場景。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "欣晨工業提供機械手臂整合服務嗎？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "是的。欣晨工業提供 FANUC、ABB、KUKA 等主流品牌機械手臂的系統整合服務，應用涵蓋上下料自動化、焊接、搬運、視覺引導等。同時承接協作機器人（Cobot）導入規劃，以及機械手臂第七軸線性走行軸的設計與製作。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "欣晨工業有提供日文或英文服務嗎？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "有。欣晨工業官網提供中文、日文、英文三語介面，業務團隊亦可提供多語言溝通支援。歡迎日本及海外客戶直接以慣用語言洽詢。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "什麼是數位雙生服務？欣晨工業如何實施？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "數位雙生（Digital Twin）是透過 IoT 感測器為實體設備建立即時虛擬模型，讓企業可以在不停機的情況下模擬、監控與優化生產流程。欣晨工業的數位雙生服務可協助客戶減少最多 30% 的非計畫停機時間。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "欣晨工業如何實踐豐田生產方式（TPS）？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "欣晨工業將 TPS 三大支柱落實於每個服務環節：改善（Kaizen）—— 提供現場 VSM 價值流分析、5S 輔導、防呆設計等顧問服務；即時生產（JIT）—— 協助客戶建立拉式生產系統，減少庫存浪費；自働化（Jidoka）—— 透過視覺檢測與 AOI 系統讓品質問題即時被發現並阻斷，不讓不良品流入下游製程。"
         }
       }
     ]
