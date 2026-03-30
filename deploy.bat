@@ -9,11 +9,11 @@ echo ======================================
 echo.
 
 :: 檢查是否有修改
-git status --short > temp_status.txt
-set /p STATUS=<temp_status.txt
+git status --short > temp_status.txt 2>&1
+for %%A in (temp_status.txt) do set FILESIZE=%%~zA
 del temp_status.txt
 
-if "%STATUS%"=="" (
+if "%FILESIZE%"=="0" (
   echo 沒有任何修改，無需部署。
   echo.
   pause
