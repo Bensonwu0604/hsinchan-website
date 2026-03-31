@@ -1965,16 +1965,8 @@ h1, h2, h3, h4, h5, h6 {
 .footer__fb-link:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 2px; }
 .footer__fb-link .icon-fb { width: 13px; height: 13px; }
 
-/* ─── 18.5 RESPONSIVE — LARGE TABLET / SMALL LAPTOP (1025px–1280px) ───── */
-@media (min-width: 1025px) and (max-width: 1280px) {
-  .nav__container { gap: 0.75rem; }
-  .nav__logo-en { display: none; }
-  .nav__menu { gap: 0; }
-  .nav__link { font-size: 0.82rem; padding: 0.4em 0.55em; letter-spacing: 0.03em; }
-}
-
-/* ─── 19. RESPONSIVE — TABLET (≤ 1024px) ──────────────────────────────── */
-@media (max-width: 1024px) {
+/* ─── 19. RESPONSIVE — TABLET / iPAD (≤ 1200px) ───────────────────────── */
+@media (max-width: 1200px) {
   .nav__menu {
     position: fixed;
     top: var(--nav-h); left: 0; right: 0; bottom: 0;
