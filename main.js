@@ -848,7 +848,7 @@ const nav = (() => {
       if (e.key === 'Escape' && isOpen) { close(); toggle.focus(); }
     });
 
-    window.matchMedia('(min-width: 1201px)').addEventListener('change', e => {
+    window.matchMedia('(min-width: 1367px)').addEventListener('change', e => {
       if (e.matches && isOpen) close();
     });
   }

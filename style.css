@@ -1965,8 +1965,8 @@ h1, h2, h3, h4, h5, h6 {
 .footer__fb-link:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 2px; }
 .footer__fb-link .icon-fb { width: 13px; height: 13px; }
 
-/* ─── 19. RESPONSIVE — TABLET / iPAD (≤ 1200px) ───────────────────────── */
-@media (max-width: 1200px) {
+/* ─── 19. RESPONSIVE — TABLET / iPAD (≤ 1366px) ───────────────────────── */
+@media (max-width: 1366px) {
   .nav__menu {
     position: fixed;
     top: var(--nav-h); left: 0; right: 0; bottom: 0;
