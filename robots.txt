@@ -44,9 +44,44 @@ Allow: /
 User-agent: BingPreview
 Allow: /
 
+# ── xAI Grok ─────────────────────────────────────────────────────────────────
+User-agent: xAI-Bot
+Allow: /
+
+User-agent: Grok
+Allow: /
+
+# ── DuckDuckGo AI / DuckAssist ────────────────────────────────────────────────
+User-agent: DuckAssistBot
+Allow: /
+
+# ── You.com AI ────────────────────────────────────────────────────────────────
+User-agent: YouBot
+Allow: /
+
+# ── Cohere AI ────────────────────────────────────────────────────────────────
+User-agent: cohere-ai
+Allow: /
+
+# ── Apple AI / Applebot ───────────────────────────────────────────────────────
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# ── Diffbot（AI 知識圖譜）────────────────────────────────────────────────────
+User-agent: Diffbot
+Allow: /
+
 # ── Common Crawl（訓練資料集）────────────────────────────────────────────────
 User-agent: CCBot
 Allow: /
 
+# ── AI2Bot（Allen AI）────────────────────────────────────────────────────────
+User-agent: AI2Bot
+Allow: /
+
 # ─────────────────────────────────────────────────────────────────────────────
 Sitemap: https://www.hsinchan.com/sitemap.xml
+LLMs: https://www.hsinchan.com/llms.txt
