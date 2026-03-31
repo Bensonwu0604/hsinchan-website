@@ -1320,26 +1320,7 @@ const contentApi = (() => {
     return li;
   }
 
-  /** 將 FAQ 資料注入 JSON-LD FAQPage schema（SSE / AI 爬蟲可讀） */
-  function injectFaqSchema(faqItems) {
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      'mainEntity': faqItems.map(item => ({
-        '@type': 'Question',
-        'name': item.question,
-        'acceptedAnswer': {
-          '@type': 'Answer',
-          'text': item.answer
-        }
-      }))
-    };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'faq-schema';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
-  }
+
 
   async function init() {
     if (!FAQ_LIST) return;
@@ -1369,7 +1350,6 @@ const contentApi = (() => {
         obs.observe(el);
       });
 
-      injectFaqSchema(items);
     } catch (e) {
       // content.json 不可用時靜默略過（不影響其他功能）
       if (FAQ_LIST) FAQ_LIST.closest('section')?.remove();
