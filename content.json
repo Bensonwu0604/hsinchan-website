@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": "1.2.0",
-    "lastUpdated": "2026-03-29",
+    "lastUpdated": "2026-04-02",
     "description": "欣晨工業網站內容管理檔案 — 修改此檔案可即時更新網站 FAQ 與 SEO 關鍵文字，無需改動 HTML/JS",
     "howToUpdate": "直接編輯此 JSON 後存檔，重新整理網頁即可看到更新"
   },
