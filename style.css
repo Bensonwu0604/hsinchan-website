@@ -671,9 +671,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Force subtitle single line on dark hero */
 .hero .hero__subtitle {
   white-space: nowrap;
-  max-width: none;
-  align-self: stretch;
-  text-align: center;
 }
 
 /* Hero badge needs light text on dark bg */
@@ -789,9 +786,6 @@ h1, h2, h3, h4, h5, h6 {
   padding-inline: var(--container-px);
   padding-block: 7rem 5rem;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 /* Corner brackets */
@@ -882,7 +876,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* CTA group */
 .hero__cta {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
@@ -891,7 +885,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Metrics strip */
 .hero__metrics {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 2.5rem;
 }
