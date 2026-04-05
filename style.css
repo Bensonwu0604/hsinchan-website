@@ -853,10 +853,14 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.03em;
   line-height: 1;
   margin-bottom: 1.75rem;
-  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.08em;
 }
 
-.hero__title-line      { display: inline; }
+.hero__title-line      { display: block; white-space: nowrap; }
 .hero__title-line--accent {
   background: linear-gradient(135deg, var(--c-navy-vivid) 0%, var(--c-gold-dim) 100%);
   -webkit-background-clip: text;
@@ -2051,7 +2055,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .nav__logo-en { display: none; }
 
-  .hero__title { font-size: clamp(2rem, 9vw, 3.5rem); white-space: normal; }
+  .hero__title { font-size: clamp(2rem, 9vw, 3.5rem); flex-wrap: wrap; }
 
   .hero__metrics { gap: 1.25rem; }
 
