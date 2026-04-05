@@ -973,7 +973,7 @@ const heroCanvas = (() => {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(43,75,107,${this.a})`;
+        ctx.fillStyle = `rgba(74,122,181,${this.a * 1.6})`;
         ctx.fill();
       }
     }
@@ -998,7 +998,7 @@ const heroCanvas = (() => {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(43,75,107,${(1 - d / DIST) * 0.1})`;
+            ctx.strokeStyle = `rgba(74,122,181,${(1 - d / DIST) * 0.18})`;
             ctx.lineWidth = 0.7;
             ctx.stroke();
           }
