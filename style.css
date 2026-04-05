@@ -848,15 +848,15 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Title */
 .hero__title {
-  font-size: clamp(3.8rem, 11vw, 10rem);
+  font-size: clamp(3rem, 7.5vw, 7rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 0.95;
+  line-height: 1;
   margin-bottom: 1.75rem;
-  max-width: 16ch;
+  white-space: nowrap;
 }
 
-.hero__title-line      { display: block; }
+.hero__title-line      { display: inline; }
 .hero__title-line--accent {
   background: linear-gradient(135deg, var(--c-navy-vivid) 0%, var(--c-gold-dim) 100%);
   -webkit-background-clip: text;
@@ -2051,7 +2051,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .nav__logo-en { display: none; }
 
-  .hero__title { font-size: clamp(2.75rem, 12vw, 4.5rem); }
+  .hero__title { font-size: clamp(2rem, 9vw, 3.5rem); white-space: normal; }
 
   .hero__metrics { gap: 1.25rem; }
 
@@ -2085,7 +2085,7 @@ h1, h2, h3, h4, h5, h6 {
 /* ─── 22. WIDE SCREEN (≥ 1536px) ──────────────────────────────────────── */
 @media (min-width: 1536px) {
   :root { --container-max: 1480px; }
-  .hero__title { font-size: 8.5rem; }
+  .hero__title { font-size: clamp(5rem, 7.5vw, 8rem); }
 }
 
 /* ─── 23. ACCESSIBILITY — FOCUS & MOTION ───────────────────────────────── */
