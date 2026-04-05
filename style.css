@@ -864,13 +864,13 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Subtitle */
 .hero__subtitle {
-  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
   color: var(--c-text-muted);
   margin-bottom: 2.5rem;
-  max-width: 52ch;
   font-weight: 300;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   line-height: 1.75;
+  white-space: nowrap;
 }
 
 /* CTA group */
@@ -2050,6 +2050,8 @@ h1, h2, h3, h4, h5, h6 {
   .nav__logo-en { display: none; }
 
   .hero__title { font-size: clamp(2rem, 9vw, 3.5rem); }
+
+  .hero__subtitle { white-space: normal; font-size: 0.95rem; }
 
   .hero__metrics { gap: 1.25rem; }
 
