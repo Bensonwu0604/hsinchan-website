@@ -668,6 +668,12 @@ h1, h2, h3, h4, h5, h6 {
   background-clip: text;
 }
 
+/* Force subtitle single line on dark hero */
+.hero .hero__subtitle {
+  white-space: nowrap;
+  max-width: none;
+}
+
 /* Hero badge needs light text on dark bg */
 .hero .hero__badge {
   color: #8A9BAE;
