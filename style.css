@@ -37,7 +37,7 @@
   --font-body:       'Noto Sans TC', sans-serif;
 
   /* Section vertical rhythm */
-  --section-py: clamp(4rem, 8vw, 7rem);
+  --section-py: clamp(5rem, 9vw, 8rem);
 
   /* Layout */
   --container-max: 1360px;
@@ -141,10 +141,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-title {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
   font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
   margin-bottom: 1.25rem;
 }
 
@@ -156,7 +156,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-header {
-  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: clamp(3rem, 5.5vw, 5rem);
 }
 
 /* ─── 4. LAYOUT UTILITIES ──────────────────────────────────────────────── */
@@ -960,7 +960,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .adv {
-  background: var(--c-surface);
+  background: linear-gradient(180deg, var(--c-bg) 0%, var(--c-surface) 100%);
   border-top: 1px solid var(--c-border);
   border-bottom: 1px solid var(--c-border);
 }
@@ -968,22 +968,25 @@ h1, h2, h3, h4, h5, h6 {
 .adv__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5px;
-  background: var(--c-border);
-  border: 1px solid var(--c-border);
+  gap: 1.75rem;
 }
 
 .adv-card {
   position: relative;
-  background: var(--c-surface);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
   padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
   overflow: hidden;
-  transition: background var(--t-base), box-shadow var(--t-base);
+  box-shadow: var(--shadow-sm);
+  transition: background var(--t-base), box-shadow var(--t-base), transform var(--t-slow), border-color var(--t-base);
 }
 
 .adv-card:hover {
-  background: var(--c-surface-2);
-  box-shadow: inset 0 0 0 1px rgba(43,75,107,0.3);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(43,75,107,0.22);
+  transform: translateY(-4px);
 }
 
 /* Animated top border */
@@ -998,6 +1001,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform var(--t-slow);
 }
 
+.adv-card.is-visible::before { transform: scaleX(1); }
 .adv-card:hover::before { transform: scaleX(1); }
 
 /* Faint glow on hover */
@@ -1060,7 +1064,7 @@ h1, h2, h3, h4, h5, h6 {
 /* ─── 12. STATS ─────────────────────────────────────────────────────────── */
 .stats {
   position: relative;
-  background: var(--c-bg);
+  background: linear-gradient(180deg, var(--c-surface) 0%, var(--c-bg) 100%);
   overflow: hidden;
 }
 
@@ -1081,16 +1085,17 @@ h1, h2, h3, h4, h5, h6 {
 .stats__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5px;
-  background: var(--c-border);
-  border: 1px solid var(--c-border);
+  gap: 1.5rem;
 }
 
 .stat-card {
   background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
   padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2rem);
   text-align: center;
-  transition: background var(--t-base), box-shadow var(--t-base);
+  box-shadow: var(--shadow-sm);
+  transition: background var(--t-base), box-shadow var(--t-base), transform var(--t-slow), border-color var(--t-base);
   position: relative;
   overflow: hidden;
 }
@@ -1112,7 +1117,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .stat-card:hover {
   background: var(--c-surface);
-  box-shadow: var(--glow-card);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(43,75,107,0.20);
+  transform: translateY(-3px);
 }
 
 .stat-card__inner {
@@ -1125,10 +1132,10 @@ h1, h2, h3, h4, h5, h6 {
 .stat-card__num {
   display: block;
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-size: clamp(3rem, 5.5vw, 5.5rem);
   font-weight: 800;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   background: linear-gradient(145deg, var(--c-navy) 0%, var(--c-navy-vivid) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1343,7 +1350,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ─── 14. SERVICES GRID ─────────────────────────────────────────────────── */
 .services {
-  background: var(--c-surface);
+  background: var(--c-bg);
   border-top: 1px solid var(--c-border);
   border-bottom: 1px solid var(--c-border);
 }
@@ -1351,26 +1358,29 @@ h1, h2, h3, h4, h5, h6 {
 .services__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5px;
-  background: var(--c-border);
-  border: 1px solid var(--c-border);
+  gap: 1.25rem;
 }
 
 .srv-card {
   position: relative;
-  background: var(--c-surface);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
   padding: clamp(1.75rem, 3vw, 2.5rem);
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
   transition:
-    background  var(--t-base),
-    box-shadow  var(--t-base),
-    transform   var(--t-slow);
+    background    var(--t-base),
+    box-shadow    var(--t-base),
+    border-color  var(--t-base),
+    transform     var(--t-slow);
 }
 
 .srv-card:hover {
-  background: var(--c-surface-2);
-  box-shadow: 0 0 0 1px rgba(43,75,107,0.4), 0 -4px 24px rgba(43,75,107,0.06) inset;
-  transform: translateY(-3px);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(43,75,107,0.20);
+  transform: translateY(-4px);
   z-index: 1;
 }
 
@@ -1544,23 +1554,25 @@ h1, h2, h3, h4, h5, h6 {
 .tech-news__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5px;
-  background: var(--c-border);
-  border: 1px solid var(--c-border);
+  gap: 1.75rem;
 }
 
 .tech-card {
   background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: background var(--t-base), box-shadow var(--t-base), transform var(--t-slow);
+  box-shadow: var(--shadow-sm);
+  transition: background var(--t-base), box-shadow var(--t-base), transform var(--t-slow), border-color var(--t-base);
 }
 
 .tech-card:hover {
   background: var(--c-surface);
-  box-shadow: var(--glow-card);
-  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(43,75,107,0.20);
+  transform: translateY(-4px);
   z-index: 1;
 }
 
@@ -2051,9 +2063,8 @@ h1, h2, h3, h4, h5, h6 {
 
   .footer__bottom-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
 
-  .adv__grid { background: none; gap: 0; border: none; }
-  .adv-card { border-bottom: 1px solid var(--c-border); }
-  .adv-card:last-child { border-bottom: none; }
+  .adv__grid { gap: 1rem; }
+  .adv-card { border-radius: var(--radius-md); }
 }
 
 /* ─── 21. RESPONSIVE — SMALL MOBILE (≤ 480px) ─────────────────────────── */
