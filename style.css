@@ -668,10 +668,6 @@ h1, h2, h3, h4, h5, h6 {
   background-clip: text;
 }
 
-/* Force subtitle single line on dark hero */
-.hero .hero__subtitle {
-  white-space: nowrap;
-}
 
 /* Hero badge needs light text on dark bg */
 .hero .hero__badge {
@@ -784,8 +780,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   margin-inline: auto;
   padding-inline: var(--container-px);
-  padding-block: 7rem 5rem;
-  text-align: center;
+  padding-block: 6rem 4rem;
 }
 
 /* Corner brackets */
@@ -850,13 +845,14 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Title */
 .hero__title {
-  font-size: clamp(3rem, 7.5vw, 7rem);
+  font-size: clamp(3.2rem, 8.5vw, 7.5rem);
   font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  margin-bottom: 1.75rem;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin-bottom: 1.5rem;
 }
 
+.hero__title-line      { display: block; }
 .hero__title-line--accent {
   background: linear-gradient(135deg, var(--c-navy-vivid) 0%, var(--c-gold-dim) 100%);
   -webkit-background-clip: text;
@@ -866,28 +862,28 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Subtitle */
 .hero__subtitle {
-  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+  font-size: clamp(1rem, 2vw, 1.3rem);
   color: var(--c-text-muted);
   margin-bottom: 2.5rem;
+  max-width: 46ch;
   font-weight: 300;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   line-height: 1.75;
 }
 
 /* CTA group */
 .hero__cta {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 1rem;
-  margin-bottom: 4rem;
+  margin-bottom: 3.5rem;
 }
 
 /* Metrics strip */
 .hero__metrics {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
 .hero__metric {
@@ -2050,9 +2046,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .nav__logo-en { display: none; }
 
-  .hero__title { font-size: clamp(2rem, 9vw, 3.5rem); }
-
-  .hero__subtitle { white-space: normal; font-size: 0.95rem; }
+  .hero__title { font-size: clamp(2.75rem, 12vw, 4.5rem); }
 
   .hero__metrics { gap: 1.25rem; }
 
@@ -2086,7 +2080,7 @@ h1, h2, h3, h4, h5, h6 {
 /* ─── 22. WIDE SCREEN (≥ 1536px) ──────────────────────────────────────── */
 @media (min-width: 1536px) {
   :root { --container-max: 1480px; }
-  .hero__title { font-size: clamp(5rem, 7.5vw, 8rem); }
+  .hero__title { font-size: 8.5rem; }
 }
 
 /* ─── 23. ACCESSIBILITY — FOCUS & MOTION ───────────────────────────────── */
