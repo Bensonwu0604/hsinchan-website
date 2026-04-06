@@ -852,7 +852,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1.5rem;
 }
 
-.hero__title-line      { display: block; }
+.hero__title-line      { display: inline-block; }
 .hero__title-line--accent {
   background: linear-gradient(135deg, var(--c-navy-vivid) 0%, var(--c-gold-dim) 100%);
   -webkit-background-clip: text;
@@ -865,10 +865,10 @@ h1, h2, h3, h4, h5, h6 {
   font-size: clamp(1rem, 2vw, 1.3rem);
   color: var(--c-text-muted);
   margin-bottom: 2.5rem;
-  max-width: 46ch;
   font-weight: 300;
   letter-spacing: 0.02em;
   line-height: 1.75;
+  white-space: nowrap;
 }
 
 /* CTA group */
@@ -2047,6 +2047,7 @@ h1, h2, h3, h4, h5, h6 {
   .nav__logo-en { display: none; }
 
   .hero__title { font-size: clamp(2.75rem, 12vw, 4.5rem); }
+  .hero__subtitle { white-space: normal; max-width: 42ch; }
 
   .hero__metrics { gap: 1.25rem; }
 
