@@ -259,6 +259,8 @@ const translations = {
     contact_form_tel_ph: '例：02-1234-5678', contact_form_email_ph: 'example@company.com',
     contact_form_msg_ph: '請描述您的需求，例如：產品規格詢問、報價需求、技術合作洽談等…',
     contact_form_submit: '送出詢問',
+
+    faq_title: '常見問題', faq_lead: '快速找到您需要的答案。更多問題歡迎直接', faq_contact_link: '聯絡我們',
   },
 
   ja: {
@@ -495,6 +497,8 @@ const translations = {
     contact_form_tel_ph: '例：03-1234-5678', contact_form_email_ph: 'example@company.com',
     contact_form_msg_ph: 'ご要望をご記入ください（例：製品仕様のお問い合わせ、見積依頼、技術提携など）',
     contact_form_submit: '送信する',
+
+    faq_title: 'よくある質問', faq_lead: 'お探しの答えをすばやく見つけてください。その他のご質問は', faq_contact_link: 'お問い合わせ',
   },
 
   en: {
@@ -731,6 +735,8 @@ const translations = {
     contact_form_tel_ph: 'e.g. 02-1234-5678', contact_form_email_ph: 'example@company.com',
     contact_form_msg_ph: 'Describe your needs, e.g. product specification inquiry, quotation request, technical collaboration…',
     contact_form_submit: 'Send Enquiry',
+
+    faq_title: 'Frequently Asked Questions', faq_lead: 'Find answers quickly. For more questions, feel free to', faq_contact_link: 'contact us',
   },
 };
 
@@ -771,6 +777,9 @@ const i18n = (() => {
     });
 
     try { localStorage.setItem(STORAGE_KEY, lang); } catch (_) {}
+
+    // Re-render FAQ in new language (contentApi may not be defined yet on first call)
+    if (typeof contentApi !== 'undefined') contentApi.refresh();
   }
 
   function saved() {
@@ -1209,6 +1218,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ═══════════════════════════════════════════════════════════════════════════ */
 const contentApi = (() => {
   const FAQ_LIST = document.getElementById('faqList');
+  let cachedData = null;
 
   /**
    * 安全 HTML 轉義 — 防止 XSS（所有來自 JSON 的文字都必須過此函式）
@@ -1322,41 +1332,48 @@ const contentApi = (() => {
 
 
 
+  function renderFaqList(data, lang) {
+    if (!FAQ_LIST || !data) return;
+    const key = lang === 'ja' ? 'faq_ja' : lang === 'en' ? 'faq_en' : 'faq';
+    const items = (data[key] || data.faq || []).filter(validateFaqItem).slice(0, 30);
+    if (!items.length) return;
+
+    FAQ_LIST.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+    items.forEach((item, i) => fragment.appendChild(renderFaqItem(item, i)));
+    FAQ_LIST.appendChild(fragment);
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+    FAQ_LIST.querySelectorAll('[data-reveal]').forEach(el => {
+      const d = el.getAttribute('data-reveal-delay');
+      if (d) el.style.transitionDelay = `${d}ms`;
+      obs.observe(el);
+    });
+  }
+
   async function init() {
     if (!FAQ_LIST) return;
     try {
       const res = await fetch('content.json');
       if (!res.ok) throw new Error('content.json fetch failed');
-      const data = await res.json();
-      // 驗證並過濾格式不正確的項目，防止畸形 JSON 造成 DOM 異常
-      const items = (data.faq || []).filter(validateFaqItem).slice(0, 30); // 最多30則
-      if (!items.length) return;
-
-      const fragment = document.createDocumentFragment();
-      items.forEach((item, i) => fragment.appendChild(renderFaqItem(item, i)));
-      FAQ_LIST.appendChild(fragment);
-
-      // 觀察動態新增的 FAQ 項目（加入滾動顯示動畫）
-      const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (!e.isIntersecting) return;
-          e.target.classList.add('is-visible');
-          obs.unobserve(e.target);
-        });
-      }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
-      FAQ_LIST.querySelectorAll('[data-reveal]').forEach(el => {
-        const d = el.getAttribute('data-reveal-delay');
-        if (d) el.style.transitionDelay = `${d}ms`;
-        obs.observe(el);
-      });
-
+      cachedData = await res.json();
+      renderFaqList(cachedData, i18n.current());
     } catch (e) {
-      // content.json 不可用時靜默略過（不影響其他功能）
       if (FAQ_LIST) FAQ_LIST.closest('section')?.remove();
     }
   }
 
-  return { init };
+  function refresh() {
+    if (cachedData) renderFaqList(cachedData, i18n.current());
+  }
+
+  return { init, refresh };
 })();
 
 /* ═══════════════════════════════════════════════════════════════════════════
