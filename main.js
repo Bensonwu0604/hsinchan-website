@@ -261,6 +261,31 @@ const translations = {
     contact_form_submit: '送出詢問',
 
     faq_title: '常見問題', faq_lead: '快速找到您需要的答案。更多問題歡迎直接', faq_contact_link: '聯絡我們',
+
+    genchi_title: '現地現物',
+    genchi_desc: '豐田的核心原則：不相信二手報告，要親自到現場，用雙眼確認、用雙手丈量。欣晨工業在每個專案啟動前，工程師必定親赴客戶廠房，深入理解真實的生產環境、設備空間限制與作業員習慣。唯有真正讀懂現場，才能設計出真正適用的自動化系統。',
+    genchi_spec1_label: '現場', genchi_spec1_val: '需求訪談與動線觀察',
+    genchi_spec2_label: '量測', genchi_spec2_val: '設備空間與干涉評估',
+    genchi_spec3_label: '分析', genchi_spec3_val: '生產節拍（Takt Time）實地計測',
+    genchi_cta: '了解我們的做法', genchi_img_tag: '現地現物',
+
+    kaizen_title_1: '改善', kaizen_title_2: '永無止境的精益之路',
+    kaizen_desc: '改善不是一次性的革命，而是每天積累的微進化。欣晨工業將Kaizen精神落實在每一個設計環節：從縮短換線時間（SMED）、導入防呆裝置（Poka-yoke），到建立標準作業程序（SOP）。我們不停地問：「這裡還能更好嗎？」，直到找到答案為止。',
+    kaizen_spec1_val: '快速換模設計，縮短換線停機',
+    kaizen_spec2_label: '防呆', kaizen_spec2_val: 'Poka-yoke 機構，從源頭杜絕錯誤',
+    kaizen_spec3_label: '標準化', kaizen_spec3_val: 'SOP 建立，確保製程一致性',
+    kaizen_cta: '查看自動化服務', kaizen_img_tag: '改善',
+
+    marquee_1: '半導體製程客戶', marquee_2: '鋁鑄造廠', marquee_3: '電動車零件製造商',
+    marquee_4: '精密機械廠', marquee_5: '電子封裝廠', marquee_6: '化工設備廠',
+
+    tech_lead: '以改善、防呆與標準化思維，持續突破製造效能的邊界。',
+    tps_tag_1: '改善 × 半導體製程', tps_1_title: 'Kaizen文化在精密製程中的實踐',
+    tps_1_desc: '半導體製程的微米級要求，正是Kaizen精神最需要的舞台。每一道工序的微小改善，累積成良率的持續突破。',
+    tps_tag_2: 'JIT × 電動車生產', tps_2_title: 'JIT準時化生產在電動車廠的應用',
+    tps_2_desc: '電動車零件種類龐雜，JIT的「必要時間、必要數量、必要品項」原則，是消除電池組裝線庫存浪費的關鍵工具。',
+    tps_tag_3: '防呆設計 × 機械手臂', tps_3_title: 'Poka-yoke防呆設計讓機械手臂零失誤',
+    tps_3_desc: '在機械手臂整合中建入防呆機構，讓夾爪錯誤、定位偏差在發生前就被制止，是實現零缺陷生產的核心設計邏輯。',
   },
 
   ja: {
@@ -499,6 +524,31 @@ const translations = {
     contact_form_submit: '送信する',
 
     faq_title: 'よくある質問', faq_lead: 'お探しの答えをすばやく見つけてください。その他のご質問は', faq_contact_link: 'お問い合わせ',
+
+    genchi_title: '現地現物',
+    genchi_desc: 'トヨタのコア原則：二次情報を信じず、自ら現場へ赴き、目で確認し、手で計測する。欣晨工業では、すべてのプロジェクト開始前にエンジニアが必ずお客様の工場を直接訪問し、実際の生産環境・設備スペース・作業者の動きを深く理解します。現場を真に読み解いてこそ、真に使える自動化システムを設計できます。',
+    genchi_spec1_label: '現場', genchi_spec1_val: '要件ヒアリングと動線観察',
+    genchi_spec2_label: '計測', genchi_spec2_val: '設備スペースと干渉評価',
+    genchi_spec3_label: '分析', genchi_spec3_val: 'タクトタイム（Takt Time）の実地計測',
+    genchi_cta: '私たちのアプローチを見る', genchi_img_tag: '現地現物',
+
+    kaizen_title_1: '改善', kaizen_title_2: '終わりなき改良への道',
+    kaizen_desc: 'カイゼンは一度きりの革命ではなく、毎日積み重ねる微進化です。欣晨工業はカイゼン精神をすべての設計工程に落とし込んでいます。段取り替え時間の短縮（SMED）、ポカヨケ装置の導入、標準作業手順（SOP）の確立など、「ここをもっと良くできないか？」と問い続けます。',
+    kaizen_spec1_val: '段取り替え設計で停機時間を短縮',
+    kaizen_spec2_label: 'ポカヨケ', kaizen_spec2_val: 'Poka-yoke機構で源流エラーを防止',
+    kaizen_spec3_label: '標準化', kaizen_spec3_val: 'SOP策定で工程の一貫性を確保',
+    kaizen_cta: '自動化サービスを見る', kaizen_img_tag: '改善',
+
+    marquee_1: '半導体プロセスのお客様', marquee_2: 'アルミ鋳造メーカー', marquee_3: 'EV部品メーカー',
+    marquee_4: '精密機械メーカー', marquee_5: '電子封止メーカー', marquee_6: '化学設備メーカー',
+
+    tech_lead: 'カイゼン・ポカヨケ・標準化の思想で、製造効率の限界を継続的に突破します。',
+    tps_tag_1: 'カイゼン × 半導体製造', tps_1_title: '精密製造におけるカイゼン文化の実践',
+    tps_1_desc: '半導体製造のマイクロメートル単位の要求こそ、カイゼン精神が最も輝く舞台です。各工程のわずかな改善が積み重なり、歩留まりの継続的な向上につながります。',
+    tps_tag_2: 'JIT × EV生産', tps_2_title: 'JIT生産方式のEV工場への応用',
+    tps_2_desc: 'EV部品は種類が多岐にわたります。「必要なとき、必要な数量、必要な品目」というJITの原則は、電池組立ラインの在庫ロス削減に不可欠なツールです。',
+    tps_tag_3: 'ポカヨケ × 産業用ロボット', tps_3_title: 'Poka-yoke設計で産業用ロボットのエラーをゼロに',
+    tps_3_desc: 'ロボット統合にポカヨケ機構を組み込むことで、グリッパーエラーや位置ズレを発生前に防止します。これがゼロ不良生産を実現するコア設計ロジックです。',
   },
 
   en: {
@@ -737,6 +787,31 @@ const translations = {
     contact_form_submit: 'Send Enquiry',
 
     faq_title: 'Frequently Asked Questions', faq_lead: 'Find answers quickly. For more questions, feel free to', faq_contact_link: 'contact us',
+
+    genchi_title: 'Genchi Genbutsu',
+    genchi_desc: "Toyota's core principle: never trust second-hand reports — go to the actual place, confirm with your own eyes, measure with your own hands. At Hsin-Chan Industrial, engineers visit every client's facility before a project begins, gaining a deep understanding of the real production environment, equipment space constraints, and operator workflows. Only by truly reading the shop floor can we design automation systems that truly work.",
+    genchi_spec1_label: 'Site', genchi_spec1_val: 'Requirements interviews & workflow observation',
+    genchi_spec2_label: 'Measure', genchi_spec2_val: 'Equipment space & interference assessment',
+    genchi_spec3_label: 'Analyze', genchi_spec3_val: 'Takt Time on-site measurement',
+    genchi_cta: 'Learn our approach', genchi_img_tag: 'Genchi Genbutsu',
+
+    kaizen_title_1: 'Kaizen', kaizen_title_2: 'The Endless Path of Improvement',
+    kaizen_desc: "Kaizen is not a one-time revolution — it is the micro-evolution of each passing day. Hsin-Chan Industrial embeds the Kaizen spirit into every design phase: reducing changeover time (SMED), introducing mistake-proofing devices (Poka-yoke), and establishing standard operating procedures (SOP). We never stop asking, 'Can this be better?' — until we find the answer.",
+    kaizen_spec1_val: 'SMED design to minimize changeover downtime',
+    kaizen_spec2_label: 'Poka-yoke', kaizen_spec2_val: 'Poka-yoke mechanisms to eliminate errors at the source',
+    kaizen_spec3_label: 'Standardize', kaizen_spec3_val: 'SOP documentation for process consistency',
+    kaizen_cta: 'View Automation Services', kaizen_img_tag: 'Kaizen',
+
+    marquee_1: 'Semiconductor Process Clients', marquee_2: 'Aluminum Foundries', marquee_3: 'EV Parts Manufacturers',
+    marquee_4: 'Precision Machinery Plants', marquee_5: 'Electronic Packaging Fabs', marquee_6: 'Chemical Equipment Makers',
+
+    tech_lead: 'Continuously pushing the boundaries of manufacturing performance through Kaizen, Poka-yoke, and Standardization.',
+    tps_tag_1: 'Kaizen × Semiconductor', tps_1_title: 'Kaizen Culture in Precision Manufacturing',
+    tps_1_desc: 'The micron-level demands of semiconductor manufacturing are the perfect stage for Kaizen. Incremental improvements to each process step accumulate into sustained yield breakthroughs.',
+    tps_tag_2: 'JIT × EV Production', tps_2_title: 'JIT Production in EV Manufacturing Plants',
+    tps_2_desc: "EV components are highly diverse. JIT's principle of 'right time, right quantity, right item' is the key tool for eliminating inventory waste on battery assembly lines.",
+    tps_tag_3: 'Poka-yoke × Robot Arms', tps_3_title: 'Poka-yoke Design for Zero-Error Robot Arms',
+    tps_3_desc: 'Embedding mistake-proofing mechanisms into robot arm integration stops gripper errors and positioning deviations before they occur — this is the core design logic for zero-defect production.',
   },
 };
 
