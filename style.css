@@ -1625,7 +1625,7 @@ h1, h2, h3, h4, h5, h6 {
 .tech-card__img--ev::before {
   background-image:
     linear-gradient(145deg, rgba(4,7,14,0.65) 0%, rgba(10,18,36,0.28) 50%, rgba(4,7,14,0.72) 100%),
-    url('https://images.unsplash.com/photo-7Az9gLFn6ek?auto=format&fit=crop&w=900&q=80');
+    url('https://images.unsplash.com/photo-5n8jb5inWPI?auto=format&fit=crop&w=900&q=80');
   background-size: cover;
   background-position: center;
 }
