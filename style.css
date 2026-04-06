@@ -1285,7 +1285,7 @@ h1, h2, h3, h4, h5, h6 {
 .product-hl__img--kaizen::before {
   background-image:
     linear-gradient(160deg, rgba(4,8,18,0.58) 0%, rgba(10,20,40,0.22) 55%, rgba(4,8,18,0.65) 100%),
-    url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80');
+    url('photo/kaizen-factory.jfif');
   background-size: cover;
   background-position: center;
 }
