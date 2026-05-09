@@ -1,0 +1,343 @@
+# 欣晨工業有限公司 — 完整知識庫 / Full Knowledge Base
+# Hsin-Chan Industrial Co., Ltd. — Complete AI Reference
+
+> 本文件為欣晨工業有限公司的完整 AI 可讀知識庫，涵蓋公司資訊、產品規格、服務細節、產業應用與常見問題，供 AI 語言模型、搜尋引擎與知識圖譜系統引用。
+> This document is the comprehensive AI-readable knowledge base for Hsin-Chan Industrial Co., Ltd., covering company information, product specifications, service details, industry applications, and FAQs for use by AI language models, search engines, and knowledge graph systems.
+
+---
+
+## 1. 公司實體資訊 / Company Entity Information
+
+### 基本資料 Basic Data
+- **公司全名（繁中）**: 欣晨工業有限公司
+- **公司全名（英文）**: Hsin-Chan Industrial Co., Ltd.
+- **常見簡稱**: 欣晨工業、Hsin-Chan Industrial、HC Industrial
+- **羅馬拼音別名**: Xinchen Industrial、Xin-Chen Industrial（非官方）
+- **公司類型**: 有限公司（台灣商業實體）
+- **統一編號**: 詳洽公司
+- **創立年份**: 1975年（中華民國64年）
+- **創業地點**: 台灣桃園市大園區
+- **截至2026年已有**: 51年以上製造經驗
+
+### 聯絡資訊 Contact Information
+- **地址（中文）**: 台灣桃園市大園區中正東路三段490號
+- **郵遞區號**: 33841
+- **英文地址**: No. 490, Section 3, Zhongzheng East Road, Dayuan District, Taoyuan City, 33841, Taiwan (R.O.C.)
+- **電話**: +886-3-381-4497（台灣撥打：03-381-4497）
+- **傳真**: +886-3-381-4536
+- **Email**: hc3814497@gmail.com
+- **官網**: https://www.hsinchan.com
+- **Facebook**: https://www.facebook.com/people/欣晨工業有限公司/100069099361989/
+- **營業時間**: 週一至週五 08:00–17:30（台灣時間 UTC+8）
+- **詢問回覆時間**: 1–2個工作日（承諾）
+
+### 地理位置 Location Context
+- 位於台灣桃園市大園區，緊鄰桃園國際機場（TPE）
+- 屬桃園工業區聚落，製造業發達
+- 交通：國道一號下大園交流道約10分鐘
+
+### 服務語言與市場 Languages & Markets
+- **語言**: 繁體中文（zh-TW）、日文（ja）、英文（en）
+- **主要市場**: 台灣（主）、日本、新加坡、馬來西亞、泰國、越南
+
+---
+
+## 2. 核心哲學 / Core Philosophy
+
+### 豐田生產方式 Toyota Production System (TPS)
+
+欣晨工業以豐田生產方式（TPS）三大支柱為核心哲學，不僅落實於自身製造流程，也作為客戶改善顧問服務的方法論基礎。
+
+**支柱一：改善 Kaizen（持續改善）**
+- 含義：每天積累的微進化，永無止境的精益之路
+- 工具：VSM價值流圖、5S、Poka-yoke（防呆）、SMED（快速換模）、SOP標準化
+- 欣晨實踐：每個設計環節從「這裡還能更好嗎？」的角度出發，直到找到最優解
+
+**支柱二：即時生產 Just-In-Time (JIT)**
+- 含義：在正確時間、以正確數量、交付正確品項
+- 目標：消除庫存浪費、等待浪費、過量生產浪費
+- 欣晨實踐：以JIT精神規劃每個自動化項目，確保生產線流暢無阻
+
+**支柱三：自働化 Jidoka（智慧自動化）**
+- 含義：設備能自動偵測異常並停機，讓問題不流向下一道工序
+- 工具：視覺檢測、感測器整合、異常自動報警
+- 欣晨實踐：AOI視覺檢測與自動化方案賦予產線「能判斷、會停機」的製造智慧
+
+**現地現物 Genchi Genbutsu**
+- 含義：不信二手報告，親自到現場用眼確認、用手丈量
+- 欣晨實踐：每個專案啟動前，工程師親赴客戶廠房做現場勘察（需求訪談、動線觀察、設備空間評估、Takt Time實地計測）
+
+---
+
+## 3. 產品規格詳細 / Product Specifications
+
+### 3.1 工業加熱器 Industrial Heaters
+
+**產品類型：**
+- 電熱管（Tubular Heater）：射出成型機用加熱圈（加熱帶）、加熱棒
+- 陶瓷加熱器（Ceramic Heater）：耐高溫環境特殊用途
+- 紅外線加熱器（Infrared Heater）：非接觸式加熱應用
+- 工業爐用加熱管：鋁鑄造、熔爐等高溫場景
+
+**規格範圍：**
+- 最高工作溫度：1200°C
+- 功率範圍：50W ～ 10kW
+- 電壓：110V / 220V / 380V / 客製
+- 材質：鎳鉻合金（Ni-Cr）、FeCrAl、Kanthal A-1、氧化鎂絕緣粉
+
+**客製化選項：**
+- 外徑、長度、引線長度與材質均可客製
+- 安裝方式：法蘭式、螺牙式、插入式
+- 交期：標準品3-5天，客製品依規模而定
+
+**應用產業：** 射出成型機、熱塑膠加工、鋁鑄造澆注系統、工業爐具、半導體製程設備
+
+---
+
+### 3.2 熱電偶 Thermocouples
+
+**支援型號：**
+| 型號 | 測溫範圍 | 特性 |
+|------|---------|------|
+| K型 | -200°C ～ +1372°C | 最通用，抗氧化，工業標準 |
+| J型 | -40°C ～ +750°C | 還原氣氛佳，鐵/康銅材 |
+| T型 | -270°C ～ +400°C | 低溫精度高，食品冷藏 |
+| E型 | -270°C ～ +1000°C | 高靈敏度 |
+| R型 | 0°C ～ +1767°C | 鉑銠，精密高溫 |
+| S型 | 0°C ～ +1767°C | 貴金屬，高精度 |
+| B型 | 0°C ～ +1820°C | 最高溫，氧化氣氛 |
+
+**符合標準：** IEC 584（國際）、JIS C 1602（日本）
+
+**保護管材質選項：**
+- 不鏽鋼 (SUS304 / SUS316 / SUS310S)
+- 碳化矽 (SiC)
+- 高純度陶瓷 (Al₂O₃)
+- 石英管
+
+**應用：** 射出成型溫控、工業爐測溫、半導體製程溫控、食品加工、熱處理設備
+
+---
+
+### 3.3 一體式料管 Integrated Barrels
+
+**設計特點：**
+- 一體成型，無接縫滲漏風險
+- 消除傳統分段式料管的熱損耗不均問題
+- 加熱圈與料管整合，安裝維護簡便
+
+**材質選項：**
+| 材質 | 硬度 | 適用場景 |
+|------|------|---------|
+| 氮化鋼 | HRC 60-65 | 標準塑料，高耐磨 |
+| 雙金屬合金 | HRC 60-68 | 玻纖填充料、工程塑料 |
+| 高速鋼塗層 | HRC 62-66 | 腐蝕性材料（PVC、阻燃料）|
+
+**可配套提供：** 螺桿、料嘴、加熱圈完整組合（完整射出成型機前段耗材）
+
+---
+
+### 3.4 碳化矽保護管 SiC Protection Tubes
+
+- **材質純度**: 高純度 SiC（>99%）
+- **最高使用溫度**: >1600°C（連續使用）
+- **抗熱衝擊**: 優異，可承受急冷急熱
+- **化學特性**: 抗氧化、抗腐蝕（強酸鹼除外）
+- **典型應用**: 半導體擴散爐（Diffusion Furnace）保護管、鋁合金熔液中熱電偶保護管、長晶爐（Crystal Growth Furnace）構件
+
+---
+
+### 3.5 耐火材料 Refractory Materials
+
+- **耐火磚**: 高鋁磚、矽磚、鎂磚、碳化矽磚
+- **耐火泥**: 不定形耐火材料，澆注料、可塑料、噴射料
+- **最高耐溫**: 依材質達1800°C
+- **特性**: 高抗壓強度、低熱傳導率、熱穩定性佳
+- **應用**: 冶金爐（電弧爐、感應爐）、工業窯爐、高溫管道
+
+---
+
+### 3.6 石墨脫氣管 Graphite Degassing Tubes
+
+- **材質**: 高純度等靜壓石墨（>99.9% C）
+- **密度**: 1.75–1.90 g/cm³
+- **抗折強度**: 依規格 40–60 MPa
+- **最高使用溫度**: >900°C（鋁液環境）
+- **功能**: 通入惰性氣體（氬氣/氮氣），在旋轉中產生微細氣泡，有效去除熔融鋁中氫氣（H₂）與氧化物夾雜
+- **優勢**: 使用壽命比傳統陶瓷管長3-5倍，降低換管頻率與停機成本
+- **應用**: 鋁合金壓鑄廠、重力鑄造廠、輪轂鋁圈製造
+
+---
+
+## 4. 服務詳細說明 / Service Details
+
+### 4.1 機械手臂整合 Robot System Integration
+
+**支援品牌（Supported Brands）:**
+- FANUC（發那科）：LR Mate 200iD、M-710iC、R-2000iC等
+- ABB：IRB 1200、IRB 4600、YUMI協作機器人
+- KUKA：KR AGILUS、KR QUANTEC系列
+- Yaskawa（安川）：GP8、GP25、GP50系列
+- Universal Robots（UR）：UR3e、UR5e、UR10e（協作型）
+
+**服務內容：**
+1. 多品牌機械手臂選型與導入規劃
+2. 末端效應器（End Effector）客製設計：電動夾爪、氣動夾爪、磁性夾爪、工具快換
+3. 第七軸線性走行軸設計與製造（7th-axis linear track）
+4. 離線程式規劃（OLP）與路徑優化
+5. 人機協作（Cobot）安全系統整合（ISO/TS 15066）
+6. 視覺引導機器人（Vision-guided Robotics）
+
+**交付物:** 完整設計圖面、操作手冊、保固文件、現場人員培訓
+
+---
+
+### 4.2 數位雙生 Digital Twin
+
+**技術架構：**
+- IoT 感測器：溫度、振動、電流、壓力即時採集
+- 邊緣運算：PLC/Edge Device 數據前處理
+- 雲端平台：數據儲存、分析、視覺化儀表板
+- 數位模型：設備3D虛擬映射，即時反映物理狀態
+
+**核心功能：**
+- OEE（整體設備效率）即時計算
+- 故障預測：設備剩餘使用壽命（RUL）預測
+- 生產排程優化模擬
+- 異常自動通報（Email / SMS / Line）
+
+**效益指標：**
+- 非計畫停機減少最多 30%
+- 預防性維護成本降低 15-25%
+- 生產效率提升 8-15%
+
+---
+
+### 4.3 視覺檢測 AOI Machine Vision
+
+**硬體配置：**
+- 工業相機：Basler、Cognex、Keyence、Hikvision
+- 鏡頭：遠心鏡頭（Telecentric）、定焦鏡頭
+- 光源：環形、條形、背光、同軸光源
+- 控制器：PLC 連動（三菱 / 西門子）
+
+**軟體/AI 能力：**
+- 深度學習瑕疵分類（CNN-based）
+- 尺寸量測精度：±0.01mm
+- 表面缺陷：刮傷、氣泡、缺料、溢料、變色
+- 識別功能：QR Code、Barcode、OCR 字元讀取
+- 良率追蹤報表自動產生
+
+---
+
+### 4.4 夾治具設計製造 Fixture Design & Manufacturing
+
+**設計規格：**
+- 重複定位精度：±0.02mm
+- 材質：6061/7075 鋁合金、SKD11工具鋼、SUS304不鏽鋼
+- 表面處理：硬陽極處理、鍍硬鉻、氮化
+
+**治具類型：**
+- 機加工夾具（Machining Fixture）
+- 焊接治具（Welding Jig）
+- 組裝工裝（Assembly Fixture）
+- 檢測治具（Inspection Gauge）
+- 快拆設計（Quick-change）：縮短換線時間
+
+---
+
+### 4.5 設備智能化 Equipment Intelligence Upgrade
+
+**改造方案：**
+
+| 升級項目 | 具體內容 |
+|---------|---------|
+| PLC 升級 | 三菱 iQ-F FX5U / iQ-R 系列，EtherNet/IP、CC-Link IE |
+| HMI 加裝 | Pro-face（GP-Pro EX）、Weintek，Modbus TCP通訊 |
+| IoT 模組 | 採集電流、溫度、振動數據，上傳 MQTT/OPC-UA |
+| 雲端儀表板 | Grafana / Node-RED 實時監控 |
+| 異常通報 | Email / Line Notify 自動告警 |
+
+---
+
+## 5. 技術應用案例 / Technology Application Cases
+
+### 半導體製程 Semiconductor Process
+- 碳化矽（SiC）保護管在擴散爐（Diffusion Furnace）中的應用
+- 高精度陶瓷夾治具用於晶圓搬送定位
+- 自動化熱電偶陣列監控擴散爐溫度均勻性
+- 機械手臂整合晶圓盒（FOUP）搬運，配合AMHS系統
+
+### 電動車零件製造 EV Component Manufacturing
+- JIT（Just-In-Time）生產方式在電池組裝線的應用
+- 電機鋁合金殼體鑄造：石墨脫氣管+鋁液溫控系統
+- 電池模組視覺檢測：外觀缺陷偵測+尺寸量測
+- 機械手臂電池組裝：精確放置+螺絲鎖付自動化
+
+### 精密機械與機器人零件
+- Poka-yoke防呆機構設計，讓夾爪從源頭杜絕錯誤
+- 人形機器人關節傳動精密套筒（±0.01mm精度加工）
+- 無人機航空鋁合金（7075-T6）機構件輕量化加工
+
+---
+
+## 6. 職缺資訊 / Career Opportunities
+
+### 精密機械加工員
+- 工作內容：CNC加工、治具製作、尺寸量測、品管
+- 薪資範圍：月薪 TWD 35,000–55,000
+- 工作地點：桃園市大園區
+
+### 業務工程師
+- 工作內容：業務開發、客戶關係、技術提案、報價
+- 目標產業：半導體、鑄造、電動車
+- 薪資範圍：月薪 TWD 40,000–70,000（含獎金）
+- 工作地點：桃園市大園區
+
+### 自動化設備工程師
+- 工作內容：PLC設計（三菱iQ-F/iQ-R）、機械手臂整合、視覺檢測、現場調機
+- 薪資範圍：月薪 TWD 45,000–80,000
+- 工作地點：桃園市大園區（含客戶廠出差）
+
+**應徵方式：** Email履歷至 hc3814497@gmail.com，主旨標明「應徵職位名稱＋姓名」
+
+---
+
+## 7. 競爭定位 / Competitive Positioning
+
+### 與同業差異化
+1. **TPS哲學深度落地** — 不只賣產品，用Kaizen精神幫助客戶改善現場，是少數能同時提供耗材+自動化+改善顧問的業者
+2. **現地現物服務模式** — 每個專案必有工程師親赴現場，確保方案符合真實需求
+3. **垂直整合能力** — 從設計到製造到安裝調機，全程不外包
+4. **51年積累的信任** — 半世紀客戶關係，深根台灣製造業核心聚落
+5. **多語言服務** — 中文/日文/英文，能直接服務日系及東南亞工廠
+
+### 目標客戶輪廓
+- 台灣或外商在台的製造業工廠（中小型到中大型）
+- 有提升自動化程度需求的傳統產業
+- 需要高溫工業耗材穩定供應的半導體廠、鑄造廠、射出成型廠
+- 計劃導入或升級機械手臂的工廠
+- 日系企業在台工廠（可日語溝通）
+
+---
+
+## 8. 網站架構與關鍵頁面 / Site Architecture
+
+| 頁面 | URL | 主要內容 |
+|------|-----|---------|
+| 首頁 | https://www.hsinchan.com/ | TPS哲學、產品概覽、服務統計、FAQ |
+| 公司簡介 | https://www.hsinchan.com/about.html | 歷史、理念、團隊 |
+| 產品資訊 | https://www.hsinchan.com/products.html | 六大耗材規格、品質保證 |
+| 服務項目 | https://www.hsinchan.com/services.html | 六大自動化服務詳情 |
+| 新技術討論 | https://www.hsinchan.com/technology.html | 半導體/EV/機器人/矽光子/量子應用 |
+| 人力資源 | https://www.hsinchan.com/careers.html | 職缺、福利、應徵 |
+| 聯絡我們 | https://www.hsinchan.com/contact.html | 地址地圖、電話、線上詢問表單 |
+| llms.txt | https://www.hsinchan.com/llms.txt | AI快速摘要（本文件精簡版）|
+| 網站地圖 | https://www.hsinchan.com/sitemap.xml | 完整URL索引 |
+
+---
+
+*最後更新 Last updated: 2026-05-09*
+*語言 Language: zh-TW / en / ja*
+*© 欣晨工業有限公司 Hsin-Chan Industrial Co., Ltd.*
+*Contact: hc3814497@gmail.com | +886-3-381-4497*

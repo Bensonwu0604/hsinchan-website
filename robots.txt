@@ -82,6 +82,35 @@ Allow: /
 User-agent: AI2Bot
 Allow: /
 
+# ── Google Gemini / Vertex AI ────────────────────────────────────────────────
+User-agent: Google-CloudVertexBot
+Allow: /
+
+# ── Amazon Alexa / Rufus ─────────────────────────────────────────────────────
+User-agent: Amazonbot
+Allow: /
+
+# ── Bytedance / TikTok ───────────────────────────────────────────────────────
+User-agent: Bytespider
+Allow: /
+
+# ── Huawei PetalBot ──────────────────────────────────────────────────────────
+User-agent: PetalBot
+Allow: /
+
+# ── Brave Search ─────────────────────────────────────────────────────────────
+User-agent: BraveBot
+Allow: /
+
+# ── Mistral AI ───────────────────────────────────────────────────────────────
+User-agent: MistralAI-User
+Allow: /
+
+# ── Timpi AI ─────────────────────────────────────────────────────────────────
+User-agent: Timpibot
+Allow: /
+
 # ─────────────────────────────────────────────────────────────────────────────
 Sitemap: https://www.hsinchan.com/sitemap.xml
 LLMs: https://www.hsinchan.com/llms.txt
+LLMs-Full: https://www.hsinchan.com/llms-full.txt
