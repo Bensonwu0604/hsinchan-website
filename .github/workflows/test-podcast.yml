@@ -18,10 +18,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-cjk
+      - name: Install CJK fonts
+        run: sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+        # ffmpeg 在 ubuntu-latest 已預裝，不需額外安裝
 
       - name: Set up Python
         uses: actions/setup-python@v5
