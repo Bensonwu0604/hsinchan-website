@@ -1,9 +1,6 @@
 name: 每3天智慧製造 FB + YouTube 影片自動發文
 
 on:
-  schedule:
-    # 每3天台灣時間 10:30 (UTC 02:30)，每月 1/4/7/10/13/16/19/22/25/28 日
-    - cron: '30 2 * * 2,5'
   workflow_dispatch:
     inputs:
       dry_run:
