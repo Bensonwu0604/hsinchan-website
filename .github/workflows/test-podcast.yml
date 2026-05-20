@@ -1,7 +1,10 @@
-name: 試作 Podcast 影片（手動觸發）
+name: 試作 Podcast 影片（每3天自動執行）
 
 on:
-  workflow_dispatch:   # 只手動觸發，不自動排程
+  schedule:
+    # 每3天台灣時間 11:00 (UTC 03:00)
+    - cron: '0 3 */3 * *'
+  workflow_dispatch:
 
 jobs:
   test-podcast:
