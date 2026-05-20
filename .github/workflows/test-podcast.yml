@@ -32,6 +32,15 @@ jobs:
       - name: Install Python dependencies
         run: pip install --prefer-binary anthropic edge-tts Pillow
 
+      - name: Diagnostics
+        run: |
+          python -c "import anthropic; print('OK: anthropic', anthropic.__version__)"
+          python -c "import edge_tts; print('OK: edge_tts')"
+          python -c "from PIL import Image; print('OK: Pillow')"
+          fc-list | grep -i noto | head -5 || echo "No noto fonts found"
+          echo "ANTHROPIC_API_KEY set: $( [ -n '${{ secrets.ANTHROPIC_API_KEY }}' ] && echo YES || echo EMPTY )"
+        working-directory: scripts
+
       - name: Generate test podcast video
         run: python test_podcast.py
         working-directory: scripts
@@ -39,6 +48,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
       - name: Upload video for download
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: test-podcast-video
