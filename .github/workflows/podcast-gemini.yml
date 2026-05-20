@@ -1,0 +1,59 @@
+name: 每3天 NotebookLM 風格 Podcast 影片（Gemini TTS）
+
+on:
+  schedule:
+    - cron: '0 3 */3 * *'   # 每3天台灣時間 11:00
+  push:
+    paths:
+      - 'scripts/generate_podcast_gemini.py'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '測試模式（產生影片但不上傳）'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+
+jobs:
+  podcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            ffmpeg fonts-noto-cjk fonts-noto-cjk-extra
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+
+      - run: pip install -r requirements.txt
+        working-directory: scripts
+
+      - name: Generate Gemini TTS podcast video
+        run: python generate_podcast_gemini.py
+        working-directory: scripts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GOOGLE_API_KEY:    ${{ secrets.GOOGLE_API_KEY }}
+          FB_PAGE_ID:        ${{ secrets.FB_PAGE_ID }}
+          FB_ACCESS_TOKEN:   ${{ secrets.FB_ACCESS_TOKEN }}
+          YT_CLIENT_ID:      ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET:  ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN:  ${{ secrets.YT_REFRESH_TOKEN }}
+          DRY_RUN:           ${{ inputs.dry_run || 'false' }}
+
+      - name: Upload artifact (dry run)
+        if: ${{ inputs.dry_run == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: podcast-gemini-preview
+          path: scripts/podcast_gemini_*.mp4
+          retention-days: 7

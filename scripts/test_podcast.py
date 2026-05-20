@@ -153,96 +153,154 @@ def concat_audio(segments, tmp_dir):
     return str(full), duration
 
 # ── Podcast 視覺背景 ──────────────────────────────────────────────────────────
-def draw_bg_gradient(img):
-    draw = ImageDraw.Draw(img)
-    for y in range(H):
-        r = BG[0] + (SURFACE[0] - BG[0]) * y // H
-        g = BG[1] + (SURFACE[1] - BG[1]) * y // H
-        b = BG[2] + (SURFACE[2] - BG[2]) * y // H
-        draw.line([(0, y), (W, y)], fill=(r, g, b))
-    for x in range(0, W, 72):
-        draw.line([(x, 0), (x, H)], fill=(20, 32, 60))
-    for y in range(0, H, 72):
-        draw.line([(0, y), (W, y)], fill=(20, 32, 60))
+def wrap_cjk(draw, text, font, max_w):
+    lines, cur = [], ""
+    for ch in text:
+        test = cur + ch
+        if draw.textbbox((0,0), test, font=font)[2] > max_w and cur:
+            lines.append(cur); cur = ch
+        else:
+            cur = test
+    if cur: lines.append(cur)
+    return lines
 
-def draw_avatar(draw, cx, cy, r, color, initial, name, font_init, font_name):
-    # 光暈
-    for ring in range(r + 28, r, -3):
-        a = int(50 * (1 - (ring - r) / 28))
-        draw.ellipse([cx-ring, cy-ring, cx+ring, cy+ring], outline=(*color[:3],))
-    # 主圓
-    draw.ellipse([cx-r, cy-r, cx+r, cy+r], fill=color)
-    # 首字
-    bb = draw.textbbox((0, 0), initial, font=font_init)
+def draw_topic_icon_simple(draw, cx, cy, color, size=100):
+    """簡易主題圖示（工廠符號）"""
+    s = size
+    draw.rectangle([cx-s//2, cy-s//3, cx+s//2, cy+s//3], outline=color, width=5)
+    draw.polygon([(cx-s//2-10, cy-s//3), (cx, cy-s*0.7), (cx+s//2+10, cy-s//3)], outline=color, width=5)
+    draw.rectangle([cx-14, cy-s//3+18, cx+14, cy+s//3], fill=color)
+
+def draw_avatar_v2(draw, cx, cy, r, color, initial, role, name, f_big, f_role, f_name):
+    for ring in range(r+38, r+2, -3):
+        t = 1 - (ring-r-2)/36
+        c = tuple(min(255, int(v*t*0.5)) for v in color)
+        draw.ellipse([cx-ring, cy-ring, cx+ring, cy+ring], outline=c)
+    for dr in range(r, 0, -4):
+        ratio = 1 - dr/r
+        rc = tuple(min(255, int(c + (255-c)*ratio*0.15)) for c in color)
+        draw.ellipse([cx-dr, cy-dr, cx+dr, cy+dr], fill=rc)
+    bb = draw.textbbox((0,0), initial, font=f_big)
     tw, th = bb[2]-bb[0], bb[3]-bb[1]
-    draw.text((cx - tw//2, cy - th//2), initial, font=font_init, fill=WHITE)
-    # 名稱
-    bb2 = draw.textbbox((0, 0), name, font=font_name)
-    nw = bb2[2] - bb2[0]
-    draw.text((cx - nw//2, cy + r + 22), name, font=font_name, fill=WHITE)
+    draw.text((cx-tw//2, cy-th//2-8), initial, font=f_big, fill=WHITE)
+    bb2 = draw.textbbox((0,0), role, font=f_role)
+    rw = bb2[2]-bb2[0]+20; rh = bb2[3]-bb2[1]+10
+    draw.rounded_rectangle([cx-rw//2, cy+r+16, cx+rw//2, cy+r+16+rh], radius=6, fill=color)
+    draw.text((cx-rw//2+10, cy+r+21), role, font=f_role, fill=WHITE)
+    bb3 = draw.textbbox((0,0), name, font=f_name)
+    nw = bb3[2]-bb3[0]
+    draw.text((cx-nw//2, cy+r+16+rh+8), name, font=f_name, fill=GRAY)
 
 def create_bg(topic_title, bold_path, reg_path, out_path):
     img  = Image.new("RGB", (W, H))
     draw = ImageDraw.Draw(img)
-    draw_bg_gradient(img)
 
-    f_brand   = ImageFont.truetype(bold_path, 28)
-    f_eyebrow = ImageFont.truetype(reg_path,  30)
-    f_title   = ImageFont.truetype(bold_path, 60)
-    f_init    = ImageFont.truetype(bold_path, 110)
-    f_name    = ImageFont.truetype(bold_path, 40)
-    f_tag     = ImageFont.truetype(reg_path,  26)
-    f_small   = ImageFont.truetype(reg_path,  24)
+    # 漸層底色
+    for y in range(H):
+        ratio = y / H
+        r = int(8 + 10 * ratio); g = int(12 + 16 * ratio); b = int(22 + 33 * ratio)
+        draw.line([(0, y), (W, y)], fill=(r, g, b))
+    for x in range(0, W, 60):
+        draw.line([(x, 0), (x, H)], fill=(22, 35, 65))
+    for y in range(0, H, 60):
+        draw.line([(0, y), (W, y)], fill=(22, 35, 65))
 
-    # 品牌頂欄
-    draw.rectangle([0, 0, W, 68], fill=(10, 16, 30))
-    draw.text((48, 18), "欣晨工業有限公司  智慧製造深度對談", font=f_brand, fill=GRAY)
-    draw.text((W-320, 18), "Hsin-Chan Industrial", font=f_brand, fill=(30, 48, 80))
+    COL1, COL2 = 560, 1360
+    draw.rectangle([0, 0, W, 64], fill=(8, 14, 28))
+    draw.rectangle([0, 64, W, 70], fill=ACCENT)
+    draw.rectangle([COL1, 70, COL1+2, H-172], fill=(30, 48, 90))
+    draw.rectangle([COL2, 70, COL2+2, H-172], fill=(30, 48, 90))
 
-    # 藍色分隔線
-    draw.rectangle([0, 68, W, 74], fill=ACCENT)
+    f_brand   = ImageFont.truetype(bold_path, 26)
+    f_ep      = ImageFont.truetype(reg_path,  24)
+    f_title_l = ImageFont.truetype(bold_path, 50)
+    f_stat    = ImageFont.truetype(bold_path, 28)
+    f_init    = ImageFont.truetype(bold_path, 96)
+    f_role    = ImageFont.truetype(bold_path, 28)
+    f_name    = ImageFont.truetype(reg_path,  26)
+    f_vs      = ImageFont.truetype(bold_path, 44)
+    f_badge   = ImageFont.truetype(reg_path,  22)
+    f_sec     = ImageFont.truetype(bold_path, 30)
+    f_bullet  = ImageFont.truetype(reg_path,  26)
+    f_company = ImageFont.truetype(bold_path, 28)
+    f_comp_s  = ImageFont.truetype(reg_path,  22)
+    f_bottom  = ImageFont.truetype(reg_path,  26)
 
-    # 主題標題
-    bb = draw.textbbox((0,0), topic_title, font=f_title)
-    tw = bb[2]-bb[0]
-    draw.text(((W-tw)//2, 105), topic_title, font=f_title, fill=WHITE)
+    # 頂部
+    draw.text((44, 17), "欣晨工業有限公司", font=f_brand, fill=WHITE)
+    draw.text((314, 19), "智慧製造深度對談  ·  SMART MANUFACTURING DEEP DIVE", font=f_ep, fill=GRAY)
+    trial_text = "試作版  Edge TTS"
+    bb_tr = draw.textbbox((0,0), trial_text, font=f_ep)
+    draw.text((W-(bb_tr[2]-bb_tr[0])-44, 19), trial_text, font=f_ep, fill=ACCENT_LT)
 
-    # 眉標
-    eyebrow = "SMART MANUFACTURING DEEP DIVE  ·  PODCAST"
-    bb2 = draw.textbbox((0,0), eyebrow, font=f_eyebrow)
-    ew = bb2[2]-bb2[0]
-    draw.text(((W-ew)//2, 185), eyebrow, font=f_eyebrow, fill=ACCENT_LT)
+    # 左欄
+    icon_cx = COL1 // 2
+    draw_topic_icon_simple(draw, icon_cx, 255, (60, 200, 120), 105)
+    title_lines = wrap_cjk(draw, topic_title, f_title_l, COL1-60)
+    ty = 400
+    for line in title_lines:
+        bb = draw.textbbox((0,0), line, font=f_title_l)
+        lw = bb[2]-bb[0]
+        draw.text((max(30, icon_cx-lw//2), ty), line, font=f_title_l, fill=WHITE)
+        ty += (bb[3]-bb[1]) + 8
+    for stat_text in ["豐田生產方式 TPS", "Kaizen / JIT / Jidoka", "現地現物 現場哲學"]:
+        draw.rounded_rectangle([30, ty+10, COL1-30, ty+58], radius=8, fill=(14, 22, 46))
+        draw.rounded_rectangle([30, ty+10, 36, ty+58], radius=4, fill=(60, 200, 120))
+        draw.text((50, ty+22), stat_text, font=f_stat, fill=WHITE)
+        ty += 68
 
-    # 裝飾線
-    draw.rectangle([(W//2-100), 232, (W//2+100), 236], fill=ACCENT)
+    # 中欄
+    mid_cx = (COL1 + COL2) // 2
+    h1_cx  = COL1 + (COL2-COL1)//4
+    h2_cx  = COL1 + (COL2-COL1)*3//4
 
-    # 試作標籤
-    badge = "  試作版  Edge TTS  "
-    bb3 = draw.textbbox((0,0), badge, font=f_tag)
-    bw, bh = bb3[2]-bb3[0]+20, bb3[3]-bb3[1]+12
-    draw.rounded_rectangle([W//2-bw//2, 248, W//2+bw//2, 248+bh], radius=6, fill=(40, 60, 100))
-    draw.text((W//2-bw//2+10, 252), badge.strip(), font=f_tag, fill=ACCENT_LT)
+    badge_txt = "試作版  Edge TTS 台灣神經語音"
+    bb_b = draw.textbbox((0,0), badge_txt, font=f_badge)
+    bw = bb_b[2]-bb_b[0]+28; bh = bb_b[3]-bb_b[1]+14
+    bx = mid_cx - bw//2
+    draw.rounded_rectangle([bx, 88, bx+bw, 88+bh], radius=8, fill=(20, 36, 80))
+    draw.rounded_rectangle([bx, 88, bx+bw, 90], radius=1, fill=ACCENT_LT)
+    draw.text((bx+14, 95), badge_txt, font=f_badge, fill=ACCENT_LT)
 
-    # 主持人頭像
-    draw_avatar(draw, W//4, 570, 115, FEMALE_CLR, "欣", "小欣", f_init, f_name)
-    draw_avatar(draw, W*3//4, 570, 115, MALE_CLR,   "晨", "阿晨", f_init, f_name)
+    f_ch = ImageFont.truetype(bold_path, 36)
+    bb_ch = draw.textbbox((0,0), "智慧製造深度對談", font=f_ch)
+    draw.text((mid_cx-(bb_ch[2]-bb_ch[0])//2, 128), "智慧製造深度對談", font=f_ch, fill=WHITE)
 
-    # 中間 × 符號
-    bb4 = draw.textbbox((0,0), "×", font=f_name)
-    xw = bb4[2]-bb4[0]
-    draw.text((W//2-xw//2, 540), "×", font=f_name, fill=GRAY)
+    draw_avatar_v2(draw, h1_cx, 490, 108, FEMALE_CLR, "欣", "女主持人", "小欣", f_init, f_role, f_name)
+    draw_avatar_v2(draw, h2_cx, 490, 108, MALE_CLR,   "晨", "男主持人", "阿晨", f_init, f_role, f_name)
+    bb_vs = draw.textbbox((0,0), "×", font=f_vs)
+    draw.text((mid_cx-(bb_vs[2]-bb_vs[0])//2, 462), "×", font=f_vs, fill=(40, 60, 100))
 
-    # 底部音波區
-    draw.rectangle([0, H-175, W, H], fill=(5, 8, 16))
-    draw.rectangle([0, H-178, W, H-175], fill=ACCENT)
+    # 右欄
+    rx = COL2 + 36; rw = W - COL2 - 60
+    draw.text((rx, 90), "本集重點", font=f_sec, fill=ACCENT_LT)
+    draw.rectangle([rx, 128, rx+50, 132], fill=ACCENT)
+    by2 = 148
+    for bullet in ["· 改善文化核心概念", "· 七大浪費與消除方法", "· Poka-yoke 防呆設計", "· 台灣工廠實際案例", "· 欣晨工業 TPS 實踐"]:
+        for line in wrap_cjk(draw, bullet, f_bullet, rw):
+            draw.text((rx, by2), line, font=f_bullet, fill=GRAY)
+            bb = draw.textbbox((0,0), line, font=f_bullet)
+            by2 += (bb[3]-bb[1]) + 6
+        by2 += 4
 
-    # 底部資訊
-    draw.text((48, H-140), "🌐  www.hsinchan.com",    font=f_small, fill=GRAY)
-    draw.text((48, H-105), "📞  03-381-4497",          font=f_small, fill=GRAY)
-    draw.text((48, H-68),  "📍  桃園市大園區 · Est. 1975 · 51年精密製造", font=f_small, fill=(40, 55, 80))
+    company_y = H - 330
+    draw.rounded_rectangle([rx-6, company_y, W-24, H-186], radius=10, fill=(12, 20, 40))
+    draw.rounded_rectangle([rx-6, company_y, rx-2, H-186], radius=4, fill=ACCENT)
+    draw.text((rx+10, company_y+14), "欣晨工業有限公司", font=f_company, fill=WHITE)
+    draw.text((rx+10, company_y+50), "Hsin-Chan Industrial Co., Ltd.", font=f_comp_s, fill=GRAY)
+    iy = company_y + 86
+    for icon, text in [("📞", "03-381-4497"), ("🌐", "www.hsinchan.com"), ("📅", "Est. 1975 · 51年製造")]:
+        draw.text((rx+10, iy), f"{icon}  {text}", font=f_comp_s, fill=GRAY); iy += 34
+
+    # 底部
+    draw.rectangle([0, H-172, W, H], fill=(5, 8, 16))
+    draw.rectangle([0, H-175, W, H-172], fill=ACCENT)
+    bottom_text = "🎙  小欣 × 阿晨  ·  每3天更新  ·  智慧製造深度對談"
+    bb_bot = draw.textbbox((0,0), bottom_text, font=f_bottom)
+    draw.text(((W-(bb_bot[2]-bb_bot[0]))//2, H-138), bottom_text, font=f_bottom, fill=GRAY)
 
     img.save(out_path)
-    print("🖼️  背景圖建立完成（1920×1080）")
+    print("🖼️  三欄式 Podcast 背景圖建立完成（1920×1080）")
 
 # ── FFmpeg 合成最終影片 ───────────────────────────────────────────────────────
 def render_video(bg_path, audio_path, duration, out_path):
@@ -297,7 +355,7 @@ def main():
         # 2. 字型 & 背景
         bold_path, reg_path = load_fonts()
         bg_path = tmp / "bg.png"
-        topic   = "改善文化 × 豐田哲學 × 台灣製造"
+        topic = "改善文化 × 豐田哲學 × 台灣製造"
         create_bg(topic, bold_path, reg_path, bg_path)
 
         # 3. TTS 音訊（async）
