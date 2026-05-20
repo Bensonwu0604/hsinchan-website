@@ -33,10 +33,10 @@ jobs:
       - name: Diagnostics
         run: |
           python -c "import anthropic; print('OK: anthropic', anthropic.__version__)"
-          python -c "import edge_tts; print('OK: edge_tts')"
+          python -c "from gtts import gTTS; print('OK: gtts')"
           python -c "from PIL import Image; print('OK: Pillow')"
-          fc-list | grep -i noto | head -5 || echo "No noto fonts found"
-          echo "ANTHROPIC_API_KEY set: $( [ -n '${{ secrets.ANTHROPIC_API_KEY }}' ] && echo YES || echo EMPTY )"
+          ffmpeg -version 2>&1 | head -1
+          fc-list | grep -i noto | head -3 || echo "No noto fonts"
         working-directory: scripts
 
       - name: Generate test podcast video
