@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# trigger: 2026-05-20d
+# trigger: 2026-05-20e
 """
 欣晨工業 — Podcast 影片試作版
 使用 Edge TTS（微軟免費神經語音，不需額外 API Key）
@@ -289,18 +289,18 @@ def create_bg(topic_title, bold_path, reg_path, out_path):
     draw.text((rx+10, company_y+14), "欣晨工業有限公司", font=f_company, fill=WHITE)
     draw.text((rx+10, company_y+50), "Hsin-Chan Industrial Co., Ltd.", font=f_comp_s, fill=GRAY)
     iy = company_y + 86
-    for icon, text in [("📞", "03-381-4497"), ("🌐", "www.hsinchan.com"), ("📅", "Est. 1975 · 51年製造")]:
-        draw.text((rx+10, iy), f"{icon}  {text}", font=f_comp_s, fill=GRAY); iy += 34
+    for label, text in [("TEL  ", "03-381-4497"), ("WEB  ", "www.hsinchan.com"), ("EST  ", "1975 / 51年製造")]:
+        draw.text((rx+10, iy), label + text, font=f_comp_s, fill=GRAY); iy += 34
 
     # 底部
     draw.rectangle([0, H-172, W, H], fill=(5, 8, 16))
     draw.rectangle([0, H-175, W, H-172], fill=ACCENT)
-    bottom_text = "🎙  小欣 × 阿晨  ·  每3天更新  ·  智慧製造深度對談"
+    bottom_text = "小欣 x 阿晨  ·  每3天更新  ·  智慧製造深度對談  PODCAST"
     bb_bot = draw.textbbox((0,0), bottom_text, font=f_bottom)
     draw.text(((W-(bb_bot[2]-bb_bot[0]))//2, H-138), bottom_text, font=f_bottom, fill=GRAY)
 
     img.save(out_path)
-    print("🖼️  三欄式 Podcast 背景圖建立完成（1920×1080）")
+    print("背景圖建立完成（1920x1080）")
 
 # ── FFmpeg 合成最終影片 ───────────────────────────────────────────────────────
 def render_video(bg_path, audio_path, duration, out_path):
@@ -376,4 +376,10 @@ def main():
         print("\n✅ 請至 GitHub Actions → Artifacts 下載 'test-podcast-video'")
 
 if __name__ == "__main__":
-    main()
+    import traceback
+    try:
+        main()
+    except Exception as e:
+        print(f"\n[ERROR] {type(e).__name__}: {e}")
+        traceback.print_exc()
+        sys.exit(1)
