@@ -28,12 +28,12 @@ jobs:
           cache: 'pip'
 
       - name: Install Python dependencies
-        run: pip install --prefer-binary anthropic gtts Pillow
+        run: pip install --prefer-binary anthropic openai Pillow
 
       - name: Diagnostics
         run: |
           python -c "import anthropic; print('OK: anthropic', anthropic.__version__)"
-          python -c "from gtts import gTTS; print('OK: gtts')"
+          python -c "from openai import OpenAI; print('OK: openai')"
           python -c "from PIL import Image; print('OK: Pillow')"
           ffmpeg -version 2>&1 | head -1
           fc-list | grep -i noto | head -3 || echo "No noto fonts"
@@ -44,6 +44,7 @@ jobs:
         working-directory: scripts
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY:    ${{ secrets.OPENAI_API_KEY }}
 
       - name: Upload video for download
         if: success()

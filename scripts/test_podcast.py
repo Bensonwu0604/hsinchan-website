@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-# trigger: 2026-05-20n
+# trigger: 2026-05-20o
 """
 欣晨工業 — Podcast 影片試作版
-使用 gTTS（Google 翻譯 TTS，免費，GitHub Actions 可用）
-+ FFmpeg 變音：小欣（高音）× 阿晨（低音）
-只需 ANTHROPIC_API_KEY 即可試作完整影片
+使用 OpenAI TTS：nova（小欣女聲）× onyx（阿晨男聲）
+需要：ANTHROPIC_API_KEY + OPENAI_API_KEY
 """
 
 import os, sys, json, subprocess, tempfile
@@ -12,7 +11,7 @@ from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
 import anthropic
-from gtts import gTTS
+from openai import OpenAI
 from PIL import Image, ImageDraw, ImageFont
 
 # ── 視覺常數（同正式版）──────────────────────────────────────────────────────
@@ -104,34 +103,26 @@ def generate_script(ac_client):
     print(f"腳本完成：{len(dialogue)} 輪對話，{total} 字（預估 {total//150:.0f} 分鐘）")
     return dialogue
 
-# ── gTTS 音訊生成（Google 翻譯 TTS，GitHub Actions 可用）────────────────────
-def make_segment(text, speaker, out_path):
-    """gTTS 生成音訊，FFmpeg 變音區分男女聲"""
-    raw_mp3 = str(out_path) + ".raw.mp3"
-    gTTS(text=text, lang="zh-TW", slow=False).save(raw_mp3)
-
-    if speaker == "Host1":   # 小欣 — 高音女聲（asetrate 上調）
-        af = "asetrate=27000,aresample=24000,atempo=0.95"
-    else:                    # 阿晨 — 低音男聲（asetrate 下調）
-        af = "asetrate=20500,aresample=24000,atempo=1.05"
-
-    subprocess.run(
-        ["ffmpeg", "-y", "-i", raw_mp3, "-af", af, str(out_path)],
-        capture_output=True, check=True
-    )
-    os.remove(raw_mp3)
+# ── OpenAI TTS 音訊生成 ───────────────────────────────────────────────────────
+VOICE_FEMALE = "nova"    # 小欣 — 自然女聲
+VOICE_MALE   = "onyx"    # 阿晨 — 沉穩男聲
 
 def generate_all_audio(dialogue, tmp_dir):
+    oai = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
     tmp = Path(tmp_dir)
-    print(f"生成 {len(dialogue)} 段 gTTS 音訊（Google 翻譯 TTS）...")
+    print(f"生成 {len(dialogue)} 段 OpenAI TTS 音訊...")
     segments = []
     for i, turn in enumerate(dialogue):
-        out = tmp / f"seg_{i:03d}.mp3"
-        make_segment(turn["text"], turn["speaker"], out)
+        voice = VOICE_FEMALE if turn["speaker"] == "Host1" else VOICE_MALE
+        out   = tmp / f"seg_{i:03d}.mp3"
+        resp  = oai.audio.speech.create(
+            model="tts-1", voice=voice, input=turn["text"], speed=0.95
+        )
+        resp.stream_to_file(str(out))
         segments.append({"path": str(out), "speaker": turn["speaker"]})
         if (i + 1) % 5 == 0:
             print(f"   {i+1}/{len(dialogue)} 段完成")
-    print("TTS 音訊生成完成")
+    print("OpenAI TTS 音訊生成完成")
     return segments
 
 def concat_audio(segments, tmp_dir):
