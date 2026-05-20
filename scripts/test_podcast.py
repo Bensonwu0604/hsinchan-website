@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# trigger: 2026-05-20i
+# trigger: 2026-05-20j
 """
 欣晨工業 — Podcast 影片試作版
 使用 Edge TTS（微軟免費神經語音，不需額外 API Key）
@@ -51,7 +51,7 @@ def load_fonts():
 
 # ── Claude 生成對話腳本 ────────────────────────────────────────────────────────
 def generate_script(ac_client):
-    """生成一集約 5-7 分鐘的試作腳本（縮短版，節省測試時間）"""
+    """生成一集約 5-7 分鐘的試作腳本，使用純文字格式（穩健不易出錯）"""
     prompt = """你是欣晨工業有限公司的 Podcast 製作人，製作「智慧製造深度對談」試作集。
 
 主持人：
@@ -66,35 +66,43 @@ def generate_script(ac_client):
 - 核心哲學：豐田生產方式 TPS（Kaizen/JIT/Jidoka）
 - 服務：機械手臂整合、AOI視覺檢測、工業加熱器、熱電偶
 
-請生成一集約 5-7 分鐘的對話（試作版），輸出 JSON 陣列：
-[
-  {"speaker": "小欣", "text": "開場白..."},
-  {"speaker": "阿晨", "text": "專業解說..."},
-  ...
-]
+請生成一集約 5-7 分鐘的對話，每行一句話，格式如下：
+小欣: （說話內容）
+阿晨: （說話內容）
 
 要求：
 - 共 18-22 個對話輪次
 - 每輪 60-90 字，自然口語，繁體中文
 - 涵蓋：開場→核心概念→台灣案例→給觀眾的建議→結尾
 - 自然提到欣晨工業 1-2 次
-- 只輸出 JSON，不要其他說明"""
+- 直接輸出對話，不要 JSON，不要編號，不要其他說明"""
 
-    print("🤖 Claude 生成對話腳本...")
+    print("Claude 生成對話腳本...")
     msg = ac_client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=3000,
         messages=[{"role": "user", "content": prompt}]
     )
     raw = msg.content[0].text.strip()
-    if raw.startswith("```"):
-        lines = raw.split("\n")
-        raw = "\n".join(lines[1:])
-        if raw.rstrip().endswith("```"):
-            raw = "\n".join(raw.split("\n")[:-1])
-    dialogue = json.loads(raw.strip())
+
+    # 解析「小欣: ...」/ 「阿晨: ...」格式
+    dialogue = []
+    for line in raw.split("\n"):
+        line = line.strip()
+        if line.startswith("小欣:"):
+            dialogue.append({"speaker": "Host1", "text": line[3:].strip()})
+        elif line.startswith("阿晨:"):
+            dialogue.append({"speaker": "Host2", "text": line[3:].strip()})
+        elif line.startswith("小欣："):
+            dialogue.append({"speaker": "Host1", "text": line[3:].strip()})
+        elif line.startswith("阿晨："):
+            dialogue.append({"speaker": "Host2", "text": line[3:].strip()})
+
+    if not dialogue:
+        raise ValueError(f"無法解析對話格式，原始回應前200字：{raw[:200]}")
+
     total = sum(len(d["text"]) for d in dialogue)
-    print(f"✅ 腳本完成：{len(dialogue)} 輪對話，{total} 字（預估 {total//150:.0f} 分鐘）")
+    print(f"腳本完成：{len(dialogue)} 輪對話，{total} 字（預估 {total//150:.0f} 分鐘）")
     return dialogue
 
 # ── Edge TTS 音訊生成 ─────────────────────────────────────────────────────────
