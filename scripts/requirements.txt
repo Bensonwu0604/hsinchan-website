@@ -1,5 +1,6 @@
 anthropic>=0.39.0
 openai>=1.30.0
+playwright>=1.44.0
 edge-tts>=6.1.9
 google-genai>=1.0.0
 Pillow>=10.3.0

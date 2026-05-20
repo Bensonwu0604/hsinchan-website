@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-# trigger: 2026-05-20v
+# trigger: 2026-05-20w
 """
-欣晨工業 Podcast — 半身主持人動畫 + 投影片
-左側：小欣/阿晨半身圖（4幀呼吸動畫）
-右側：投影片（標題 + 圖表 + 玻璃卡片）
-底部：說話者姓名 + 字幕
+欣晨工業 Podcast — HTML + Playwright 高品質視覺版
+HTML/CSS 渲染投影片（接近 NotebookLM 品質）
 OpenAI TTS: nova（小欣）x onyx（阿晨）
 """
 import os, sys, json, subprocess, tempfile, shutil, math
@@ -13,529 +11,553 @@ from datetime import datetime, timezone, timedelta
 
 import anthropic
 from openai import OpenAI
-from PIL import Image, ImageDraw, ImageFont
+from playwright.sync_api import sync_playwright
 
-# ── 版面常數 ─────────────────────────────────────────────────────────────────
+# ── 常數 ─────────────────────────────────────────────────────────────────────
 W, H          = 1920, 1080
-BG            = (6,   8,  18)
-BG2           = (10,  14,  30)
-ACCENT        = (90, 140, 255)
-ACCENT2       = (0,  210, 180)
-FEMALE_CLR    = (180, 100, 255)   # 小欣 紫
-MALE_CLR      = (0,  195, 165)    # 阿晨 青
-GLASS_BG      = (16,  22,  48)
-GLASS_EDGE    = (50,  70, 120)
-TEXT1         = (235, 240, 255)
-TEXT2         = (130, 150, 195)
-TEXT3         = (60,  78, 115)
-GOLD          = (255, 215, 100)
-
 VOICE_FEMALE  = "nova"
 VOICE_MALE    = "onyx"
 SILENCE_SEC   = 0.40
+ANIM_FRAMES   = 4
 
-AVATAR_W      = 820    # 左側主持人區寬度
-CONTENT_X     = 850    # 右側內容起始 X
-ANIM_FRAMES   = 4      # 每段對話的動畫幀數
+# ── 字型路徑（系統 Noto CJK）────────────────────────────────────────────────
+FONT_BOLD = next((p for p in [
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+    "/usr/share/fonts/opentype/noto/NotoSansCJKtc-Bold.otf",
+    "/usr/share/fonts/noto-cjk/NotoSansCJK-Bold.ttc",
+] if Path(p).exists()), "")
 
-# ── 字型 ─────────────────────────────────────────────────────────────────────
-def load_fonts():
-    bold = next((p for p in [
-        "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
-        "/usr/share/fonts/opentype/noto/NotoSansCJKtc-Bold.otf",
-        "/usr/share/fonts/noto-cjk/NotoSansCJK-Bold.ttc",
-    ] if Path(p).exists()), None)
-    reg = next((p for p in [
-        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
-        "/usr/share/fonts/opentype/noto/NotoSansCJKtc-Regular.otf",
-        "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
-    ] if Path(p).exists()), None)
-    if not bold: raise FileNotFoundError("找不到 CJK 字型")
-    return bold, reg or bold
+FONT_REG = next((p for p in [
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "/usr/share/fonts/opentype/noto/NotoSansCJKtc-Regular.otf",
+    "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
+] if Path(p).exists()), "")
 
-# ── 工具 ─────────────────────────────────────────────────────────────────────
-def lerp(a, b, t):
-    return tuple(int(a[i]+(b[i]-a[i])*t) for i in range(3))
-
-def clamp(v): return max(0, min(255, int(v)))
-
-def dim_col(c, factor, bg=BG):
-    return tuple(clamp(c2*factor + bg[i]*(1-factor)) for i,c2 in enumerate(c))
-
-def tw(draw, text, font):
-    bb = draw.textbbox((0,0), text, font=font)
-    return bb[2]-bb[0], bb[3]-bb[1]
-
-def draw_cx(draw, text, font, cx, y, color):
-    w2, h2 = tw(draw, text, font)
-    draw.text((cx-w2//2, y), text, font=font, fill=color)
-    return h2
-
-def wrap_text(draw, text, font, max_w):
-    lines, cur = [], ""
-    for ch in text:
-        test = cur+ch
-        if draw.textbbox((0,0), test, font=font)[2] > max_w and cur:
-            lines.append(cur); cur = ch
-        else: cur = test
-    if cur: lines.append(cur)
-    return lines
-
-def glow_line(draw, x1,y1,x2,y2, color, w=2, gw=8):
-    for gw2 in range(gw,0,-2):
-        gc = tuple(clamp(c*0.08*(gw2/gw)) for c in color)
-        draw.line([x1,y1,x2,y2], fill=gc, width=gw2)
-    draw.line([x1,y1,x2,y2], fill=color, width=w)
-
-def radial_glow(draw, img, cx, cy, r, color, strength=0.2):
-    for dr in range(r,0,-4):
-        t = (1-dr/r)**1.5
-        c = lerp(BG, color, t*strength)
-        draw.ellipse([cx-dr,cy-dr,cx+dr,cy+dr], fill=c)
-
-# ── 半身主持人繪圖 ────────────────────────────────────────────────────────────
-SKIN_F = (238, 196, 165)   # 女性膚色
-SKIN_M = (215, 175, 142)   # 男性膚色
-HAIR_F = (38,  28,  22)    # 深棕髮
-HAIR_M = (50,  38,  28)    # 深棕髮（男）
-TOP_F  = (145, 75, 225)    # 小欣上衣 — 紫
-TOP_FL = (175, 105, 250)   # 上衣亮色
-TOP_M  = (22,  48,  95)    # 阿晨西裝 — 深藍
-TOP_ML = (42,  68, 118)    # 西裝亮色
-TIE_M  = (185, 40,  40)    # 領帶紅
-
-def draw_female(img, cx, base_y, active, anim_t):
-    """小欣半身像（anim_t: 0.0-1.0, 呼吸動畫相位）"""
-    alpha  = 1.0 if active else 0.28
-    # 輕微呼吸：頭部微微上下浮動
-    bob    = int(math.sin(anim_t * math.pi * 2) * 6)
-    draw   = ImageDraw.Draw(img)
-
-    def da(c): return dim_col(c, alpha)
-    skin = da(SKIN_F); hair = da(HAIR_F)
-    top  = da(TOP_F);  topl = da(TOP_FL)
-
-    hy = base_y + bob   # 呼吸偏移
-
-    # ── 發光背景圓 ──
-    if active:
-        for gr in range(180, 0, -6):
-            t = (1-gr/180)**2
-            gc = tuple(clamp(c*t*0.35) for c in FEMALE_CLR)
-            draw.ellipse([cx-gr, hy-gr+60, cx+gr, hy+gr+60], fill=gc)
-
-    # ── 長髮（頭後方）──
-    draw.ellipse([cx-68, hy-90, cx-30, hy+190], fill=hair)
-    draw.ellipse([cx+30, hy-90, cx+68, hy+190], fill=hair)
-    # 瀏海
-    draw.ellipse([cx-60, hy-115, cx+60, hy-30], fill=hair)
-
-    # ── 頭部 ──
-    draw.ellipse([cx-55, hy-100, cx+55, hy+75], fill=skin)
-
-    # ── 臉部特徵 ──
-    # 眉毛
-    for ex in [cx-20, cx+20]:
-        draw.arc([ex-13, hy-38, ex+13, hy-22], 200, 340, fill=hair, width=3)
-    # 眼睛
-    for ex in [cx-20, cx+20]:
-        draw.ellipse([ex-11, hy-22, ex+11, hy-4], fill=(250,250,255))
-        draw.ellipse([ex-6, hy-20, ex+6, hy-6], fill=(35,28,22))
-        draw.ellipse([ex-3, hy-19, ex-1, hy-17], fill=(255,255,255))  # 高光
-    # 鼻子
-    draw.line([cx-3, hy+5, cx-6, hy+18], fill=tuple(clamp(c*0.82) for c in skin), width=2)
-    # 嘴巴（微笑）
-    draw.arc([cx-14, hy+22, cx+14, hy+38], 12, 168, fill=(175, 92, 92), width=3)
-    # 腮紅
-    for ex in [cx-32, cx+32]:
-        for r in range(14, 0, -2):
-            draw.ellipse([ex-r, hy+8, ex+r, hy+8+r], fill=(240,185,170,0))
-
-    # ── 頸部 ──
-    draw.rectangle([cx-14, hy+72, cx+14, hy+108], fill=skin)
-
-    # ── 肩膀/上衣 ──
-    sy = hy + 105
-    draw.polygon([(cx-85, sy), (cx+85, sy), (cx+62, sy+220), (cx-62, sy+220)], fill=top)
-    # V領
-    draw.polygon([(cx-24, sy+8), (cx, sy+50), (cx+24, sy+8)], fill=topl)
-
-    # ── 左手臂（自然垂放）──
-    draw.polygon([(cx-85, sy+12), (cx-108, sy+12),
-                  (cx-118, sy+145), (cx-95, sy+145)], fill=top)
-    draw.ellipse([cx-118, sy+138, cx-92, sy+162], fill=skin)
-
-    # ── 右手臂（舉起手勢，隨動畫微動）──
-    arm_lift = int(anim_t * 12) if active else 0
-    draw.polygon([(cx+85, sy+12), (cx+108, sy+12),
-                  (cx+122+arm_lift//2, sy+60-arm_lift),
-                  (cx+100+arm_lift//2, sy+60-arm_lift)], fill=top)
-    # 前臂
-    ax_end = cx + 120 + arm_lift
-    ay_end = sy + 55 - arm_lift
-    draw.polygon([(cx+108, sy+12),
-                  (cx+125, sy+12),
-                  (ax_end+18, ay_end),
-                  (ax_end,   ay_end)], fill=skin)
-    draw.ellipse([ax_end-2, ay_end-6, ax_end+22, ay_end+18], fill=skin)
-
-def draw_male(img, cx, base_y, active, anim_t):
-    """阿晨半身像（anim_t: 0.0-1.0）"""
-    alpha = 1.0 if active else 0.28
-    bob   = int(math.sin(anim_t * math.pi * 2) * 5)
-    draw  = ImageDraw.Draw(img)
-
-    def da(c): return dim_col(c, alpha)
-    skin = da(SKIN_M); hair = da(HAIR_M)
-    top  = da(TOP_M);  topl = da(TOP_ML)
-    tie  = da(TIE_M)
-
-    hy = base_y + bob
-
-    # 發光背景
-    if active:
-        for gr in range(180, 0, -6):
-            t = (1-gr/180)**2
-            gc = tuple(clamp(c*t*0.35) for c in MALE_CLR)
-            draw.ellipse([cx-gr, hy-gr+60, cx+gr, hy+gr+60], fill=gc)
-
-    # 短髮（頭頂）
-    draw.ellipse([cx-62, hy-112, cx+62, hy-40], fill=hair)
-    for dx in [-55, -50, 50, 55]:
-        draw.ellipse([cx+dx-10, hy-80, cx+dx+10, hy-20], fill=hair)
-
-    # 頭部
-    draw.ellipse([cx-58, hy-98, cx+58, hy+78], fill=skin)
-
-    # 臉部
-    # 眉毛（平直，男性特徵）
-    for ex in [cx-21, cx+21]:
-        draw.line([ex-12, hy-35, ex+12, hy-31], fill=hair, width=4)
-    # 眼睛
-    for ex in [cx-21, cx+21]:
-        draw.ellipse([ex-12, hy-24, ex+12, hy-5], fill=(250,250,255))
-        draw.ellipse([ex-7, hy-22, ex+7, hy-7], fill=(35,28,22))
-        draw.ellipse([ex-4, hy-21, ex-2, hy-19], fill=(255,255,255))
-    # 鼻子
-    draw.line([cx, hy+5, cx-5, hy+20], fill=tuple(clamp(c*0.8) for c in skin), width=2)
-    draw.arc([cx-7, hy+14, cx+7, hy+22], 10, 170, fill=tuple(clamp(c*0.8) for c in skin), width=2)
-    # 嘴（輕微微笑）
-    draw.arc([cx-12, hy+26, cx+12, hy+40], 15, 165, fill=(160, 85, 85), width=3)
-
-    # 頸部
-    draw.rectangle([cx-15, hy+75, cx+15, hy+110], fill=skin)
-
-    # 西裝
-    sy = hy + 108
-    draw.polygon([(cx-90, sy), (cx+90, sy), (cx+65, sy+225), (cx-65, sy+225)], fill=top)
-    # 西裝翻領
-    draw.polygon([(cx-28, sy), (cx-10, sy+65), (cx-45, sy+8)], fill=topl)
-    draw.polygon([(cx+28, sy), (cx+10, sy+65), (cx+45, sy+8)], fill=topl)
-    # 白襯衫
-    draw.polygon([(cx-10, sy+3), (cx+10, sy+3), (cx+6, sy+80), (cx-6, sy+80)],
-                 fill=(220, 228, 245))
-    # 領帶
-    draw.polygon([(cx-5, sy+18), (cx+5, sy+18), (cx+3, sy+90), (cx-3, sy+90)], fill=tie)
-    draw.polygon([(cx-7, sy+88), (cx+7, sy+88), (cx+3, sy+105), (cx-3, sy+105)], fill=tie)
-
-    # 左手臂
-    draw.polygon([(cx-90, sy+14), (cx-113, sy+14),
-                  (cx-123, sy+150), (cx-100, sy+150)], fill=top)
-    draw.ellipse([cx-123, sy+142, cx-97, sy+168], fill=skin)
-
-    # 右手臂（指向/說明動作，有動畫）
-    lift = int(20 + anim_t * 18) if active else 5
-    draw.polygon([(cx+90, sy+14),
-                  (cx+113, sy+14),
-                  (cx+140, sy+30-lift),
-                  (cx+118, sy+30-lift)], fill=top)
-    # 前臂指向
-    ax = cx + 140
-    ay = sy + 28 - lift
-    draw.polygon([(cx+115, sy+28-lift), (cx+132, sy+28-lift),
-                  (ax+60,  ay-25),
-                  (ax+42,  ay-25)], fill=skin)
-    # 手掌（指向）
-    draw.ellipse([ax+38, ay-38, ax+66, ay-18], fill=skin)
-    # 食指
-    draw.line([ax+52, ay-36, ax+65, ay-55], fill=skin, width=10)
-
-# ── 圖表（沿用上版，縮小適應右側）────────────────────────────────────────────
-def draw_chart_right(img, draw, chart_type, items, x, y, w, h, bold_path, reg_path):
-    fb = ImageFont.truetype(bold_path, 24)
-    fr = ImageFont.truetype(reg_path,  20)
+# ── HTML 投影片模板 ───────────────────────────────────────────────────────────
+def build_chart_svg(chart_type, items):
+    """依類型生成 SVG 圖表"""
+    w, h = 520, 280
+    colors = ["#5a8cff", "#00d4b4", "#b464ff", "#ffd764"]
 
     if chart_type == "pillars":
-        n = min(len(items), 4)
-        cw = (w-40)//n
-        colors = [ACCENT, ACCENT2, FEMALE_CLR, MALE_CLR]
-        heights = [0.85, 0.65, 0.90, 0.70]
-        base_y2 = y+h-25
+        n     = min(len(items), 4)
+        cw    = w // n
+        hvals = [0.85, 0.65, 0.90, 0.70]
+        bars  = ""
         for i, label in enumerate(items[:n]):
-            bx = x+20+i*cw; col = colors[i%4]
-            ph = int((h-60)*heights[i%4])
-            for gy in range(ph):
-                t = gy/ph
-                gc = lerp(tuple(c//5 for c in col), col, t)
-                draw.line([bx+14, base_y2-gy, bx+cw-14, base_y2-gy], fill=gc)
-            draw.ellipse([bx+12, base_y2-ph-6, bx+cw-12, base_y2-ph+6],
-                         fill=tuple(min(255,c+60) for c in col))
-            lw2,_ = tw(draw, label, fb)
-            draw.text((bx+cw//2-lw2//2, base_y2+5), label, font=fb, fill=TEXT2)
+            bx  = i * cw + 20
+            bh2 = int((h - 60) * hvals[i % 4])
+            col = colors[i % 4]
+            bars += f"""
+              <defs>
+                <linearGradient id="g{i}" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="{col}" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="{col}" stop-opacity="0.2"/>
+                </linearGradient>
+              </defs>
+              <rect x="{bx}" y="{h-40-bh2}" width="{cw-40}" height="{bh2}"
+                    rx="6" fill="url(#g{i})"/>
+              <circle cx="{bx+(cw-40)//2}" cy="{h-40-bh2}" r="6" fill="{col}"
+                      style="filter:drop-shadow(0 0 8px {col})"/>
+              <text x="{bx+(cw-40)//2}" y="{h-10}" text-anchor="middle"
+                    font-size="22" fill="#8899cc">{label}</text>"""
+        return f'<svg viewBox="0 0 {w} {h}" width="{w}" height="{h}">{bars}</svg>'
 
     elif chart_type == "cycle":
-        cx2 = x+w//2; cy2 = y+h//2; R = min(w,h)//2-25
-        colors = [ACCENT, ACCENT2, FEMALE_CLR, MALE_CLR]
-        items4 = (items+["","","",""])[:4]
-        draw.ellipse([cx2-R-8,cy2-R-8,cx2+R+8,cy2+R+8], outline=GLASS_EDGE, width=1)
+        items4 = (items + ["","","",""])[:4]
+        nodes  = ""
+        cx2, cy2, R = w//2, h//2, 95
         for i, label in enumerate(items4):
             if not label: continue
-            a = math.radians(i*90-45)
-            ex = cx2+int(R*math.cos(a)); ey = cy2+int(R*math.sin(a))
-            col = colors[i%4]
-            for gr in range(28,4,-3):
-                gc = tuple(clamp(c*0.4*(1-gr/28)) for c in col)
-                draw.ellipse([ex-gr,ey-gr,ex+gr,ey+gr], fill=gc)
-            draw.ellipse([ex-22,ey-22,ex+22,ey+22], fill=col)
-            lw2, lh2 = tw(draw, label, fb)
-            draw.text((ex-lw2//2, ey-lh2//2), label, font=fb, fill=TEXT1)
-        draw.ellipse([cx2-26,cy2-26,cx2+26,cy2+26], fill=GLASS_BG, outline=ACCENT, width=2)
-        draw_cx(draw, "改善", fb, cx2, cy2-12, ACCENT)
+            a   = math.radians(i*90 - 45)
+            ex  = cx2 + int(R * math.cos(a))
+            ey  = cy2 + int(R * math.sin(a))
+            col = colors[i % 4]
+            if i < 3:
+                na  = math.radians((i+1)*90 - 45)
+                nx  = cx2 + int(R * math.cos(na))
+                ny  = cy2 + int(R * math.sin(na))
+                nodes += f'<line x1="{ex}" y1="{ey}" x2="{nx}" y2="{ny}" stroke="{col}" stroke-width="2" stroke-opacity="0.4"/>'
+            nodes += f"""
+              <circle cx="{ex}" cy="{ey}" r="38" fill="#111830"
+                      stroke="{col}" stroke-width="2"
+                      style="filter:drop-shadow(0 0 10px {col}40)"/>
+              <text x="{ex}" y="{ey+7}" text-anchor="middle"
+                    font-size="20" fill="{col}" font-weight="bold">{label}</text>"""
+        nodes += f'<circle cx="{cx2}" cy="{cy2}" r="30" fill="#111830" stroke="#5a8cff" stroke-width="2"/>'
+        nodes += f'<text x="{cx2}" y="{cy2+6}" text-anchor="middle" font-size="16" fill="#5a8cff">改善</text>'
+        return f'<svg viewBox="0 0 {w} {h}" width="{w}" height="{h}">{nodes}</svg>'
 
     elif chart_type == "bars":
-        n = min(len(items),4); bh = (h-30)//n
-        vals = [(85,35),(90,40),(75,50),(80,90)]
+        n     = min(len(items), 4)
+        bh2   = (h - 30) // n
+        vals  = [(85,35),(90,40),(75,50),(80,90)]
+        bars2 = ""
         for i, label in enumerate(items[:n]):
-            by2 = y+15+i*bh; bef,aft = vals[i%4]
-            draw.rectangle([x+130,by2+4,x+w,by2+bh-8], fill=(18,26,48))
-            bw_b = int((w-140)*bef/100)
-            for px in range(bw_b):
-                gc = lerp((40,55,90),(70,95,140), px/bw_b)
-                draw.line([x+130+px,by2+4,x+130+px,by2+bh//2-2], fill=gc)
-            bw_a = int((w-140)*aft/100)
-            for px in range(bw_a):
-                gc = lerp(tuple(c//4 for c in ACCENT), ACCENT, px/bw_a)
-                draw.line([x+130+px,by2+bh//2+2,x+130+px,by2+bh-8], fill=gc)
-            draw.text((x+130+bw_a+5, by2+bh//2+2), f"{aft}%", font=fr, fill=ACCENT)
-            draw.text((x+4, by2+bh//2-10), label, font=fr, fill=TEXT2)
+            by2        = 15 + i * bh2
+            bef, aft   = vals[i % 4]
+            col        = colors[i % 4]
+            bw_b       = int((w-180) * bef/100)
+            bw_a       = int((w-180) * aft/100)
+            bars2 += f"""
+              <text x="10" y="{by2+bh2//2+6}" font-size="18" fill="#8899cc">{label}</text>
+              <rect x="160" y="{by2+6}" width="{bw_b}" height="{bh2//2-10}"
+                    rx="4" fill="#1e2d50"/>
+              <rect x="160" y="{by2+bh2//2+2}" width="{bw_a}" height="{bh2//2-10}"
+                    rx="4" fill="{col}" style="filter:drop-shadow(0 0 4px {col}60)"/>
+              <text x="{160+bw_a+8}" y="{by2+bh2//2+bh2//4+6}"
+                    font-size="16" fill="{col}">{aft}%</text>"""
+        return f'<svg viewBox="0 0 {w} {h}" width="{w}" height="{h}">{bars2}</svg>'
 
     elif chart_type == "stats":
-        n = min(len(items),3); sw = (w-20)//n
-        colors2 = [ACCENT, GOLD, ACCENT2]
+        n     = min(len(items), 3)
+        sw    = w // n
+        stats = ""
         for i, val in enumerate(items[:n]):
-            sx = x+10+i*sw+sw//2; sy = y+h//2; col = colors2[i%3]
-            f_big = ImageFont.truetype(bold_path, 58)
-            draw_cx(draw, val, f_big, sx, sy-30, col)
-            draw.rectangle([sx-35,sy+32,sx+35,sy+35], fill=tuple(c//2 for c in col))
+            sx  = i * sw + sw//2
+            col = colors[i % 4]
+            stats += f"""
+              <circle cx="{sx}" cy="{h//2}" r="85"
+                      fill="{col}18" stroke="{col}40" stroke-width="1"/>
+              <text x="{sx}" y="{h//2+8}" text-anchor="middle"
+                    font-size="52" fill="{col}" font-weight="bold">{val}</text>
+              <line x1="{sx-35}" y1="{h//2+42}" x2="{sx+35}" y2="{h//2+42}"
+                    stroke="{col}80" stroke-width="2"/>"""
+        return f'<svg viewBox="0 0 {w} {h}" width="{w}" height="{h}">{stats}</svg>'
 
     elif chart_type == "flow":
-        n = min(len(items),4); fw = (w-30)//n
-        colors3 = [ACCENT, ACCENT2, FEMALE_CLR, MALE_CLR]
+        n   = min(len(items), 4)
+        fw  = (w - 30) // n
+        fls = ""
         for i, label in enumerate(items[:n]):
-            bx = x+15+i*fw; by2 = y+h//2-38; col = colors3[i%4]
-            for pad in range(5,0,-1):
-                gc = tuple(clamp(c*0.2) for c in col)
-                draw.rounded_rectangle([bx-pad,by2-pad,bx+fw-22+pad,by2+76+pad], radius=10+pad, fill=gc)
-            draw.rounded_rectangle([bx,by2,bx+fw-22,by2+76], radius=10, fill=GLASS_BG, outline=col, width=2)
-            lw2, lh2 = tw(draw, label, fb)
-            draw.text((bx+(fw-22)//2-lw2//2, by2+38-lh2//2), label, font=fb, fill=col)
-            if i<n-1:
-                ax = bx+fw-8
-                draw.polygon([(ax,by2+38-14),(ax+18,by2+38),(ax,by2+38+14)], fill=col)
+            bx  = 15 + i * fw
+            col = colors[i % 4]
+            fls += f"""
+              <rect x="{bx}" y="{h//2-40}" width="{fw-28}" height="80"
+                    rx="12" fill="#111830" stroke="{col}" stroke-width="2"
+                    style="filter:drop-shadow(0 0 8px {col}40)"/>
+              <text x="{bx+(fw-28)//2}" y="{h//2+8}" text-anchor="middle"
+                    font-size="22" fill="{col}" font-weight="bold">{label}</text>"""
+            if i < n-1:
+                ax = bx + fw - 10
+                ay = h//2
+                fls += f'<polygon points="{ax},{ay-14} {ax+20},{ay} {ax},{ay+14}" fill="{col}80"/>'
+        return f'<svg viewBox="0 0 {w} {h}" width="{w}" height="{h}">{fls}</svg>'
 
-# ── 玻璃卡片 ─────────────────────────────────────────────────────────────────
-def draw_glass_cards(draw, cards, x, y, w, h, bold_path, reg_path):
-    n = len(cards[:3]); ch = (h-(n-1)*12)//n
-    colors = [ACCENT, ACCENT2, FEMALE_CLR]
-    fb = ImageFont.truetype(bold_path, 26); fr = ImageFont.truetype(reg_path, 24)
-    for i, card in enumerate(cards[:n]):
-        cy2 = y+i*(ch+12); col = colors[i%3]
-        for pad in range(5,0,-1):
-            gc = tuple(clamp(c*0.18*(1-pad/5)) for c in col)
-            draw.rounded_rectangle([x-pad,cy2-pad,x+w+pad,cy2+ch+pad], radius=16+pad, fill=gc)
-        draw.rounded_rectangle([x,cy2,x+w,cy2+ch], radius=14, fill=GLASS_BG)
-        draw.rounded_rectangle([x,cy2,x+w,cy2+5], radius=3, fill=col)
-        draw.ellipse([x+13,cy2+17,x+25,cy2+29], fill=col)
-        draw.text((x+33,cy2+12), card["label"], font=fb, fill=col)
-        draw.rectangle([x+14,cy2+48,x+w-14,cy2+50], fill=GLASS_EDGE)
-        lines = wrap_text(draw, card["text"], fr, w-32)[:3]
-        ty2 = cy2+58
-        for line in lines:
-            draw.text((x+14,ty2), line, font=fr, fill=TEXT1); ty2+=32
+    return '<svg width="520" height="280"></svg>'
 
-# ── 完整影格建立 ──────────────────────────────────────────────────────────────
-def build_frame(slide, dialogue_text, speaker, anim_phase,
-                bold_path, reg_path, out_path):
-    """
-    anim_phase: 0.0~1.0，控制呼吸動畫相位
-    """
-    img  = Image.new("RGB", (W, H), BG)
-    draw = ImageDraw.Draw(img)
 
-    # 全域背景光暈
-    radial_glow(draw, img, AVATAR_W//2, H//2, 500, FEMALE_CLR if speaker=="Host1" else MALE_CLR, 0.1)
-    radial_glow(draw, img, AVATAR_W//2+CONTENT_X, H//2, 400, ACCENT, 0.08)
+def build_avatar_svg(is_female, active, anim_phase):
+    """SVG 半身主持人插圖"""
+    alpha   = 1.0 if active else 0.22
+    skin_f  = f"rgba(238,196,165,{alpha})"
+    skin_m  = f"rgba(215,175,142,{alpha})"
+    hair_f  = f"rgba(38,28,22,{alpha})"
+    hair_m  = f"rgba(50,38,28,{alpha})"
+    top_f   = f"rgba(145,75,225,{alpha})"
+    top_f2  = f"rgba(175,105,250,{alpha})"
+    top_m   = f"rgba(22,48,95,{alpha})"
+    top_m2  = f"rgba(42,68,118,{alpha})"
+    tie_m   = f"rgba(185,40,40,{alpha})"
+    glow_c  = "#b464ff" if is_female else "#00c8b4"
+    skin    = skin_f if is_female else skin_m
+    hair    = hair_f if is_female else hair_m
+    top     = top_f  if is_female else top_m
+    top2    = top_f2 if is_female else top_m2
 
-    # 細網格
-    for gx2 in range(0,W,80):
-        draw.line([gx2,0,gx2,H], fill=(12,18,36))
-    for gy2 in range(0,H,80):
-        draw.line([0,gy2,W,gy2], fill=(12,18,36))
+    # 呼吸動畫偏移
+    bob = int(math.sin(anim_phase * math.pi * 2) * 7)
 
-    # ── 頂部品牌欄 ────────────────────────────────────────────────────────
-    draw.rectangle([0,0,W,55], fill=(7,10,22))
-    glow_line(draw, 0,55, W,55, ACCENT, w=2, gw=10)
-    fb_hd = ImageFont.truetype(bold_path, 24)
-    fr_hd = ImageFont.truetype(reg_path,  22)
-    draw.text((44,14), "欣晨工業有限公司", font=fb_hd, fill=TEXT1)
-    draw.text((296,16), "智慧製造深度對談  SMART MANUFACTURING DEEP DIVE",
-              font=fr_hd, fill=TEXT2)
-    sl_txt = f"SLIDE {slide['id']}"
-    slw,_ = tw(draw, sl_txt, fr_hd)
-    draw.text((W-slw-44,16), sl_txt, font=fr_hd, fill=TEXT3)
+    glow = f"""
+      <radialGradient id="av_glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="{glow_c}" stop-opacity="{0.25*alpha}"/>
+        <stop offset="100%" stop-color="{glow_c}" stop-opacity="0"/>
+      </radialGradient>
+      <ellipse cx="200" cy="300" rx="200" ry="280" fill="url(#av_glow)"/>
+    """ if active else ""
 
-    # ── 左側：主持人頭像 ─────────────────────────────────────────────────
-    glow_line(draw, AVATAR_W,55, AVATAR_W,H-168, GLASS_EDGE, w=1, gw=6)
-    avatar_cx = AVATAR_W//2
-    avatar_by = 330   # 人像基準Y（頭部中心偏移參考）
-
-    if speaker == "Host1":
-        draw_female(img, avatar_cx, avatar_by, True,  anim_phase)
-        draw_male  (img, avatar_cx, avatar_by, False, 0.0)  # 另一人不顯示（節省空間）
+    if is_female:
+        svg = f"""<svg viewBox="0 0 400 620" width="340" height="530"
+                       style="transform:translateY({bob}px);transition:transform 0.4s ease">
+          <defs>
+            <linearGradient id="top_grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="{top2}"/>
+              <stop offset="100%" stop-color="{top}"/>
+            </linearGradient>
+          </defs>
+          {glow}
+          <!-- 長髮（後方）-->
+          <ellipse cx="148" cy="195" rx="32" ry="95" fill="{hair}"/>
+          <ellipse cx="252" cy="195" rx="32" ry="95" fill="{hair}"/>
+          <ellipse cx="200" cy="108" rx="72" ry="55" fill="{hair}"/>
+          <!-- 頭部 -->
+          <ellipse cx="200" cy="135" rx="62" ry="75" fill="{skin}"/>
+          <!-- 眉毛 -->
+          <path d="M174 105 Q187 98 200 103" stroke="{hair}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M200 103 Q213 98 226 105" stroke="{hair}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <!-- 眼睛 -->
+          <ellipse cx="178" cy="125" rx="13" ry="10" fill="white"/>
+          <ellipse cx="178" cy="125" rx="7" ry="8" fill="#2a1e15"/>
+          <ellipse cx="175" cy="122" rx="2.5" ry="2.5" fill="white"/>
+          <ellipse cx="222" cy="125" rx="13" ry="10" fill="white"/>
+          <ellipse cx="222" cy="125" rx="7" ry="8" fill="#2a1e15"/>
+          <ellipse cx="219" cy="122" rx="2.5" ry="2.5" fill="white"/>
+          <!-- 睫毛 -->
+          <path d="M168 115 L165 109" stroke="{hair}" stroke-width="1.8"/>
+          <path d="M178 114 L178 107" stroke="{hair}" stroke-width="1.8"/>
+          <path d="M188 116 L190 109" stroke="{hair}" stroke-width="1.8"/>
+          <path d="M212 116 L210 109" stroke="{hair}" stroke-width="1.8"/>
+          <path d="M222 114 L222 107" stroke="{hair}" stroke-width="1.8"/>
+          <path d="M232 115 L235 109" stroke="{hair}" stroke-width="1.8"/>
+          <!-- 鼻子 -->
+          <path d="M196 148 Q200 158 204 148" stroke="{skin}" stroke-width="2" fill="none" opacity="0.6"/>
+          <!-- 嘴巴（微笑）-->
+          <path d="M186 165 Q200 177 214 165" stroke="rgba(175,92,92,0.9)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- 頸部 -->
+          <rect x="186" y="208" width="28" height="40" rx="8" fill="{skin}"/>
+          <!-- 肩膀/上衣 -->
+          <path d="M110 248 L290 248 L270 430 L130 430 Z" fill="url(#top_grad)"/>
+          <!-- V領 -->
+          <path d="M176 252 L200 295 L224 252" fill="{top2}"/>
+          <!-- 左臂（自然）-->
+          <path d="M115 258 L82 268 L58 360 L84 368 L105 280 L128 268 Z" fill="url(#top_grad)"/>
+          <ellipse cx="72" cy="374" rx="18" ry="14" fill="{skin}"/>
+          <!-- 右臂（舉起手勢，動畫）-->
+          <path d="M285 258 L318 250 L{'345' if anim_phase<0.5 else '338'} {'175' if anim_phase<0.5 else '185'} L{'318' if anim_phase<0.5 else '312'} {'170' if anim_phase<0.5 else '180'} L292 240 L272 268 Z" fill="url(#top_grad)"/>
+          <ellipse cx="{'352' if anim_phase<0.5 else '344'}" cy="{'166' if anim_phase<0.5 else '175'}" rx="18" ry="14" fill="{skin}"/>
+        </svg>"""
     else:
-        draw_male  (img, avatar_cx, avatar_by, True,  anim_phase)
-        draw_female(img, avatar_cx, avatar_by, False, 0.0)
+        svg = f"""<svg viewBox="0 0 400 620" width="340" height="530"
+                       style="transform:translateY({bob}px);transition:transform 0.4s ease">
+          <defs>
+            <linearGradient id="suit_grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="{top2}"/>
+              <stop offset="100%" stop-color="{top}"/>
+            </linearGradient>
+          </defs>
+          {glow}
+          <!-- 短髮 -->
+          <ellipse cx="200" cy="112" rx="70" ry="48" fill="{hair}"/>
+          <ellipse cx="148" cy="148" rx="22" ry="30" fill="{hair}"/>
+          <ellipse cx="252" cy="148" rx="22" ry="30" fill="{hair}"/>
+          <!-- 頭部 -->
+          <ellipse cx="200" cy="145" rx="65" ry="78" fill="{skin}"/>
+          <!-- 眉毛（平直）-->
+          <line x1="173" y1="112" x2="197" y2="110" stroke="{hair}" stroke-width="4.5" stroke-linecap="round"/>
+          <line x1="203" y1="110" x2="227" y2="112" stroke="{hair}" stroke-width="4.5" stroke-linecap="round"/>
+          <!-- 眼睛 -->
+          <ellipse cx="178" cy="132" rx="14" ry="10" fill="white"/>
+          <ellipse cx="178" cy="132" rx="8" ry="8" fill="#2a1e15"/>
+          <ellipse cx="175" cy="129" rx="2.5" ry="2.5" fill="white"/>
+          <ellipse cx="222" cy="132" rx="14" ry="10" fill="white"/>
+          <ellipse cx="222" cy="132" rx="8" ry="8" fill="#2a1e15"/>
+          <ellipse cx="219" cy="129" rx="2.5" ry="2.5" fill="white"/>
+          <!-- 鼻子 -->
+          <path d="M196 158 Q200 170 208 165" stroke="{skin}" stroke-width="2.5" fill="none" opacity="0.65"/>
+          <!-- 嘴巴 -->
+          <path d="M186 180 Q200 191 214 180" stroke="rgba(160,85,85,0.9)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- 頸部 -->
+          <rect x="185" y="220" width="30" height="42" rx="8" fill="{skin}"/>
+          <!-- 西裝 -->
+          <path d="M105 262 L295 262 L275 440 L125 440 Z" fill="url(#suit_grad)"/>
+          <!-- 西裝翻領 -->
+          <path d="M175 264 L158 310 L118 268 Z" fill="{top2}"/>
+          <path d="M225 264 L242 310 L282 268 Z" fill="{top2}"/>
+          <!-- 白襯衫 -->
+          <path d="M192 268 L208 268 L205 335 L195 335 Z" fill="rgba(215,225,245,0.9)"/>
+          <!-- 領帶 -->
+          <path d="M195 275 L205 275 L202 340 L198 340 Z" fill="{tie_m}"/>
+          <path d="M193 337 L207 337 L202 355 L198 355 Z" fill="{tie_m}"/>
+          <!-- 左臂 -->
+          <path d="M110 272 L78 282 L52 375 L80 382 L102 292 L125 278 Z" fill="url(#suit_grad)"/>
+          <ellipse cx="66" cy="388" rx="18" ry="14" fill="{skin}"/>
+          <!-- 右臂（指向，動畫）-->
+          <path d="M290 272 L322 258 L{'358' if anim_phase<0.5 else '348'} {'182' if anim_phase<0.5 else '194'} L{'336' if anim_phase<0.5 else '326'} {'176' if anim_phase<0.5 else '188'} L298 248 L275 278 Z" fill="url(#suit_grad)"/>
+          <!-- 食指指向 -->
+          <ellipse cx="{'368' if anim_phase<0.5 else '358'}" cy="{'172' if anim_phase<0.5 else '183'}" rx="18" ry="13" fill="{skin}"/>
+          <line x1="{'368' if anim_phase<0.5 else '358'}" y1="{'160' if anim_phase<0.5 else '170'}" x2="{'385' if anim_phase<0.5 else '375'}" y2="{'142' if anim_phase<0.5 else '152'}" stroke="{skin}" stroke-width="11" stroke-linecap="round"/>
+        </svg>"""
+    return svg
 
-    # 主持人名字 + 角色（頭像下方）
-    fb_nm = ImageFont.truetype(bold_path, 36)
-    fr_ro = ImageFont.truetype(reg_path,  24)
-    spk_name  = "小欣" if speaker=="Host1" else "阿晨"
-    spk_role  = "女主持人" if speaker=="Host1" else "男主持人"
-    spk_color = FEMALE_CLR if speaker=="Host1" else MALE_CLR
-    nh = draw_cx(draw, spk_name, fb_nm, avatar_cx, H-228, spk_color)
-    draw_cx(draw, spk_role, fr_ro, avatar_cx, H-228+nh+6, TEXT3)
 
-    # ── 右側：投影片內容 ─────────────────────────────────────────────────
-    CX  = CONTENT_X
-    CW  = W - CX - 30
-    fb_t = ImageFont.truetype(bold_path, 54)
-    fr_s = ImageFont.truetype(reg_path,  26)
+def build_slide_html(slide, speaker, dialogue_text, anim_phase):
+    """生成一張投影片的完整 HTML"""
+    is_female   = (speaker == "Host1")
+    spk_name    = "小欣" if is_female else "阿晨"
+    spk_role    = "女主持人" if is_female else "男主持人"
+    spk_color   = "#b464ff" if is_female else "#00c8b4"
+    glow_color  = "#7b30c8" if is_female else "#008878"
 
-    # 投影片標題
-    t_lines = wrap_text(draw, slide["title"], fb_t, CW-20)
-    ty = 72
-    for line in t_lines:
-        draw.text((CX, ty), line, font=fb_t, fill=TEXT1)
-        _,lh = tw(draw, line, fb_t)
-        ty += lh+5
+    avatar_svg  = build_avatar_svg(is_female, True,  anim_phase)
+    chart_svg   = build_chart_svg(slide.get("chart_type","pillars"),
+                                  slide.get("chart_items",[]))
+    cards_html  = ""
+    for i, card in enumerate(slide.get("cards",[])[:3]):
+        col = ["#5a8cff","#00d4b4","#b464ff"][i]
+        cards_html += f"""
+        <div class="card" style="--c:{col}">
+          <div class="card-top" style="background:{col}"></div>
+          <div class="card-label" style="color:{col}">
+            <span class="dot" style="background:{col}"></span>{card['label']}
+          </div>
+          <div class="card-sep" style="background:{col}33"></div>
+          <div class="card-text">{card['text']}</div>
+        </div>"""
 
-    # 標題底線
-    glow_line(draw, CX, ty+10, CX+200, ty+10, ACCENT, w=2, gw=8)
-
-    # 圖表（上半）
-    chart_top = ty + 30
-    chart_h   = 280
-    draw_chart_right(img, draw, slide.get("chart_type","pillars"),
-                     slide.get("chart_items",[]),
-                     CX, chart_top, CW-20, chart_h, bold_path, reg_path)
-
-    # 卡片（下半）
-    cards_top = chart_top + chart_h + 10
-    cards_h   = H - 168 - cards_top - 10
-    draw_glass_cards(draw, slide.get("cards",[])[:3],
-                     CX, cards_top, CW-20, cards_h, bold_path, reg_path)
-
-    # ── 底部字幕欄 ────────────────────────────────────────────────────────
-    sub_y = H - 165
-    for gy3 in range(sub_y, H):
-        t = (gy3-sub_y)/(H-sub_y)
-        draw.line([0,gy3,W,gy3], fill=lerp(BG2, (3,5,12), t))
-    glow_line(draw, 0,sub_y, W,sub_y, ACCENT, w=2, gw=12)
-
+    # 字幕（一行截斷）
+    subtitle_html = ""
     if dialogue_text:
-        fb_sub = ImageFont.truetype(reg_path, 40)
-        # 即時字幕：強制一行，超過長度截斷
-        text_1l = dialogue_text
-        while len(text_1l) > 4:
-            tw3, _ = tw(draw, text_1l, fb_sub)
-            if tw3 <= W - 160:
-                break
-            text_1l = text_1l[:-2] + "..."
-        # 居中顯示，背景藥丸
-        tw3, th3 = tw(draw, text_1l, fb_sub)
-        tx = (W - tw3) // 2
-        ty3 = sub_y + (165 - th3) // 2
-        px, py = 22, 10
-        draw.rounded_rectangle(
-            [tx-px, ty3-py, tx+tw3+px, ty3+th3+py],
-            radius=12, fill=(15, 20, 45, 0)
-        )
-        draw.text((tx, ty3), text_1l, font=fb_sub, fill=TEXT1)
+        # 截斷到約 55 個中文字的長度（確保一行）
+        txt = dialogue_text[:56] + ("…" if len(dialogue_text) > 56 else "")
+        subtitle_html = f"""
+        <div class="subtitle">
+          <span class="sub-name" style="color:{spk_color}">{spk_name}</span>
+          <span class="sub-text">{txt}</span>
+        </div>"""
 
-    img.save(out_path)
+    font_css = ""
+    if FONT_BOLD:
+        font_css = f"""
+        @font-face {{
+          font-family: 'NotoSans';
+          src: url('file://{FONT_BOLD}');
+          font-weight: 700;
+        }}"""
+    if FONT_REG:
+        font_css += f"""
+        @font-face {{
+          font-family: 'NotoSans';
+          src: url('file://{FONT_REG}');
+          font-weight: 400;
+        }}"""
+
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+{font_css}
+*, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+html, body {{
+  width: 1920px; height: 1080px; overflow: hidden;
+  font-family: 'NotoSans', 'Noto Sans TC', sans-serif;
+  background: #06081a;
+  color: #e8eeff;
+}}
+/* ── 背景光暈 ── */
+.bg {{
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 55% 65% at 22% 48%, {glow_color}22 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 78% 52%, #0a3a3a22 0%, transparent 60%),
+    linear-gradient(160deg, #06081a 0%, #0c1230 50%, #06081a 100%);
+}}
+.grid {{
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(80,100,180,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(80,100,180,0.07) 1px, transparent 1px);
+  background-size: 80px 80px;
+}}
+/* ── 頂部品牌欄 ── */
+.topbar {{
+  position: absolute; top: 0; left: 0; right: 0; height: 52px;
+  background: rgba(6,8,26,0.92);
+  display: flex; align-items: center;
+  padding: 0 44px;
+  border-bottom: 2px solid #5a8cff;
+  box-shadow: 0 0 20px #5a8cff40;
+  z-index: 10;
+}}
+.brand {{ font-weight: 700; font-size: 22px; color: #e8eeff; }}
+.ep    {{ font-size: 20px; color: #8899cc; margin-left: 28px; }}
+.slide-no {{ margin-left: auto; font-size: 20px; color: #445580; }}
+/* ── 分隔線 ── */
+.divider {{
+  position: absolute; top: 52px; bottom: 158px; left: 840px; width: 1px;
+  background: linear-gradient(180deg, transparent 0%, #334488 20%, #334488 80%, transparent 100%);
+  z-index: 5;
+}}
+/* ── 左側：主持人 ── */
+.avatar-panel {{
+  position: absolute; top: 52px; left: 0; width: 840px; bottom: 158px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0;
+}}
+.avatar-wrap {{
+  filter: drop-shadow(0 0 30px {spk_color}50);
+}}
+.host-name {{
+  font-size: 36px; font-weight: 700; color: {spk_color};
+  margin-top: 8px;
+  text-shadow: 0 0 20px {spk_color}80;
+}}
+.host-role {{ font-size: 22px; color: #556688; margin-top: 4px; }}
+/* ── 右側：投影片內容 ── */
+.content-panel {{
+  position: absolute; top: 62px; left: 868px; right: 28px; bottom: 168px;
+  display: flex; flex-direction: column; gap: 0;
+  overflow: hidden;
+}}
+.slide-title {{
+  font-size: 52px; font-weight: 700; color: #eef2ff;
+  line-height: 1.2; margin-bottom: 8px;
+  text-shadow: 0 2px 20px rgba(90,140,255,0.3);
+}}
+.title-bar {{
+  width: 200px; height: 3px; margin-bottom: 14px;
+  background: linear-gradient(90deg, #5a8cff, transparent);
+  box-shadow: 0 0 12px #5a8cff80;
+}}
+.chart-area {{ flex: 0 0 auto; margin-bottom: 12px; }}
+.cards-area {{
+  flex: 1 1 auto;
+  display: flex; flex-direction: column; gap: 10px;
+  min-height: 0;
+}}
+/* ── 卡片 ── */
+.card {{
+  flex: 1 1 0; min-height: 0;
+  background: rgba(16,22,50,0.85);
+  border: 1px solid var(--c, #5a8cff)33;
+  border-radius: 14px; padding: 10px 16px;
+  display: flex; flex-direction: column; gap: 4px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 16px var(--c, #5a8cff)20, inset 0 1px 0 rgba(255,255,255,0.05);
+  overflow: hidden;
+}}
+.card-top {{ height: 4px; border-radius: 4px; margin: -10px -16px 6px; }}
+.card-label {{
+  font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+}}
+.dot {{ width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }}
+.card-sep {{ height: 1px; margin: 2px 0; }}
+.card-text {{ font-size: 21px; color: #c8d4ec; line-height: 1.5; }}
+/* ── 底部字幕 ── */
+.subtitle-bar {{
+  position: absolute; left: 0; right: 0; bottom: 0; height: 155px;
+  background: linear-gradient(180deg, rgba(6,8,22,0.92) 0%, rgba(3,4,14,0.98) 100%);
+  border-top: 2px solid #5a8cff;
+  box-shadow: 0 0 24px #5a8cff50;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 60px;
+}}
+.subtitle {{
+  display: flex; align-items: baseline; gap: 16px;
+  max-width: 1800px;
+}}
+.sub-name {{
+  font-size: 28px; font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 0 0 12px currentColor;
+}}
+.sub-text {{
+  font-size: 38px; color: #eef2ff; line-height: 1.2;
+  white-space: nowrap; overflow: hidden;
+}}
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="grid"></div>
+  <!-- 頂部 -->
+  <div class="topbar">
+    <span class="brand">欣晨工業有限公司</span>
+    <span class="ep">智慧製造深度對談 SMART MANUFACTURING DEEP DIVE</span>
+    <span class="slide-no">SLIDE {slide['id']}</span>
+  </div>
+  <!-- 左右分隔 -->
+  <div class="divider"></div>
+  <!-- 左：主持人 -->
+  <div class="avatar-panel">
+    <div class="avatar-wrap">{avatar_svg}</div>
+    <div class="host-name">{spk_name}</div>
+    <div class="host-role">{spk_role}</div>
+  </div>
+  <!-- 右：投影片內容 -->
+  <div class="content-panel">
+    <div class="slide-title">{slide['title']}</div>
+    <div class="title-bar"></div>
+    <div class="chart-area">{chart_svg}</div>
+    <div class="cards-area">{cards_html}</div>
+  </div>
+  <!-- 底部字幕 -->
+  <div class="subtitle-bar">{subtitle_html}</div>
+</body>
+</html>"""
+
+
+def html_to_png(html_content, out_path):
+    """Playwright 截圖"""
+    with sync_playwright() as p:
+        browser = p.chromium.launch(args=["--no-sandbox","--disable-setuid-sandbox"])
+        page    = browser.new_page(viewport={"width": 1920, "height": 1080})
+        page.set_content(html_content, wait_until="networkidle")
+        page.wait_for_timeout(300)   # 等字型渲染
+        page.screenshot(path=str(out_path), clip={"x":0,"y":0,"w":1920,"h":1080})
+        browser.close()
+
 
 # ── 腳本生成 ─────────────────────────────────────────────────────────────────
 def generate_script(ac_client):
     prompt = """你是欣晨工業 Podcast「智慧製造深度對談」資深製作人。
 主持人：小欣（女，活潑好奇，善於追問）、阿晨（男，資深工程師，深入解說）
-欣晨工業：台灣桃園，1975年創立，51年精密製造，豐田生產方式（TPS）核心哲學。
+欣晨工業：台灣桃園，1975年，51年精密製造，TPS核心哲學。
 
-今集主題：豐田改善文化（Kaizen）在台灣製造業的實踐
+今集：豐田改善文化（Kaizen）在台灣製造業的實踐
 
-【節目結構要求——起承轉合】
-- 起（開場，約6輪）：小欣歡迎觀眾、介紹阿晨、拋出今日主題鉤子，讓聽眾想一直聽下去。開頭要有衝擊感的問句或數字。
-- 承（深入，約12輪）：系統解說 Kaizen 核心概念、TPS三大支柱、七大浪費，舉台灣真實工廠案例，有數據有故事。
-- 轉（翻轉，約6輪）：提出台灣中小企業導入改善的困境、反直覺的觀點或常見誤解，阿晨給出破解之道。小欣要有「我以前想法完全錯了！」的驚嘆反應。
-- 合（收尾，約8輪）：帶出欣晨工業的實踐案例，給聽眾3個可立刻行動的建議，最後小欣說一句話呼應開場的問句/數字，形成完美收尾。
-
-【收尾結輪】：結尾最後2輪對話，要明確呼應開場第1-2輪的主題或關鍵詞，讓觀眾感受「完整的一集」。
+【起承轉合結構，目標10-13分鐘】
+- 起（6輪）：衝擊開場＋引出主題，開頭要有震撼數字或反直覺問題
+- 承（12輪）：深入 Kaizen/TPS 概念，台灣工廠真實案例，數據豐富
+- 轉（6輪）：反轉——台灣企業導入改善的陷阱，阿晨給破解之道，小欣有驚嘆反應
+- 合（8-10輪）：欣晨實踐，給聽眾3個行動建議，最後呼應開場形成收尾結圓
 
 請輸出：
 === SLIDES ===
-[
-  {"id":1,"title":"標題（10字以內）","chart_type":"stats",
-   "chart_items":["XX%","XX年","X大"],
-   "cards":[{"label":"現象","text":"35字以內"},{"label":"核心問題","text":"35字"},{"label":"今集重點","text":"35字"}],
-   "dialogue_count":6},
-  ...共6張投影片，對應起/承1/承2/轉/合1/合2
-]
-chart_type選項：pillars（柱狀）/ cycle（循環）/ bars（橫條對比）/ stats（大數字）/ flow（流程）
+[{"id":1,"title":"標題（10字）","chart_type":"stats",
+  "chart_items":["數值","數值","關鍵詞"],
+  "cards":[{"label":"現象","text":"35字"},{"label":"核心問題","text":"35字"},{"label":"今集重點","text":"35字"}],
+  "dialogue_count":6}
+  ...共6張，chart_type: pillars/cycle/bars/stats/flow]
 
 === DIALOGUE ===
-小欣: （75-100字，自然口語，繁體中文）
-阿晨: （75-100字）
-...共32-36輪，總字數約2500-3000字（約10-13分鐘）
-直接輸出，不要說明"""
+小欣: （80-100字）
+阿晨: （80-100字）
+共32-36輪，總字數約2600-3200字
+繁體中文，口語自然，直接輸出不要說明"""
 
-    print("Claude Sonnet 生成腳本...")
+    print("Claude Sonnet 生成腳本（起承轉合）...")
     msg = ac_client.messages.create(
         model="claude-sonnet-4-6", max_tokens=6000,
         messages=[{"role":"user","content":prompt}]
     )
     raw = msg.content[0].text.strip()
-    slides, dialogue = [], []
 
+    slides, dialogue = [], []
     if "=== SLIDES ===" in raw and "=== DIALOGUE ===" in raw:
-        p2 = raw.split("=== DIALOGUE ===")
-        sp = p2[0].split("=== SLIDES ===")[1].strip()
-        dp = p2[1].strip()
+        parts = raw.split("=== DIALOGUE ===")
+        sp    = parts[0].split("=== SLIDES ===")[1].strip()
+        dp    = parts[1].strip()
         try:
             j1=sp.index("["); j2=sp.rindex("]")+1
             slides = json.loads(sp[j1:j2])
         except:
             slides = default_slides()
         for line in dp.split("\n"):
-            for pfx,sp2 in [("小欣:","Host1"),("小欣：","Host1"),("阿晨:","Host2"),("阿晨：","Host2")]:
+            for pfx,spk in [("小欣:","Host1"),("小欣：","Host1"),
+                            ("阿晨:","Host2"),("阿晨：","Host2")]:
                 if line.strip().startswith(pfx):
-                    t=line.strip()[len(pfx):].strip()
-                    if t: dialogue.append({"speaker":sp2,"text":t}); break
+                    t = line.strip()[len(pfx):].strip()
+                    if t: dialogue.append({"speaker":spk,"text":t}); break
     else:
         slides = default_slides()
         for line in raw.split("\n"):
-            for pfx,sp2 in [("小欣:","Host1"),("小欣：","Host1"),("阿晨:","Host2"),("阿晨：","Host2")]:
+            for pfx,spk in [("小欣:","Host1"),("小欣：","Host1"),
+                            ("阿晨:","Host2"),("阿晨：","Host2")]:
                 if line.strip().startswith(pfx):
-                    t=line.strip()[len(pfx):].strip()
-                    if t: dialogue.append({"speaker":sp2,"text":t}); break
+                    t = line.strip()[len(pfx):].strip()
+                    if t: dialogue.append({"speaker":spk,"text":t}); break
 
     if not dialogue: raise ValueError("無法解析對話")
 
@@ -543,62 +565,58 @@ chart_type選項：pillars（柱狀）/ cycle（循環）/ bars（橫條對比�
     for i in range(len(dialogue)):
         seg_map[i] = min(si, len(slides)-1)
         cnt += 1
-        if si<len(slides) and cnt>=slides[si].get("dialogue_count",5):
-            si=min(si+1,len(slides)-1); cnt=0
+        if si < len(slides) and cnt >= slides[si].get("dialogue_count",6):
+            si = min(si+1, len(slides)-1); cnt = 0
 
-    print(f"腳本完成：{len(slides)} 張投影片，{len(dialogue)} 輪對話")
+    total = sum(len(d["text"]) for d in dialogue)
+    print(f"腳本完成：{len(slides)} 張投影片，{len(dialogue)} 輪，{total} 字（約 {total//155:.0f} 分鐘）")
     return slides, dialogue, seg_map
+
 
 def default_slides():
     return [
-        # 起：開場
-        {"id":1,"title":"你的工廠每天在浪費什麼？","chart_type":"stats",
-         "chart_items":["7大浪費","30%","改善"],
-         "cards":[{"label":"驚人現實","text":"研究顯示：一般工廠有30%以上的活動是不創造價值的浪費。"},
-                  {"label":"核心問題","text":"為什麼工廠明明知道有問題，卻年復一年沒有改變？"},
-                  {"label":"今集解答","text":"Kaizen 改善哲學：豐田用51年打造的答案，台灣工廠可以學嗎？"}],
+        {"id":1,"title":"你的工廠每天浪費多少？","chart_type":"stats",
+         "chart_items":["30%","7種","51年"],
+         "cards":[{"label":"驚人事實","text":"研究顯示：製造業平均有30%以上的活動是不創造價值的浪費。"},
+                  {"label":"核心問題","text":"為何工廠年復一年知道問題存在，卻難以持續改善？"},
+                  {"label":"今集解答","text":"豐田用51年打造的Kaizen哲學，台灣工廠能複製嗎？"}],
          "dialogue_count":6},
-        # 承1：核心概念
         {"id":2,"title":"Kaizen 改善核心哲學","chart_type":"pillars",
          "chart_items":["改善","JIT","自働化"],
-         "cards":[{"label":"定義","text":"Kaizen：每天比昨天進步一點點。不是大革命，是持續的微進化。"},
+         "cards":[{"label":"定義","text":"每天比昨天進步一點點，不是大革命，而是持續的微進化積累。"},
                   {"label":"七大浪費","text":"過量生產、等待、運輸、庫存、動作、加工過度、不良品。"},
                   {"label":"現地現物","text":"不信二手報告，親自到現場，用眼確認、用手丈量。"}],
          "dialogue_count":6},
-        # 承2：TPS深度
-        {"id":3,"title":"TPS 豐田生產系統解析","chart_type":"cycle",
+        {"id":3,"title":"TPS 豐田生產系統","chart_type":"cycle",
          "chart_items":["Plan","Do","Check","Act"],
-         "cards":[{"label":"PDCA 循環","text":"計劃→執行→確認→行動，改善不是直線，是螺旋式上升。"},
-                  {"label":"JIT 即時生產","text":"正確時間、正確數量、正確品項，消除庫存浪費。"},
-                  {"label":"Jidoka 自働化","text":"設備能自動偵測異常並停機，品質從製程中建立。"}],
+         "cards":[{"label":"PDCA 循環","text":"計劃→執行→確認→行動，改善是螺旋式向上的過程。"},
+                  {"label":"JIT 即時生產","text":"正確時間、數量、品項，消除庫存浪費，生產線暢流。"},
+                  {"label":"Jidoka 自働化","text":"設備自動偵測異常並停機，品質從製程中建立而非檢驗。"}],
          "dialogue_count":6},
-        # 轉：翻轉視角
-        {"id":4,"title":"台灣工廠的 Kaizen 困境","chart_type":"bars",
-         "chart_items":["導入成功率","持續執行","員工認同","管理層支持"],
-         "cards":[{"label":"反直覺真相","text":"80%的改善計畫在3個月後停止執行，不是方法錯，是文化沒跟上。"},
-                  {"label":"最大誤解","text":"很多人以為改善=裁員，其實豐田的改善從不以裁員為目標。"},
-                  {"label":"破解關鍵","text":"改善要從「讓人更輕鬆」出發，而非「讓人更拼命」。"}],
+        {"id":4,"title":"台灣工廠的改善困境","chart_type":"bars",
+         "chart_items":["導入成功","持續執行","員工認同","管理支持"],
+         "cards":[{"label":"反直覺事實","text":"80%的改善計畫3個月後停止——不是方法錯，是文化沒跟上。"},
+                  {"label":"最大誤解","text":"許多人以為改善等於裁員，豐田的改善從不以裁員為目標。"},
+                  {"label":"破解關鍵","text":"改善要從讓人更輕鬆出發，而非讓人更拼命。"}],
          "dialogue_count":6},
-        # 合1：實踐案例
-        {"id":5,"title":"欣晨工業的改善實踐","chart_type":"flow",
+        {"id":5,"title":"欣晨工業的 Kaizen 實踐","chart_type":"flow",
          "chart_items":["現地現物","問題分析","方案設計","驗證改善"],
-         "cards":[{"label":"現場第一原則","text":"每個專案前，欣晨工程師必定親赴客戶廠房，丈量真實需求。"},
-                  {"label":"Kaizen 設計思維","text":"從縮短換線（SMED）、防呆設計（Poka-yoke）到 SOP 標準化。"},
+         "cards":[{"label":"現場第一","text":"每個專案前，欣晨工程師必定親赴客戶廠房，現場丈量真實需求。"},
+                  {"label":"設計改善","text":"SMED縮短換線、Poka-yoke防呆、SOP標準化三位一體。"},
                   {"label":"成果數字","text":"客戶平均換線時間減少60%，不良品率降低45%。"}],
          "dialogue_count":7},
-        # 合2：收尾結輪
-        {"id":6,"title":"立刻可做的 3 個改善行動","chart_type":"stats",
-         "chart_items":["行動1","行動2","行動3"],
-         "cards":[{"label":"今天就做","text":"走到現場，找出1件你每天覺得麻煩的事，問它「為什麼？」五次。"},
-                  {"label":"本週完成","text":"和你的團隊一起畫出一道工序的流程，標出哪裡是浪費。"},
-                  {"label":"本月啟動","text":"選一個問題，用 PDCA 解決它，然後告訴我你的成果。"}],
+        {"id":6,"title":"立刻可做的 3 個行動","chart_type":"stats",
+         "chart_items":["今天","本週","本月"],
+         "cards":[{"label":"今天就做","text":"走到現場，找1件每天覺得麻煩的事，問它「為什麼？」五次。"},
+                  {"label":"本週完成","text":"和團隊一起畫出一道工序的流程，標出哪裡是浪費。"},
+                  {"label":"本月啟動","text":"選一個問題，用 PDCA 解決它，記錄改善前後的數字。"}],
          "dialogue_count":7},
     ]
 
 # ── TTS ───────────────────────────────────────────────────────────────────────
 def audio_duration(path):
-    r = subprocess.run(["ffprobe","-v","quiet","-print_format","json","-show_format",str(path)],
-                       capture_output=True, text=True)
+    r = subprocess.run(["ffprobe","-v","quiet","-print_format","json",
+                        "-show_format",str(path)], capture_output=True, text=True)
     return float(json.loads(r.stdout)["format"]["duration"])
 
 def generate_all_audio(dialogue, tmp_dir):
@@ -629,18 +647,17 @@ def concat_full_audio(segments, tmp_dir):
     with open(lst,"w") as f:
         for s in segments: f.write(f"file '{s['path']}'\nfile '{silence}'\n")
     full = tmp/"full_audio.mp3"
-    subprocess.run(["ffmpeg","-y","-f","concat","-safe","0","-i",str(lst),"-c","copy",str(full)],
-                   capture_output=True, check=True)
+    subprocess.run(["ffmpeg","-y","-f","concat","-safe","0",
+                    "-i",str(lst),"-c","copy",str(full)], capture_output=True, check=True)
     total = sum(s["duration"]+SILENCE_SEC for s in segments)
     print(f"音訊完成：{total/60:.1f} 分鐘")
     return str(full), total
 
-# ── 影片合成（動畫幀 + 投影片切換淡入）──────────────────────────────────────
-def render_video(slides, seg_map, segments, bold_path, reg_path,
-                 audio_path, total_dur, tmp_dir, out_path):
+# ── 影片合成 ─────────────────────────────────────────────────────────────────
+def render_video(slides, seg_map, segments, audio_path, total_dur, tmp_dir, out_path):
     tmp = Path(tmp_dir)
-    n_total = len(segments)
-    print(f"建立 {n_total * ANIM_FRAMES} 個動畫影格...")
+    n   = len(segments)
+    print(f"Playwright 渲染 {n * ANIM_FRAMES} 張 HTML 投影片...")
 
     concat_lines = []
     prev_slide   = -1
@@ -649,52 +666,50 @@ def render_video(slides, seg_map, segments, bold_path, reg_path,
         slide_idx = seg_map.get(i, len(slides)-1)
         slide     = slides[slide_idx]
         dur       = seg["duration"] + SILENCE_SEC
-        frame_dur = dur / ANIM_FRAMES
+        fdur      = dur / ANIM_FRAMES
 
-        # 投影片切換：插入 0.25s 淡黑過場
+        # 投影片切換：淡黑過場
         if slide_idx != prev_slide and prev_slide >= 0:
-            blk = tmp / f"black_{i:03d}.png"
-            Image.new("RGB", (W, H), (2,3,8)).save(blk)
-            concat_lines.append(f"file '{blk}'\nduration 0.25")
+            blk = tmp/f"black_{i}.png"
+            with sync_playwright() as p:
+                b = p.chromium.launch(args=["--no-sandbox"])
+                pg = b.new_page(viewport={"width":1920,"height":1080})
+                pg.set_content("<html><body style='margin:0;background:#030408;width:1920px;height:1080px'></body></html>")
+                pg.screenshot(path=str(blk))
+                b.close()
+            concat_lines.append(f"file '{blk}'\nduration 0.28")
 
-        # ANIM_FRAMES 個動畫幀
         for af in range(ANIM_FRAMES):
-            anim_phase = af / ANIM_FRAMES   # 0.0, 0.25, 0.5, 0.75
-            frame = tmp / f"frame_{i:03d}_{af}.png"
-            build_frame(slide, seg["text"], seg["speaker"], anim_phase,
-                        bold_path, reg_path, frame)
-            concat_lines.append(f"file '{frame}'\nduration {frame_dur:.3f}")
+            anim_phase = af / ANIM_FRAMES
+            frame      = tmp/f"frame_{i:03d}_{af}.png"
+            html       = build_slide_html(slide, seg["speaker"], seg["text"], anim_phase)
+            html_to_png(html, frame)
+            concat_lines.append(f"file '{frame}'\nduration {fdur:.3f}")
 
         prev_slide = slide_idx
-        if (i+1) % 5 == 0:
-            print(f"   {i+1}/{n_total} 段完成")
+        if (i+1) % 3 == 0:
+            print(f"   {i+1}/{n} 段完成")
 
-    # 最後一幀重複
-    last = tmp / f"frame_{n_total-1:03d}_{ANIM_FRAMES-1}.png"
-    concat_lines.append(f"file '{last}'")
-    concat_f = tmp/"frames.txt"
-    concat_f.write_text("\n".join(concat_lines))
+    concat_lines.append(f"file '{tmp}/frame_{n-1:03d}_{ANIM_FRAMES-1}.png'")
+    cf = tmp/"frames.txt"; cf.write_text("\n".join(concat_lines))
 
     print("FFmpeg 合成影片...")
     silent = tmp/"silent.mp4"
-    r1 = subprocess.run([
-        "ffmpeg","-y","-f","concat","-safe","0","-i",str(concat_f),
-        "-vf","fps=24,scale=1920:1080",
-        "-c:v","libx264","-preset","fast","-pix_fmt","yuv420p",str(silent)
-    ], capture_output=True, text=True)
-    if r1.returncode != 0:
-        raise RuntimeError(f"FFmpeg 靜音影片：{r1.stderr[-500:]}")
+    r1 = subprocess.run(
+        ["ffmpeg","-y","-f","concat","-safe","0","-i",str(cf),
+         "-vf","fps=24,scale=1920:1080",
+         "-c:v","libx264","-preset","fast","-pix_fmt","yuv420p",str(silent)],
+        capture_output=True, text=True)
+    if r1.returncode != 0: raise RuntimeError(f"FFmpeg 靜音：{r1.stderr[-400:]}")
 
-    # 加音訊（不加波形）
-    r2 = subprocess.run([
-        "ffmpeg","-y","-i",str(silent),"-i",str(audio_path),
-        "-map","0:v","-map","1:a",
-        "-c:v","libx264","-preset","fast","-crf","22",
-        "-c:a","aac","-b:a","128k",
-        "-pix_fmt","yuv420p","-t",str(total_dur),str(out_path)
-    ], capture_output=True, text=True)
-    if r2.returncode != 0:
-        raise RuntimeError(f"FFmpeg 最終合成：{r2.stderr[-500:]}")
+    r2 = subprocess.run(
+        ["ffmpeg","-y","-i",str(silent),"-i",str(audio_path),
+         "-map","0:v","-map","1:a",
+         "-c:v","libx264","-preset","fast","-crf","22",
+         "-c:a","aac","-b:a","128k",
+         "-pix_fmt","yuv420p","-t",str(total_dur),str(out_path)],
+        capture_output=True, text=True)
+    if r2.returncode != 0: raise RuntimeError(f"FFmpeg 最終：{r2.stderr[-400:]}")
 
     size = Path(out_path).stat().st_size/1024/1024
     print(f"影片完成：{size:.0f} MB，{total_dur/60:.1f} 分鐘")
@@ -702,8 +717,8 @@ def render_video(slides, seg_map, segments, bold_path, reg_path,
 # ── 主程式 ────────────────────────────────────────────────────────────────────
 def main():
     print("="*60)
-    print("  欣晨工業 Podcast — 半身主持人 + 動畫 + 投影片")
-    print("  小欣 (nova) x 阿晨 (onyx) | OpenAI TTS")
+    print("  欣晨工業 Podcast — HTML+Playwright 高品質視覺版")
+    print("  起承轉合結構 | OpenAI TTS nova x onyx")
     print("="*60+"\n")
 
     tw2  = datetime.now(timezone(timedelta(hours=8)))
@@ -712,12 +727,10 @@ def main():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         slides, dialogue, seg_map = generate_script(ac)
-        bold_path, reg_path = load_fonts()
         segments  = generate_all_audio(dialogue, tmpdir)
         audio_path, total_dur = concat_full_audio(segments, tmpdir)
         video_out = Path(tmpdir)/f"test_podcast_{date}.mp4"
-        render_video(slides, seg_map, segments, bold_path, reg_path,
-                     audio_path, total_dur, tmpdir, video_out)
+        render_video(slides, seg_map, segments, audio_path, total_dur, tmpdir, video_out)
         final = Path(f"test_podcast_{date}.mp4")
         shutil.copy(video_out, final)
         print(f"\n完成：{final}（{total_dur/60:.1f} 分鐘）")

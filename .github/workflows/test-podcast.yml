@@ -12,14 +12,15 @@ jobs:
   test-podcast:
     name: 生成試作 Podcast 影片
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install system dependencies
-        run: sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-cjk
+        run: |
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-cjk
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -28,15 +29,17 @@ jobs:
           cache: 'pip'
 
       - name: Install Python dependencies
-        run: pip install --prefer-binary anthropic openai Pillow
+        run: pip install --prefer-binary anthropic openai playwright
+
+      - name: Install Playwright Chromium
+        run: playwright install --with-deps chromium
 
       - name: Diagnostics
         run: |
           python -c "import anthropic; print('OK: anthropic', anthropic.__version__)"
           python -c "from openai import OpenAI; print('OK: openai')"
-          python -c "from PIL import Image; print('OK: Pillow')"
+          python -c "from playwright.sync_api import sync_playwright; print('OK: playwright')"
           ffmpeg -version 2>&1 | head -1
-          fc-list | grep -i noto | head -3 || echo "No noto fonts"
         working-directory: scripts
 
       - name: Generate test podcast video
