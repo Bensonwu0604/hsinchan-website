@@ -12,7 +12,7 @@ jobs:
   test-podcast:
     name: 生成試作 Podcast 影片
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -21,19 +21,16 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends \
-            ffmpeg \
-            fonts-noto-cjk \
-           
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-cjk
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: 'pip'
 
       - name: Install Python dependencies
-        run: pip install anthropic edge-tts Pillow
-        # 只裝試作版需要的最小依賴（不需 openai / google）
+        run: pip install --prefer-binary anthropic edge-tts Pillow
 
       - name: Generate test podcast video
         run: python test_podcast.py
@@ -46,4 +43,4 @@ jobs:
         with:
           name: test-podcast-video
           path: scripts/test_podcast_*.mp4
-          retention-days: 7    # 保留 7 天可下載
+          retention-days: 7
