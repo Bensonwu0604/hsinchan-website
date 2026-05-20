@@ -1,0 +1,16 @@
+{
+  "name": "hsinchan-fb-automation",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "欣晨工業 Facebook 每日智慧製造自動發文",
+  "scripts": {
+    "post": "node daily-fb-post.js",
+    "dry-run": "DRY_RUN=true node daily-fb-post.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

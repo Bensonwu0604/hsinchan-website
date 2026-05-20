@@ -1,0 +1,45 @@
+name: 每日智慧製造 Facebook 自動發文
+
+on:
+  schedule:
+    # 每天台灣時間 10:00 (UTC 02:00)
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    # 允許手動觸發（測試用）
+    inputs:
+      dry_run:
+        description: '測試模式（只產生文案，不發文）'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+
+jobs:
+  post:
+    name: 產生並發佈智慧製造貼文
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: scripts/package.json
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: scripts
+
+      - name: Generate and post content
+        run: node daily-fb-post.js
+        working-directory: scripts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
