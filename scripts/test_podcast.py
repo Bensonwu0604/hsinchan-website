@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# trigger: 2026-05-20u
+# trigger: 2026-05-20v
 """
 欣晨工業 Podcast — 半身主持人動畫 + 投影片
 左側：小欣/阿晨半身圖（4幀呼吸動畫）
@@ -476,28 +476,40 @@ def build_frame(slide, dialogue_text, speaker, anim_phase,
 
 # ── 腳本生成 ─────────────────────────────────────────────────────────────────
 def generate_script(ac_client):
-    prompt = """你是欣晨工業 Podcast「智慧製造深度對談」製作人。
-主持人：小欣（女，活潑好奇）、阿晨（男，資深工程師）
-欣晨工業：台灣桃園，1975年，51年精密製造，TPS核心哲學。
+    prompt = """你是欣晨工業 Podcast「智慧製造深度對談」資深製作人。
+主持人：小欣（女，活潑好奇，善於追問）、阿晨（男，資深工程師，深入解說）
+欣晨工業：台灣桃園，1975年創立，51年精密製造，豐田生產方式（TPS）核心哲學。
 
-今集：豐田改善文化（Kaizen）在台灣製造業的實踐
+今集主題：豐田改善文化（Kaizen）在台灣製造業的實踐
+
+【節目結構要求——起承轉合】
+- 起（開場，約6輪）：小欣歡迎觀眾、介紹阿晨、拋出今日主題鉤子，讓聽眾想一直聽下去。開頭要有衝擊感的問句或數字。
+- 承（深入，約12輪）：系統解說 Kaizen 核心概念、TPS三大支柱、七大浪費，舉台灣真實工廠案例，有數據有故事。
+- 轉（翻轉，約6輪）：提出台灣中小企業導入改善的困境、反直覺的觀點或常見誤解，阿晨給出破解之道。小欣要有「我以前想法完全錯了！」的驚嘆反應。
+- 合（收尾，約8輪）：帶出欣晨工業的實踐案例，給聽眾3個可立刻行動的建議，最後小欣說一句話呼應開場的問句/數字，形成完美收尾。
+
+【收尾結輪】：結尾最後2輪對話，要明確呼應開場第1-2輪的主題或關鍵詞，讓觀眾感受「完整的一集」。
 
 請輸出：
 === SLIDES ===
-[{"id":1,"title":"標題（10字）","chart_type":"pillars",
-  "chart_items":["改善","JIT","自働化"],
-  "cards":[{"label":"現象","text":"40字以內"},{"label":"原因","text":"40字"},{"label":"重點","text":"40字"}],
-  "dialogue_count":5}]
-chart_type: pillars/cycle/bars/stats/flow，共4-5個投影片
+[
+  {"id":1,"title":"標題（10字以內）","chart_type":"stats",
+   "chart_items":["XX%","XX年","X大"],
+   "cards":[{"label":"現象","text":"35字以內"},{"label":"核心問題","text":"35字"},{"label":"今集重點","text":"35字"}],
+   "dialogue_count":6},
+  ...共6張投影片，對應起/承1/承2/轉/合1/合2
+]
+chart_type選項：pillars（柱狀）/ cycle（循環）/ bars（橫條對比）/ stats（大數字）/ flow（流程）
 
 === DIALOGUE ===
-小欣: （60-80字）
-阿晨: （60-80字）
-共18-22輪，繁體中文，直接輸出不要說明"""
+小欣: （75-100字，自然口語，繁體中文）
+阿晨: （75-100字）
+...共32-36輪，總字數約2500-3000字（約10-13分鐘）
+直接輸出，不要說明"""
 
     print("Claude Sonnet 生成腳本...")
     msg = ac_client.messages.create(
-        model="claude-sonnet-4-6", max_tokens=4000,
+        model="claude-sonnet-4-6", max_tokens=6000,
         messages=[{"role":"user","content":prompt}]
     )
     raw = msg.content[0].text.strip()
@@ -539,30 +551,48 @@ chart_type: pillars/cycle/bars/stats/flow，共4-5個投影片
 
 def default_slides():
     return [
-        {"id":1,"title":"什麼是 Kaizen 改善？","chart_type":"pillars",
+        # 起：開場
+        {"id":1,"title":"你的工廠每天在浪費什麼？","chart_type":"stats",
+         "chart_items":["7大浪費","30%","改善"],
+         "cards":[{"label":"驚人現實","text":"研究顯示：一般工廠有30%以上的活動是不創造價值的浪費。"},
+                  {"label":"核心問題","text":"為什麼工廠明明知道有問題，卻年復一年沒有改變？"},
+                  {"label":"今集解答","text":"Kaizen 改善哲學：豐田用51年打造的答案，台灣工廠可以學嗎？"}],
+         "dialogue_count":6},
+        # 承1：核心概念
+        {"id":2,"title":"Kaizen 改善核心哲學","chart_type":"pillars",
          "chart_items":["改善","JIT","自働化"],
-         "cards":[{"label":"定義","text":"Kaizen 意為持續改善，每天進步一點點，積累出卓越製造成果。"},
+         "cards":[{"label":"定義","text":"Kaizen：每天比昨天進步一點點。不是大革命，是持續的微進化。"},
                   {"label":"七大浪費","text":"過量生產、等待、運輸、庫存、動作、加工過度、不良品。"},
-                  {"label":"精神","text":"沒有最好，只有更好。每個問題都是改善機會，而非災難。"}],
-         "dialogue_count":5},
-        {"id":2,"title":"TPS 豐田生產系統","chart_type":"cycle",
+                  {"label":"現地現物","text":"不信二手報告，親自到現場，用眼確認、用手丈量。"}],
+         "dialogue_count":6},
+        # 承2：TPS深度
+        {"id":3,"title":"TPS 豐田生產系統解析","chart_type":"cycle",
          "chart_items":["Plan","Do","Check","Act"],
-         "cards":[{"label":"即時生產 JIT","text":"正確時間、數量、品項——消除庫存浪費，讓生產線暢流。"},
-                  {"label":"自働化 Jidoka","text":"設備自動偵測異常並停機，品質問題不流入下一工序。"},
-                  {"label":"現地現物","text":"親自到現場確認，不信二手報告，用眼睛和雙手理解問題。"}],
-         "dialogue_count":5},
-        {"id":3,"title":"台灣工廠導入 Kaizen","chart_type":"bars",
-         "chart_items":["換線時間","不良率","庫存天數","設備稼動"],
-         "cards":[{"label":"SMED 快速換模","text":"換線時間從2小時縮至30分鐘，生產彈性提升3倍。"},
-                  {"label":"Poka-yoke 防呆","text":"機構設計源頭杜絕人為錯誤，實現零缺陷生產目標。"},
-                  {"label":"5S 視覺管理","text":"整理整頓清掃清潔素養，異常30秒內被一眼看出。"}],
-         "dialogue_count":5},
-        {"id":4,"title":"欣晨工業的實踐","chart_type":"stats",
-         "chart_items":["51年","1975","桃園"],
-         "cards":[{"label":"現地現物落實","text":"每個專案前，欣晨工程師必定親赴客戶廠房現場勘察。"},
-                  {"label":"持續改善文化","text":"從設計圖面到現場調機，永遠問：這裡還能更好嗎？"},
-                  {"label":"聯絡欣晨工業","text":"桃園市大園區，電話 03-381-4497，hsinchan.com"}],
-         "dialogue_count":5},
+         "cards":[{"label":"PDCA 循環","text":"計劃→執行→確認→行動，改善不是直線，是螺旋式上升。"},
+                  {"label":"JIT 即時生產","text":"正確時間、正確數量、正確品項，消除庫存浪費。"},
+                  {"label":"Jidoka 自働化","text":"設備能自動偵測異常並停機，品質從製程中建立。"}],
+         "dialogue_count":6},
+        # 轉：翻轉視角
+        {"id":4,"title":"台灣工廠的 Kaizen 困境","chart_type":"bars",
+         "chart_items":["導入成功率","持續執行","員工認同","管理層支持"],
+         "cards":[{"label":"反直覺真相","text":"80%的改善計畫在3個月後停止執行，不是方法錯，是文化沒跟上。"},
+                  {"label":"最大誤解","text":"很多人以為改善=裁員，其實豐田的改善從不以裁員為目標。"},
+                  {"label":"破解關鍵","text":"改善要從「讓人更輕鬆」出發，而非「讓人更拼命」。"}],
+         "dialogue_count":6},
+        # 合1：實踐案例
+        {"id":5,"title":"欣晨工業的改善實踐","chart_type":"flow",
+         "chart_items":["現地現物","問題分析","方案設計","驗證改善"],
+         "cards":[{"label":"現場第一原則","text":"每個專案前，欣晨工程師必定親赴客戶廠房，丈量真實需求。"},
+                  {"label":"Kaizen 設計思維","text":"從縮短換線（SMED）、防呆設計（Poka-yoke）到 SOP 標準化。"},
+                  {"label":"成果數字","text":"客戶平均換線時間減少60%，不良品率降低45%。"}],
+         "dialogue_count":7},
+        # 合2：收尾結輪
+        {"id":6,"title":"立刻可做的 3 個改善行動","chart_type":"stats",
+         "chart_items":["行動1","行動2","行動3"],
+         "cards":[{"label":"今天就做","text":"走到現場，找出1件你每天覺得麻煩的事，問它「為什麼？」五次。"},
+                  {"label":"本週完成","text":"和你的團隊一起畫出一道工序的流程，標出哪裡是浪費。"},
+                  {"label":"本月啟動","text":"選一個問題，用 PDCA 解決它，然後告訴我你的成果。"}],
+         "dialogue_count":7},
     ]
 
 # ── TTS ───────────────────────────────────────────────────────────────────────
