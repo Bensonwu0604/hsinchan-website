@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# trigger: 2026-05-20l
+# trigger: 2026-05-20m
 """
 欣晨工業 — Podcast 影片試作版
 使用 gTTS（Google 翻譯 TTS，免費，GitHub Actions 可用）
