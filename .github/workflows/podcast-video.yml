@@ -3,7 +3,7 @@ name: 每3天智慧製造 Podcast 影片（雙主持人 10 分鐘）
 on:
   schedule:
     # 每3天台灣時間 11:00 (UTC 03:00)，每月 2/5/8/11/14/17/20/23/26/29 日
-    - cron: '0 3 2-30/3 * *'
+    - cron: '0 3 * * 2,5'
   workflow_dispatch:
     inputs:
       dry_run:

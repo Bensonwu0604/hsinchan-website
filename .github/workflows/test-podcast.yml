@@ -2,7 +2,7 @@ name: 試作 Podcast 影片（每3天自動執行）
 
 on:
   schedule:
-    - cron: '0 3 */3 * *'
+    - cron: '0 3 * * 2,5'
   push:
     paths:
       - 'scripts/test_podcast.py'

@@ -3,7 +3,7 @@ name: 每3天智慧製造 Facebook 自動發文
 on:
   schedule:
     # 每3天台灣時間 10:00 (UTC 02:00)，每月 1/4/7/10/13/16/19/22/25/28 日
-    - cron: '0 2 */3 * *'
+    - cron: '0 2 * * 2,5'
   workflow_dispatch:
     # 允許手動觸發（測試用）
     inputs:

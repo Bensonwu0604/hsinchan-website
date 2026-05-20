@@ -2,7 +2,7 @@ name: 每3天 NotebookLM 風格 Podcast 影片（Gemini TTS）
 
 on:
   schedule:
-    - cron: '0 3 */3 * *'   # 每3天台灣時間 11:00
+    - cron: '0 3 * * 2,5'   # 每3天台灣時間 11:00
   push:
     paths:
       - 'scripts/generate_podcast_gemini.py'
