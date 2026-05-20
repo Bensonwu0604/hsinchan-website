@@ -1,0 +1,65 @@
+name: 每日智慧製造 Facebook 影片自動發文
+
+on:
+  schedule:
+    # 每天台灣時間 10:30 (UTC 02:30)，比文字貼文晚30分鐘
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '測試模式（產生影片但不上傳 Facebook）'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+
+jobs:
+  generate-and-post:
+    name: 生成智慧製造影片並發布
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 系統依賴 ──────────────────────────────────────────────────────────
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            ffmpeg \
+            fonts-noto-cjk \
+            fonts-noto-cjk-extra \
+            libffi-dev
+
+      # ── Python 環境 ────────────────────────────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+        working-directory: scripts
+
+      # ── 執行腳本 ───────────────────────────────────────────────────────────
+      - name: Generate video and post to Facebook
+        run: python generate_video.py
+        working-directory: scripts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FB_PAGE_ID:        ${{ secrets.FB_PAGE_ID }}
+          FB_ACCESS_TOKEN:   ${{ secrets.FB_ACCESS_TOKEN }}
+          DRY_RUN:           ${{ inputs.dry_run || 'false' }}
+
+      # ── Dry run 時上傳影片供預覽 ──────────────────────────────────────────
+      - name: Upload video artifact (dry run only)
+        if: ${{ inputs.dry_run == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-video
+          path: scripts/hsinchan_video_*.mp4
+          retention-days: 3
