@@ -11,6 +11,10 @@ from pathlib import Path
 import anthropic
 import requests
 from PIL import Image, ImageDraw, ImageFont
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request as GoogleRequest
 
 # ── 設計常數 ────────────────────────────────────────────────────────────────
 W, H       = 1080, 1080
@@ -315,13 +319,91 @@ def upload_video_to_facebook(video_path, caption):
             f"https://graph-video.facebook.com/v21.0/{page_id}/videos",
             data={"description": caption, "access_token": token},
             files={"source": ("video.mp4", vf, "video/mp4")},
-            timeout=120,
+            timeout=180,
         )
     data = resp.json()
     if "error" in data:
         raise RuntimeError(f"Facebook API 錯誤：{data['error']['message']}")
-    print(f"✅ 影片發布成功！Video ID：{data.get('id')}")
+    print(f"✅ Facebook 影片發布成功！Video ID：{data.get('id')}")
     return data.get("id")
+
+# ── YouTube 影片上傳 ───────────────────────────────────────────────────────────
+def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_str):
+    client_id     = os.environ.get("YT_CLIENT_ID")
+    client_secret = os.environ.get("YT_CLIENT_SECRET")
+    refresh_token = os.environ.get("YT_REFRESH_TOKEN")
+
+    if not all([client_id, client_secret, refresh_token]):
+        print("⚠️  缺少 YT_CLIENT_ID / YT_CLIENT_SECRET / YT_REFRESH_TOKEN，跳過 YouTube 上傳")
+        return None
+
+    print("📺 上傳影片到 YouTube...")
+
+    # 用 refresh token 取得 access token
+    creds = Credentials(
+        token=None,
+        refresh_token=refresh_token,
+        client_id=client_id,
+        client_secret=client_secret,
+        token_uri="https://oauth2.googleapis.com/token",
+        scopes=["https://www.googleapis.com/auth/youtube.upload"],
+    )
+    creds.refresh(GoogleRequest())
+
+    youtube = build("youtube", "v3", credentials=creds, cache_discovery=False)
+
+    yt_title = f"【智慧製造】{slide_title}｜欣晨工業 Hsin-Chan Industrial"
+    if len(yt_title) > 100:
+        yt_title = yt_title[:97] + "..."
+
+    yt_desc = (
+        f"{caption}\n\n"
+        f"─────────────────────────────\n"
+        f"欣晨工業有限公司｜Hsin-Chan Industrial Co., Ltd.\n"
+        f"🌐 https://www.hsinchan.com\n"
+        f"📞 +886-3-381-4497\n"
+        f"📍 台灣桃園市大園區中正東路三段490號\n"
+        f"⏰ 週一至週五 08:00–17:30\n\n"
+        f"欣晨工業1975年創立，以豐田生產方式（TPS）為核心，提供精密自動化設備與工業耗材。\n"
+        f"服務：機械手臂整合、AOI視覺檢測、數位雙生、工業加熱器、熱電偶、一體式料管。"
+    )
+
+    tags = [
+        "智慧製造", "工業自動化", "欣晨工業", "Hsin-Chan Industrial",
+        "台灣製造", "豐田生產方式", "TPS", "精密製造", "桃園工業",
+        topic_tag, "Industry 4.0", "工業4.0", "製造業",
+    ]
+
+    media = MediaFileUpload(str(video_path), mimetype="video/mp4", resumable=True)
+    request = youtube.videos().insert(
+        part="snippet,status",
+        body={
+            "snippet": {
+                "title":       yt_title,
+                "description": yt_desc,
+                "tags":        tags,
+                "categoryId":  "28",   # Science & Technology
+                "defaultLanguage": "zh-TW",
+            },
+            "status": {
+                "privacyStatus":           "public",
+                "selfDeclaredMadeForKids": False,
+            },
+        },
+        media_body=media,
+    )
+
+    # resumable upload loop
+    response = None
+    while response is None:
+        status, response = request.next_chunk()
+        if status:
+            pct = int(status.progress() * 100)
+            print(f"   上傳中... {pct}%", end="\r")
+
+    video_id = response.get("id")
+    print(f"\n✅ YouTube 影片發布成功！https://youtu.be/{video_id}")
+    return video_id
 
 # ── 主程式 ───────────────────────────────────────────────────────────────────
 def main():
@@ -376,16 +458,23 @@ def main():
         create_video(slides, video_path)
 
         if dry_run:
-            # 儲存到當前目錄供檢視
             import shutil
             out = Path(f"hsinchan_video_{date_str}.mp4")
             shutil.copy(video_path, out)
             print(f"\n✅ Dry run 完成，影片儲存為：{out}")
             return
 
-        # 5. 上傳 Facebook
-        upload_video_to_facebook(str(video_path), script["fb_caption"])
-        print(f"\n🎉 完成！{date_str} 影片貼文已發布。")
+        # 5. 同時上傳 Facebook + YouTube
+        print("\n── 上傳至各平台 ────────────────────────────")
+        fb_id = upload_video_to_facebook(str(video_path), script["fb_caption"])
+        yt_id = upload_video_to_youtube(
+            str(video_path), script["slide_title"],
+            script["fb_caption"], topic_tag, date_str
+        )
+
+        print(f"\n🎉 完成！{date_str} 影片已發布")
+        if fb_id: print(f"   Facebook Video ID : {fb_id}")
+        if yt_id: print(f"   YouTube Video ID  : {yt_id}  (https://youtu.be/{yt_id})")
 
 if __name__ == "__main__":
     main()
