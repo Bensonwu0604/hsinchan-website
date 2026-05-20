@@ -1,0 +1,44 @@
+name: 試作 Podcast 影片（手動觸發）
+
+on:
+  workflow_dispatch:   # 只手動觸發，不自動排程
+
+jobs:
+  test-podcast:
+    name: 生成試作 Podcast 影片
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            ffmpeg \
+            fonts-noto-cjk \
+            fonts-noto-cjk-extra
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install anthropic edge-tts Pillow
+        # 只裝試作版需要的最小依賴（不需 openai / google）
+
+      - name: Generate test podcast video
+        run: python test_podcast.py
+        working-directory: scripts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Upload video for download
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-podcast-video
+          path: scripts/test_podcast_*.mp4
+          retention-days: 7    # 保留 7 天可下載
