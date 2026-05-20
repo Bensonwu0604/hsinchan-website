@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# trigger: 2026-05-20o
+# trigger: 2026-05-20p
 """
 欣晨工業 — Podcast 影片試作版
 使用 OpenAI TTS：nova（小欣女聲）× onyx（阿晨男聲）
@@ -160,163 +160,145 @@ def concat_audio(segments, tmp_dir):
     print(f"✅ 音訊拼接完成：{duration/60:.1f} 分鐘")
     return str(full), duration
 
-# ── Podcast 視覺背景 ──────────────────────────────────────────────────────────
-def wrap_cjk(draw, text, font, max_w):
+# ── NotebookLM 風格極簡視覺 ──────────────────────────────────────────────────
+
+def lerp_color(c1, c2, t):
+    """線性插值顏色"""
+    return tuple(int(c1[i] + (c2[i] - c1[i]) * t) for i in range(3))
+
+def draw_gradient_circle(img, cx, cy, r, color_inner, color_outer):
+    """繪製漸層圓形（從內到外）"""
+    draw = ImageDraw.Draw(img)
+    for dr in range(r, 0, -1):
+        t = 1 - dr / r
+        c = lerp_color(color_inner, color_outer, t * 0.7)
+        draw.ellipse([cx-dr, cy-dr, cx+dr, cy+dr], fill=c)
+
+def text_center(draw, text, font, cx, y, color):
+    bb = draw.textbbox((0, 0), text, font=font)
+    w = bb[2] - bb[0]
+    draw.text((cx - w // 2, y), text, font=font, fill=color)
+    return bb[3] - bb[1]
+
+def create_bg(topic_title, bold_path, reg_path, out_path):
+    # ── 背景：深色漸層 ──────────────────────────────────────────────────────
+    img  = Image.new("RGB", (W, H), (8, 10, 20))
+    draw = ImageDraw.Draw(img)
+
+    # 柔和放射光暈（左側紫、右側青）
+    for rx2, ry2, rc, color in [
+        (W//4, H//2, 500, (80, 40, 160)),     # 左紫
+        (W*3//4, H//2, 500, (0, 120, 140)),   # 右青
+    ]:
+        for radius in range(rc, 0, -8):
+            alpha = int(18 * (1 - radius / rc))
+            c = tuple(min(255, v + alpha) for v in color)
+            draw.ellipse([rx2-radius, ry2-radius, rx2+radius, ry2+radius],
+                         fill=tuple(min(255, b + alpha//4) for b in (8,10,20)))
+
+    # ── 字型 ────────────────────────────────────────────────────────────────
+    f_show    = ImageFont.truetype(reg_path,  28)
+    f_label   = ImageFont.truetype(reg_path,  26)
+    f_title   = ImageFont.truetype(bold_path, 72)
+    f_sub     = ImageFont.truetype(reg_path,  34)
+    f_initial = ImageFont.truetype(bold_path, 110)
+    f_name    = ImageFont.truetype(bold_path, 38)
+    f_role    = ImageFont.truetype(reg_path,  26)
+    f_bottom  = ImageFont.truetype(reg_path,  24)
+
+    CX = W // 2   # 水平中心
+
+    # ── 頂部節目標識 ────────────────────────────────────────────────────────
+    show_text = "欣晨工業  智慧製造深度對談"
+    text_center(draw, show_text, f_show, CX, 52, (120, 140, 170))
+
+    # 細分隔線
+    draw.rectangle([CX-200, 98, CX+200, 100], fill=(40, 55, 90))
+
+    # ── 主題標題 ─────────────────────────────────────────────────────────────
+    # 換行處理
+    words = list(topic_title)
     lines, cur = [], ""
-    for ch in text:
+    for ch in words:
         test = cur + ch
-        if draw.textbbox((0,0), test, font=font)[2] > max_w and cur:
+        bb = draw.textbbox((0,0), test, font=f_title)
+        if bb[2]-bb[0] > W-200 and cur:
             lines.append(cur); cur = ch
         else:
             cur = test
     if cur: lines.append(cur)
-    return lines
 
-def draw_topic_icon_simple(draw, cx, cy, color, size=100):
-    """簡易主題圖示（工廠符號）"""
-    s = size
-    draw.rectangle([cx-s//2, cy-s//3, cx+s//2, cy+s//3], outline=color, width=5)
-    draw.polygon([(cx-s//2-10, cy-s//3), (cx, cy-s*0.7), (cx+s//2+10, cy-s//3)], outline=color, width=5)
-    draw.rectangle([cx-14, cy-s//3+18, cx+14, cy+s//3], fill=color)
-
-def draw_avatar_v2(draw, cx, cy, r, color, initial, role, name, f_big, f_role, f_name):
-    for ring in range(r+38, r+2, -3):
-        t = 1 - (ring-r-2)/36
-        c = tuple(min(255, int(v*t*0.5)) for v in color)
-        draw.ellipse([cx-ring, cy-ring, cx+ring, cy+ring], outline=c)
-    for dr in range(r, 0, -4):
-        ratio = 1 - dr/r
-        rc = tuple(min(255, int(c + (255-c)*ratio*0.15)) for c in color)
-        draw.ellipse([cx-dr, cy-dr, cx+dr, cy+dr], fill=rc)
-    bb = draw.textbbox((0,0), initial, font=f_big)
-    tw, th = bb[2]-bb[0], bb[3]-bb[1]
-    draw.text((cx-tw//2, cy-th//2-8), initial, font=f_big, fill=WHITE)
-    bb2 = draw.textbbox((0,0), role, font=f_role)
-    rw = bb2[2]-bb2[0]+20; rh = bb2[3]-bb2[1]+10
-    draw.rounded_rectangle([cx-rw//2, cy+r+16, cx+rw//2, cy+r+16+rh], radius=6, fill=color)
-    draw.text((cx-rw//2+10, cy+r+21), role, font=f_role, fill=WHITE)
-    bb3 = draw.textbbox((0,0), name, font=f_name)
-    nw = bb3[2]-bb3[0]
-    draw.text((cx-nw//2, cy+r+16+rh+8), name, font=f_name, fill=GRAY)
-
-def create_bg(topic_title, bold_path, reg_path, out_path):
-    img  = Image.new("RGB", (W, H))
-    draw = ImageDraw.Draw(img)
-
-    # 漸層底色
-    for y in range(H):
-        ratio = y / H
-        r = int(8 + 10 * ratio); g = int(12 + 16 * ratio); b = int(22 + 33 * ratio)
-        draw.line([(0, y), (W, y)], fill=(r, g, b))
-    for x in range(0, W, 60):
-        draw.line([(x, 0), (x, H)], fill=(22, 35, 65))
-    for y in range(0, H, 60):
-        draw.line([(0, y), (W, y)], fill=(22, 35, 65))
-
-    COL1, COL2 = 560, 1360
-    draw.rectangle([0, 0, W, 64], fill=(8, 14, 28))
-    draw.rectangle([0, 64, W, 70], fill=ACCENT)
-    draw.rectangle([COL1, 70, COL1+2, H-172], fill=(30, 48, 90))
-    draw.rectangle([COL2, 70, COL2+2, H-172], fill=(30, 48, 90))
-
-    f_brand   = ImageFont.truetype(bold_path, 26)
-    f_ep      = ImageFont.truetype(reg_path,  24)
-    f_title_l = ImageFont.truetype(bold_path, 50)
-    f_stat    = ImageFont.truetype(bold_path, 28)
-    f_init    = ImageFont.truetype(bold_path, 96)
-    f_role    = ImageFont.truetype(bold_path, 28)
-    f_name    = ImageFont.truetype(reg_path,  26)
-    f_vs      = ImageFont.truetype(bold_path, 44)
-    f_badge   = ImageFont.truetype(reg_path,  22)
-    f_sec     = ImageFont.truetype(bold_path, 30)
-    f_bullet  = ImageFont.truetype(reg_path,  26)
-    f_company = ImageFont.truetype(bold_path, 28)
-    f_comp_s  = ImageFont.truetype(reg_path,  22)
-    f_bottom  = ImageFont.truetype(reg_path,  26)
-
-    # 頂部
-    draw.text((44, 17), "欣晨工業有限公司", font=f_brand, fill=WHITE)
-    draw.text((314, 19), "智慧製造深度對談  ·  SMART MANUFACTURING DEEP DIVE", font=f_ep, fill=GRAY)
-    trial_text = "試作版  Edge TTS"
-    bb_tr = draw.textbbox((0,0), trial_text, font=f_ep)
-    draw.text((W-(bb_tr[2]-bb_tr[0])-44, 19), trial_text, font=f_ep, fill=ACCENT_LT)
-
-    # 左欄
-    icon_cx = COL1 // 2
-    draw_topic_icon_simple(draw, icon_cx, 255, (60, 200, 120), 105)
-    title_lines = wrap_cjk(draw, topic_title, f_title_l, COL1-60)
-    ty = 400
-    for line in title_lines:
-        bb = draw.textbbox((0,0), line, font=f_title_l)
-        lw = bb[2]-bb[0]
-        draw.text((max(30, icon_cx-lw//2), ty), line, font=f_title_l, fill=WHITE)
+    ty = 130
+    for line in lines:
+        text_center(draw, line, f_title, CX, ty, (240, 244, 250))
+        bb = draw.textbbox((0,0), line, font=f_title)
         ty += (bb[3]-bb[1]) + 8
-    for stat_text in ["豐田生產方式 TPS", "Kaizen / JIT / Jidoka", "現地現物 現場哲學"]:
-        draw.rounded_rectangle([30, ty+10, COL1-30, ty+58], radius=8, fill=(14, 22, 46))
-        draw.rounded_rectangle([30, ty+10, 36, ty+58], radius=4, fill=(60, 200, 120))
-        draw.text((50, ty+22), stat_text, font=f_stat, fill=WHITE)
-        ty += 68
 
-    # 中欄
-    mid_cx = (COL1 + COL2) // 2
-    h1_cx  = COL1 + (COL2-COL1)//4
-    h2_cx  = COL1 + (COL2-COL1)*3//4
+    # 副標
+    text_center(draw, "SMART MANUFACTURING DEEP DIVE", f_sub, CX, ty + 12,
+                (70, 100, 160))
 
-    badge_txt = "試作版  Edge TTS 台灣神經語音"
-    bb_b = draw.textbbox((0,0), badge_txt, font=f_badge)
-    bw = bb_b[2]-bb_b[0]+28; bh = bb_b[3]-bb_b[1]+14
-    bx = mid_cx - bw//2
-    draw.rounded_rectangle([bx, 88, bx+bw, 88+bh], radius=8, fill=(20, 36, 80))
-    draw.rounded_rectangle([bx, 88, bx+bw, 90], radius=1, fill=ACCENT_LT)
-    draw.text((bx+14, 95), badge_txt, font=f_badge, fill=ACCENT_LT)
+    # ── 雙主持人圓形頭像 ──────────────────────────────────────────────────────
+    AVG_Y   = 620    # 圓心 Y
+    R       = 145    # 半徑
+    H1_X    = W // 2 - 260   # 小欣 X
+    H2_X    = W // 2 + 260   # 阿晨 X
 
-    f_ch = ImageFont.truetype(bold_path, 36)
-    bb_ch = draw.textbbox((0,0), "智慧製造深度對談", font=f_ch)
-    draw.text((mid_cx-(bb_ch[2]-bb_ch[0])//2, 128), "智慧製造深度對談", font=f_ch, fill=WHITE)
+    # 外發光環
+    for host_cx, glow_c in [(H1_X, (100, 60, 200)), (H2_X, (0, 150, 160))]:
+        for gr in range(R+60, R+2, -4):
+            t = 1 - (gr - R - 2) / 58
+            gc = tuple(min(255, int(v * t * 0.35)) for v in glow_c)
+            draw.ellipse([host_cx-gr, AVG_Y-gr, host_cx+gr, AVG_Y+gr], fill=gc)
 
-    draw_avatar_v2(draw, h1_cx, 490, 108, FEMALE_CLR, "欣", "女主持人", "小欣", f_init, f_role, f_name)
-    draw_avatar_v2(draw, h2_cx, 490, 108, MALE_CLR,   "晨", "男主持人", "阿晨", f_init, f_role, f_name)
-    bb_vs = draw.textbbox((0,0), "×", font=f_vs)
-    draw.text((mid_cx-(bb_vs[2]-bb_vs[0])//2, 462), "×", font=f_vs, fill=(40, 60, 100))
+    # 小欣漸層圓（紫→藍）
+    draw_gradient_circle(img, H1_X, AVG_Y, R, (130, 80, 255), (60, 100, 230))
+    # 阿晨漸層圓（青→藍）
+    draw_gradient_circle(img, H2_X, AVG_Y, R, (0, 200, 180), (30, 100, 200))
 
-    # 右欄
-    rx = COL2 + 36; rw = W - COL2 - 60
-    draw.text((rx, 90), "本集重點", font=f_sec, fill=ACCENT_LT)
-    draw.rectangle([rx, 128, rx+50, 132], fill=ACCENT)
-    by2 = 148
-    for bullet in ["· 改善文化核心概念", "· 七大浪費與消除方法", "· Poka-yoke 防呆設計", "· 台灣工廠實際案例", "· 欣晨工業 TPS 實踐"]:
-        for line in wrap_cjk(draw, bullet, f_bullet, rw):
-            draw.text((rx, by2), line, font=f_bullet, fill=GRAY)
-            bb = draw.textbbox((0,0), line, font=f_bullet)
-            by2 += (bb[3]-bb[1]) + 6
-        by2 += 4
+    draw2 = ImageDraw.Draw(img)
 
-    company_y = H - 330
-    draw.rounded_rectangle([rx-6, company_y, W-24, H-186], radius=10, fill=(12, 20, 40))
-    draw.rounded_rectangle([rx-6, company_y, rx-2, H-186], radius=4, fill=ACCENT)
-    draw.text((rx+10, company_y+14), "欣晨工業有限公司", font=f_company, fill=WHITE)
-    draw.text((rx+10, company_y+50), "Hsin-Chan Industrial Co., Ltd.", font=f_comp_s, fill=GRAY)
-    iy = company_y + 86
-    for label, text in [("TEL  ", "03-381-4497"), ("WEB  ", "www.hsinchan.com"), ("EST  ", "1975 / 51年製造")]:
-        draw.text((rx+10, iy), label + text, font=f_comp_s, fill=GRAY); iy += 34
+    # 首字
+    for host_cx, initial in [(H1_X, "欣"), (H2_X, "晨")]:
+        bb = draw2.textbbox((0,0), initial, font=f_initial)
+        tw, th = bb[2]-bb[0], bb[3]-bb[1]
+        draw2.text((host_cx - tw//2, AVG_Y - th//2 - 10), initial,
+                   font=f_initial, fill=(255, 255, 255, 220))
 
-    # 底部
-    draw.rectangle([0, H-172, W, H], fill=(5, 8, 16))
-    draw.rectangle([0, H-175, W, H-172], fill=ACCENT)
-    bottom_text = "小欣 x 阿晨  ·  每3天更新  ·  智慧製造深度對談  PODCAST"
-    bb_bot = draw.textbbox((0,0), bottom_text, font=f_bottom)
-    draw.text(((W-(bb_bot[2]-bb_bot[0]))//2, H-138), bottom_text, font=f_bottom, fill=GRAY)
+    # 名字與角色
+    for host_cx, name, role in [
+        (H1_X, "小欣", "女主持人"),
+        (H2_X, "阿晨", "男主持人"),
+    ]:
+        nh = text_center(draw2, name, f_name, host_cx, AVG_Y + R + 22,
+                         (240, 244, 250))
+        text_center(draw2, role, f_role, host_cx, AVG_Y + R + 22 + nh + 6,
+                    (100, 120, 150))
+
+    # 中間 × 符號
+    text_center(draw2, "x", f_sub, CX, AVG_Y - 20, (45, 60, 90))
+
+    # ── 底部資訊欄（波形預留區上方）────────────────────────────────────────
+    info_y = H - 200
+    draw2.rectangle([0, info_y, W, info_y + 1], fill=(25, 35, 65))
+    text_center(draw2, "Hsin-Chan Industrial Co., Ltd.  ·  hsinchan.com  ·  03-381-4497",
+                f_bottom, CX, info_y + 14, (55, 70, 100))
+
+    # 波形區底色
+    draw2.rectangle([0, H-165, W, H], fill=(5, 7, 15))
+    draw2.rectangle([0, H-167, W, H-165], fill=(35, 55, 110))
 
     img.save(out_path)
-    print("背景圖建立完成（1920x1080）")
+    print("NotebookLM 風格背景圖建立完成（1920x1080）")
 
 # ── FFmpeg 合成最終影片 ───────────────────────────────────────────────────────
 def render_video(bg_path, audio_path, duration, out_path):
     print("🎬 FFmpeg 合成影片（底部即時波形）...")
     fc = (
         "[0:v]scale=1920:1080[bg];"
-        "[1:a]showwaves=s=1920x165:mode=cline:rate=30:colors=1a3f98|5a8ce0[wave];"
-        "[bg][wave]overlay=0:902[vout]"
+        "[1:a]showwaves=s=1920x160:mode=cline:rate=30"
+        ":colors=7B48FF|00C8B4[wave];"
+        "[bg][wave]overlay=0:915[vout]"
     )
     cmd = [
         "ffmpeg", "-y",
@@ -338,10 +320,10 @@ def render_video(bg_path, audio_path, duration, out_path):
 
 # ── 主程式 ────────────────────────────────────────────────────────────────────
 def main():
-    print("═══════════════════════════════════════════════════")
-    print("  欣晨工業 — Podcast 影片試作版")
-    print("  主持人：小欣 × 阿晨  |  Edge TTS（免費神經語音）")
-    print("═══════════════════════════════════════════════════\n")
+    print("=" * 55)
+    print("  欣晨工業 Podcast — NotebookLM 風格")
+    print("  小欣 (nova) x 阿晨 (onyx) | OpenAI TTS")
+    print("=" * 55 + "\n")
 
     tw   = datetime.now(timezone(timedelta(hours=8)))
     date = tw.strftime("%Y-%m-%d")
