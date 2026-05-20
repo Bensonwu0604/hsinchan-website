@@ -2,8 +2,10 @@ name: 試作 Podcast 影片（每3天自動執行）
 
 on:
   schedule:
-    # 每3天台灣時間 11:00 (UTC 03:00)
     - cron: '0 3 */3 * *'
+  push:
+    paths:
+      - 'scripts/test_podcast.py'
   workflow_dispatch:
 
 jobs:

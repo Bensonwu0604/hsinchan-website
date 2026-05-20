@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# trigger: 2026-05-20
 """
 欣晨工業 — Podcast 影片試作版
 使用 Edge TTS（微軟免費神經語音，不需額外 API Key）
