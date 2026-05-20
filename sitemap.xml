@@ -80,4 +80,58 @@
     <xhtml:link rel="alternate" hreflang="ja"    href="https://www.hsinchan.com/contact.html?lang=ja"/>
   </url>
 
+
+  <url>
+    <loc>https://www.hsinchan.com/product-integrated-barrel.html</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/product-integrated-barrel.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/product-integrated-barrel.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/product-sic-tube.html</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/product-sic-tube.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/product-sic-tube.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/product-refractory.html</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/product-refractory.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/product-refractory.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/product-graphite-tube.html</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/product-graphite-tube.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/product-graphite-tube.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/product-heater.html</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/product-heater.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/product-heater.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/product-thermocouple.html</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/product-thermocouple.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/product-thermocouple.html"/>
+  </url>
 </urlset>
