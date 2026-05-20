@@ -28,7 +28,7 @@ jobs:
           cache: 'pip'
 
       - name: Install Python dependencies
-        run: pip install --prefer-binary anthropic edge-tts Pillow
+        run: pip install --prefer-binary anthropic gtts Pillow
 
       - name: Diagnostics
         run: |
