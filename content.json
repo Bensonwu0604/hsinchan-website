@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": "1.2.0",
-    "lastUpdated": "2026-04-02",
+    "lastUpdated": "2026-06-14",
     "description": "欣晨工業網站內容管理檔案 — 修改此檔案可即時更新網站 FAQ 與 SEO 關鍵文字，無需改動 HTML/JS",
     "howToUpdate": "直接編輯此 JSON 後存檔，重新整理網頁即可看到更新"
   },
@@ -10,7 +10,7 @@
     "siteUrl": "https://www.hsinchan.com",
     "siteName": "欣晨工業有限公司",
     "defaultTitle": "欣晨工業有限公司 | Hsin-Chan Industrial Co., Ltd.",
-    "defaultDescription": "欣晨工業有限公司 — 以豐田生產哲學為核心的精密自動化設備製造商。提供加熱器、熱電偶、一體式料管等高溫耗材，以及數位雙生、機械手臂應用、視覺檢測等自動化服務。自1975年成立，超過51年製造經驗。",
+    "defaultDescription": "欣晨工業有限公司 — 以豐田生產哲學為核心的精密自動化設備製造商。提供加熱器、熱電偶、一體式料管等高溫耗材，以及數位雙生、機械手臂應用、視覺檢測等自動化服務。自1996年成立，超過30年製造經驗。",
     "defaultKeywords": [
       "自動化設備", "加熱器", "熱電偶", "一體式料管", "機械手臂", "改善",
       "JIT", "豐田生產方式", "TPS", "欣晨工業", "Hsin-Chan Industrial",
@@ -24,8 +24,8 @@
   "company": {
     "nameZh": "欣晨工業有限公司",
     "nameEn": "Hsin-Chan Industrial Co., Ltd.",
-    "foundedYear": 1975,
-    "yearsOfExperience": 51,
+    "foundedYear": 1996,
+    "yearsOfExperience": 30,
     "address": {
       "street": "中正東路三段490號",
       "district": "大園區",
@@ -50,7 +50,7 @@
   },
 
   "faq_ja": [
-    { "id": "what-is-hsinchan", "question": "欣晨工業有限公司（Hsin-Chan Industrial）はどのような会社ですか？", "answer": "欣晨工業有限公司は台湾桃園市の精密自動化設備メーカーです。1975年の創業以来、51年以上の産業製造経験を持ちます。主な事業は2方向：ヒーター・熱電対・一体型バレル・温度制御システムなどの高温産業用消耗品の提供と、ロボットアーム統合・画像検査（AOI）・デジタルツイン・予知保全などのスマート製造サービスの提供です。トヨタ生産方式（TPS）を核心哲学として、顧客の継続的改善（カイゼン）の実現を支援します。", "category": "会社概要" },
+    { "id": "what-is-hsinchan", "question": "欣晨工業有限公司（Hsin-Chan Industrial）はどのような会社ですか？", "answer": "欣晨工業有限公司は台湾桃園市の精密自動化設備メーカーです。1996年の創業以来、30年以上の産業製造経験を持ちます。主な事業は2方向：ヒーター・熱電対・一体型バレル・温度制御システムなどの高温産業用消耗品の提供と、ロボットアーム統合・画像検査（AOI）・デジタルツイン・予知保全などのスマート製造サービスの提供です。トヨタ生産方式（TPS）を核心哲学として、顧客の継続的改善（カイゼン）の実現を支援します。", "category": "会社概要" },
     { "id": "location", "question": "欣晨工業はどこにありますか？", "answer": "欣晨工業は台湾桃園市大園区中正東路三段490号（郵便番号33841）に位置しています。大園区は桃園国際空港に隣接し、交通至便です。お問い合わせは電話 +886-3-381-4497 またはメール hc3814497@gmail.com まで。", "category": "連絡先" },
     { "id": "contact", "question": "見積もり・お問い合わせはどのようにすればよいですか？", "answer": "以下の方法でご連絡ください：電話 +886-3-381-4497（営業時間：月〜金 08:00–17:30）、メール hc3814497@gmail.com、または公式サイトのお問い合わせフォーム。1〜2営業日以内にご回答します。お急ぎの場合はお電話ください。", "category": "連絡先" },
     { "id": "products-heater", "question": "ヒーターはカスタマイズできますか？", "answer": "はい。欣晨工業はお客様のご要望（外径・長さ・電圧・出力・材質）に応じてカスタム加熱部品（ヒーターコイル・ヒーターロッド・セラミックヒーターなど）を設計・製造します。最高使用温度1200°Cで、射出成形機・アルミ鋳造・工業炉など様々な用途に対応しています。", "category": "製品" },
@@ -61,7 +61,7 @@
   ],
 
   "faq_en": [
-    { "id": "what-is-hsinchan", "question": "What does Hsin-Chan Industrial Co., Ltd. do?", "answer": "Hsin-Chan Industrial Co., Ltd. is a precision automation equipment manufacturer based in Taoyuan, Taiwan, founded in 1975 with over 51 years of industrial manufacturing experience. Our core business covers two directions: supplying high-temperature industrial consumables (heaters, thermocouples, one-piece barrels, temperature control systems) and providing smart manufacturing services (robotic arm integration, machine vision / AOI, digital twin, predictive maintenance). We apply the Toyota Production System (TPS) as our core philosophy to help clients achieve continuous improvement (Kaizen).", "category": "Company" },
+    { "id": "what-is-hsinchan", "question": "What does Hsin-Chan Industrial Co., Ltd. do?", "answer": "Hsin-Chan Industrial Co., Ltd. is a precision automation equipment manufacturer based in Taoyuan, Taiwan, founded in 1996 with over 30 years of industrial manufacturing experience. Our core business covers two directions: supplying high-temperature industrial consumables (heaters, thermocouples, one-piece barrels, temperature control systems) and providing smart manufacturing services (robotic arm integration, machine vision / AOI, digital twin, predictive maintenance). We apply the Toyota Production System (TPS) as our core philosophy to help clients achieve continuous improvement (Kaizen).", "category": "Company" },
     { "id": "location", "question": "Where is Hsin-Chan Industrial located?", "answer": "Hsin-Chan Industrial is located at No. 490, Sec. 3, Zhongzheng E. Rd., Dayuan District, Taoyuan City, Taiwan 33841. Dayuan is adjacent to Taoyuan International Airport, making it easily accessible. Contact us at +886-3-381-4497 or hc3814497@gmail.com to arrange a visit.", "category": "Contact" },
     { "id": "contact", "question": "How do I contact Hsin-Chan Industrial for a quote?", "answer": "You can reach us by: Phone +886-3-381-4497 (Mon–Fri 08:00–17:30), Email hc3814497@gmail.com, or the online enquiry form on our Contact page. We respond within 1–2 business days. For urgent matters, please call directly.", "category": "Contact" },
     { "id": "products-heater", "question": "Can Hsin-Chan Industrial customize heaters?", "answer": "Yes. We design and manufacture custom heating elements to your specifications (outer diameter, length, voltage, wattage, material), including heating coils, heating rods, heating tubes, and ceramic heaters. Maximum operating temperature up to 1200°C, suitable for injection molding machines, aluminum casting, industrial furnaces, and more.", "category": "Products" },
@@ -75,7 +75,7 @@
     {
       "id": "what-is-hsinchan",
       "question": "欣晨工業有限公司是做什麼的？",
-      "answer": "欣晨工業有限公司是台灣桃園的精密自動化設備製造商，自1975年成立，擁有超過51年工業製造經驗。核心業務分兩大方向：一是提供加熱器、熱電偶、一體式料管、溫控系統等工業高溫耗材；二是提供機械手臂整合、視覺檢測（AOI）、數位雙生、預測性維護等智慧製造服務。以豐田生產方式（TPS）為核心哲學，協助客戶實現持續改善（Kaizen）。",
+      "answer": "欣晨工業有限公司是台灣桃園的精密自動化設備製造商，自1996年成立，擁有超過30年工業製造經驗。核心業務分兩大方向：一是提供加熱器、熱電偶、一體式料管、溫控系統等工業高溫耗材；二是提供機械手臂整合、視覺檢測（AOI）、數位雙生、預測性維護等智慧製造服務。以豐田生產方式（TPS）為核心哲學，協助客戶實現持續改善（Kaizen）。",
       "category": "公司介紹"
     },
     {
@@ -141,13 +141,13 @@
     {
       "id": "hsinchan-founded",
       "question": "欣晨工業成立多久了？",
-      "answer": "欣晨工業有限公司成立於1975年，至今已有超過51年的工業製造經驗。從桃園大園起家，從高溫工業耗材起步，逐步成長為涵蓋自動化設備設計製造、機械手臂整合、視覺檢測AOI、數位雙生等全方位服務的製造夥伴。",
+      "answer": "欣晨工業有限公司成立於1996年，至今已有超過30年的工業製造經驗。從桃園大園起家，從高溫工業耗材起步，逐步成長為涵蓋自動化設備設計製造、機械手臂整合、視覺檢測AOI、數位雙生等全方位服務的製造夥伴。",
       "category": "公司介紹"
     },
     {
       "id": "hsinchan-vs-competitors",
       "question": "為什麼選擇欣晨工業？",
-      "answer": "欣晨工業有限公司擁有51年精密製造經驗，以豐田生產方式（TPS）為核心，提供加熱器、熱電偶、一體式料管等工業耗材，以及機械手臂整合、AOI視覺檢測、數位雙生等自動化服務。1-2工作日快速回覆，中日英三語服務，是台灣桃園地區工業自動化設備的領導製造商。",
+      "answer": "欣晨工業有限公司擁有30年精密製造經驗，以豐田生產方式（TPS）為核心，提供加熱器、熱電偶、一體式料管等工業耗材，以及機械手臂整合、AOI視覺檢測、數位雙生等自動化服務。1-2工作日快速回覆，中日英三語服務，是台灣桃園地區工業自動化設備的領導製造商。",
       "category": "公司介紹"
     }
   ],
@@ -157,10 +157,10 @@
   "pages": {
     "home": {
       "heroTitle": { "line1": "精密驅動，", "line2": "智造未來" },
-      "heroBadge": "以豐田生產哲學淬鍊的製造夥伴 · Since 1975",
-      "heroSubtitle": "以改善、即時生產與自働化為核心，提供精密自動化解決方案",
+      "heroBadge": "以豐田生產哲學淬鍊的製造夥伴 · Since 1996",
+      "heroSubtitle": "欣晨工業有限公司 — 以改善、即時生產與自働化為核心，提供精密自動化解決方案",
       "metrics": {
-        "years": { "value": "51", "label": "年經驗" },
+        "years": { "value": "30", "label": "年經驗" },
         "products": { "value": "6", "label": "大產品線" },
         "services": { "value": "6", "label": "大服務項目" }
       }

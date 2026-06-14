@@ -2368,8 +2368,8 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(160deg, rgba(5,8,18,0.62) 0%, rgba(10,16,32,0.26) 55%, rgba(4,6,14,0.72) 100%),
-    url('https://images.unsplash.com/photo-1759159091682-3b98f4759367?auto=format&fit=crop&w=800&q=80');
+    linear-gradient(160deg, rgba(5,8,18,0.35) 0%, rgba(10,16,32,0.12) 55%, rgba(4,6,14,0.45) 100%),
+    url('images/products/thermocouple.svg');
   background-size: cover;
   background-position: center;
 }
@@ -2968,7 +2968,7 @@ h1, h2, h3, h4, h5, h6 {
 .contact-info__link {
   font-size: 1rem;
   font-weight: 500;
-  color: var(--c-navy-light);
+  color: var(--c-text);
   text-decoration: none;
   transition: color var(--t-base);
 }
