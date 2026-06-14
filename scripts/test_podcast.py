@@ -503,7 +503,7 @@ def html_to_png(html_content, out_path):
 def generate_script(ac_client):
     prompt = """你是欣晨工業 Podcast「智慧製造深度對談」資深製作人。
 主持人：小欣（女，活潑好奇，善於追問）、阿晨（男，資深工程師，深入解說）
-欣晨工業：台灣桃園，1975年，51年精密製造，TPS核心哲學。
+欣晨工業：台灣桃園，1996年，30年精密製造，TPS核心哲學。
 
 今集：豐田改善文化（Kaizen）在台灣製造業的實踐
 
@@ -576,10 +576,10 @@ def generate_script(ac_client):
 def default_slides():
     return [
         {"id":1,"title":"你的工廠每天浪費多少？","chart_type":"stats",
-         "chart_items":["30%","7種","51年"],
+         "chart_items":["30%","7種","30年"],
          "cards":[{"label":"驚人事實","text":"研究顯示：製造業平均有30%以上的活動是不創造價值的浪費。"},
                   {"label":"核心問題","text":"為何工廠年復一年知道問題存在，卻難以持續改善？"},
-                  {"label":"今集解答","text":"豐田用51年打造的Kaizen哲學，台灣工廠能複製嗎？"}],
+                  {"label":"今集解答","text":"豐田用30年打造的Kaizen哲學，台灣工廠能複製嗎？"}],
          "dialogue_count":6},
         {"id":2,"title":"Kaizen 改善核心哲學","chart_type":"pillars",
          "chart_items":["改善","JIT","自働化"],

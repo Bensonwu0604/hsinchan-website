@@ -98,8 +98,8 @@ def generate_script(topic_title, topic_angle, ac_client):
 方向提示：{topic_angle}
 
 欣晨工業背景（自然融入，不要過度推銷）：
-- 1975年創立，51年精密製造經驗，台灣桃園市大園區
-- 核心產品：工業加熱器（1200°C）、熱電偶、碳化矽保護管、石墨脫氣管
+- 1996年創立，30年精密製造經驗，台灣桃園市大園區
+- 核心產品：工業加熱器（1200°C）、熱電偶、碳化矽保護管、高濃度奈米氣泡流體模組
 - 核心服務：機械手臂整合（FANUC/ABB/KUKA）、AOI視覺檢測、數位雙生
 - 哲學：豐田生產方式 TPS（Kaizen/JIT/Jidoka）
 
@@ -286,7 +286,7 @@ def create_podcast_bg(topic_title, bold_path, reg_path, out_path):
     # 底部公司資訊
     draw.text((50, H - 140), "🌐 hsinchan.com",    font=font_small, fill=GRAY)
     draw.text((50, H - 100), "📞 03-381-4497",     font=font_small, fill=GRAY)
-    draw.text((50, H - 60),  "📍 桃園市大園區 · Est. 1975", font=font_small, fill=DARK)
+    draw.text((50, H - 60),  "📍 桃園市大園區 · Est. 1996", font=font_small, fill=DARK)
 
     img.save(out_path)
     print("🖼️  Podcast 背景圖建立完成")

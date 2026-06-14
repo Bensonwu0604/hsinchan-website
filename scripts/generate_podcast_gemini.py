@@ -85,8 +85,8 @@ def generate_script(topic_title, topic_angle, ac_client):
 角度：{topic_angle}
 
 欣晨工業（自然融入2-3次，不硬推銷）：
-台灣桃園，1975年創立，51年精密製造，豐田TPS哲學
-產品：加熱器（1200°C）、熱電偶、碳化矽保護管、石墨脫氣管
+台灣桃園，1996年創立，30年精密製造，豐田TPS哲學
+產品：加熱器（1200°C）、熱電偶、碳化矽保護管、高濃度奈米氣泡流體模組
 服務：機械手臂整合（FANUC/ABB/KUKA）、AOI視覺檢測、數位雙生
 
 請生成一集8-10分鐘深度對談，以以下格式輸出，每行一個對話：
@@ -237,7 +237,7 @@ TOPIC_META = {
     "OEE":       {"icon": "gauge",   "stat1": "世界級目標 85%", "stat2": "台灣平均 60%", "stat3": "可用率×效率×良率", "color": (240, 200, 60)},
     "量測":      {"icon": "measure", "stat1": "CMM 三次元量測", "stat2": "雷射掃描儀", "stat3": "GD&T 幾何公差", "color": (60, 180, 200)},
 }
-DEFAULT_META = {"icon": "factory", "stat1": "智慧製造", "stat2": "51年製造經驗", "stat3": "豐田TPS哲學", "color": ACCENT_LT}
+DEFAULT_META = {"icon": "factory", "stat1": "智慧製造", "stat2": "30年製造經驗", "stat3": "豐田TPS哲學", "color": ACCENT_LT}
 
 def draw_topic_icon(draw, cx, cy, icon_type, color, size=130):
     """繪製主題專屬幾何圖示"""
@@ -529,7 +529,7 @@ def create_bg_image(topic_title, bold_path, reg_path, out_path, topic_tag="facto
         ("📍", "桃園市大園區中正東路三段490號"),
         ("📞", "03-381-4497  |  +886-3-381-4497"),
         ("🌐", "www.hsinchan.com"),
-        ("📅", "1975年創立  ·  51年精密製造經驗"),
+        ("📅", "1996年創立  ·  30年精密製造經驗"),
     ]
     iy = company_y + 86
     for icon, text in info_items:

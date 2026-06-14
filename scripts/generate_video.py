@@ -134,7 +134,7 @@ def make_title_slide(topic_title, topic_tag, bold_path, reg_path, out_path):
 
     # 品牌
     draw.text((80, H - 160), "欣晨工業有限公司", font=font_brand, fill=WHITE)
-    draw.text((80, H - 115), "Hsin-Chan Industrial Co., Ltd. · Since 1975", font=font_small, fill=GRAY)
+    draw.text((80, H - 115), "Hsin-Chan Industrial Co., Ltd. · Since 1996", font=font_small, fill=GRAY)
 
     img.save(out_path)
 
@@ -190,7 +190,7 @@ def make_cta_slide(bold_path, reg_path, out_path):
 
     draw.rectangle([80, H - 180, W - 80, H - 178], fill=DARK_GRAY)
     draw.text((80, H - 160), "欣晨工業有限公司", font=font_sub,   fill=WHITE)
-    draw.text((80, H - 115), "台灣桃園 · 1975年創立 · 51年精密製造經驗", font=font_small, fill=GRAY)
+    draw.text((80, H - 115), "台灣桃園 · 1996年創立 · 30年精密製造經驗", font=font_small, fill=GRAY)
 
     img.save(out_path)
 
@@ -232,7 +232,7 @@ def generate_video_script(topic_title, topic_angle):
     ac = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
     prompt = f"""你是欣晨工業有限公司的社群媒體編輯，需要為 Facebook 影片製作腳本。
 
-欣晨工業是台灣桃園1975年創立的精密自動化設備製造商，以豐田生產方式（TPS）為核心哲學。
+欣晨工業是台灣桃園1996年創立的精密自動化設備製造商，以豐田生產方式（TPS）為核心哲學。
 主要業務：工業加熱器（1200°C）、熱電偶、一體式料管、碳化矽保護管、機械手臂整合、AOI視覺檢測。
 
 今日題材：{topic_title}
@@ -364,7 +364,7 @@ def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_st
         f"📞 +886-3-381-4497\n"
         f"📍 台灣桃園市大園區中正東路三段490號\n"
         f"⏰ 週一至週五 08:00–17:30\n\n"
-        f"欣晨工業1975年創立，以豐田生產方式（TPS）為核心，提供精密自動化設備與工業耗材。\n"
+        f"欣晨工業1996年創立，以豐田生產方式（TPS）為核心，提供精密自動化設備與工業耗材。\n"
         f"服務：機械手臂整合、AOI視覺檢測、數位雙生、工業加熱器、熱電偶、一體式料管。"
     )
 
