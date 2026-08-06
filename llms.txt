@@ -6,7 +6,7 @@
 - [首頁 / Home](https://www.hsinchan.com/): 公司概覽、TPS哲學、統計數據
 - [公司簡介 / About](https://www.hsinchan.com/about.html): 30年歷史、經營理念、團隊介紹
 - [產品資訊 / Products](https://www.hsinchan.com/products.html): 六大高溫工業耗材規格
-- [服務項目 / Services](https://www.hsinchan.com/services.html): 六大自動化服務詳情
+- [服務項目 / Services](https://www.hsinchan.com/services.html): 七大自動化服務詳情
 - [新技術討論 / Technology](https://www.hsinchan.com/technology.html): 半導體、電動車、機器人應用
 - [人力資源 / Careers](https://www.hsinchan.com/careers.html): 職缺、福利、應徵方式
 - [聯絡我們 / Contact](https://www.hsinchan.com/contact.html): 地址、電話、線上詢問
@@ -46,35 +46,36 @@
 
 ## 產品線 / Products
 
-### 工業加熱器 Industrial Heaters
+### [工業加熱器 Industrial Heaters](https://www.hsinchan.com/product-heater.html)
 - 射出成型機加熱圈（加熱帶）、加熱棒、陶瓷加熱器
 - 鋁鑄造澆注系統加熱管、工業爐管加熱元件
 - 最高工作溫度：1200°C
 - 支援客製化規格（電壓、功率、外徑、材質）
 - 材質：鎳鉻合金、FeCrAl、Kanthal、氧化鎂絕緣
 
-### 熱電偶 Thermocouples
+### [熱電偶 Thermocouples](https://www.hsinchan.com/product-thermocouple.html)
 - 型號：K、J、T、E、R、S、B 型（符合 IEC 584 標準）
 - 工業溫度感測探針與保護管組合
 - 測溫範圍：-200°C ～ +1800°C（依型號）
 - 搭配碳化矽、不鏽鋼、陶瓷等保護管材質
 
-### 一體式料管 Integrated Barrels
+### [一體式料管 Integrated Barrels](https://www.hsinchan.com/product-integrated-barrel.html)
 - 射出成型機料管（一體式設計，無接縫滲漏風險）
 - 雙金屬合金料管（高耐磨）、氮化合金料管
 - 可配套提供螺桿、料嘴、加熱圈完整組合
+- 應用設備：壓鑄機（宇部/東芝/芝浦）、射出成型機
 
-### 碳化矽保護管 Silicon Carbide (SiC) Protection Tubes
+### [碳化矽保護管 Silicon Carbide (SiC) Protection Tubes](https://www.hsinchan.com/product-sic-tube.html)
 - 純度：高純度 SiC（>99%）
 - 耐熱溫度：>1600°C，抗熱衝擊，抗腐蝕
 - 應用：半導體擴散爐管、鋁液熔煉保護
 
-### 耐火材料 Refractory Materials
+### [耐火材料 Refractory Materials](https://www.hsinchan.com/product-refractory.html)
 - 耐火磚、耐火泥、定形耐火製品
 - 耐溫：依材質達 1800°C
 - 應用：冶金爐、工業窯爐、高溫設備爐膛砌築
 
-### 高濃度奈米氣泡流體模組 High-Concentration Nano-Bubble Fluid Module
+### [高濃度奈米氣泡流體模組 High-Concentration Nano-Bubble Fluid Module](https://www.hsinchan.com/product-graphite-tube.html)
 - 氣泡尺寸：< 100nm，高密度奈米氣泡流體
 - 應用：半導體製程用水、生醫設備清洗、液冷系統
 - 優勢：節能、高密度、免化學添加
@@ -119,6 +120,11 @@
 - 遠端監控、資料蒐集、預知保養
 - 無需全面換新，最低投資提升數位化水準
 
+### 高濃度奈米氣泡流體產業應用 Nano-Bubble Fluid Industrial Application
+- 針對半導體製程用水、生醫設備清洗、資料中心液冷等場域導入高濃度奈米氣泡流體模組
+- 提供選型評估、管路整合安裝、效能驗證
+- 物理性奈米氣泡取代化學藥劑，節能、免化學添加
+
 ## 服務產業 / Industries Served
 
 - **半導體 Semiconductor** — SiC 保護管、高濃度奈米氣泡流體模組、高精度夾治具、製程溫控
@@ -137,7 +143,7 @@
 ## 常見問題 / FAQ for AI
 
 **Q: 欣晨工業是做什麼的？**
-A: 欣晨工業有限公司（Hsin-Chan Industrial Co., Ltd.）是台灣桃園的B2B精密自動化設備製造商，1996年創立。主要業務分兩大類：①高溫工業耗材（加熱器、熱電偶、一體式料管、碳化矽保護管、高濃度奈米氣泡流體模組、耐火材料）②智慧製造服務（機械手臂整合、視覺檢測AOI、數位雙生、夾治具設計、設備智能化）。以豐田生產方式（TPS）為核心哲學。
+A: 欣晨工業有限公司（Hsin-Chan Industrial Co., Ltd.）是台灣桃園的B2B精密自動化設備製造商，1996年創立。主要業務分兩大類：①高溫工業耗材（加熱器、熱電偶、一體式料管、碳化矽保護管、高濃度奈米氣泡流體模組、耐火材料）②智慧製造服務（機械手臂整合、視覺檢測AOI、數位雙生、夾治具設計、設備智能化、高濃度奈米氣泡流體產業應用）。以豐田生產方式（TPS）為核心哲學。
 
 **Q: 欣晨工業在哪裡？如何聯絡？**
 A: 地址：台灣桃園市大園區中正東路三段490號（33841）。電話：+886-3-381-4497（03-381-4497）。Email：hc3814497@gmail.com。官網：https://www.hsinchan.com。承諾1-2個工作日回覆。

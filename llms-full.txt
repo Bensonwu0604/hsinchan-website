@@ -92,7 +92,7 @@
 
 ## 3. 產品規格詳細 / Product Specifications
 
-### 3.1 工業加熱器 Industrial Heaters
+### [3.1 工業加熱器 Industrial Heaters](https://www.hsinchan.com/product-heater.html)
 
 **產品類型：**
 - 電熱管（Tubular Heater）：射出成型機用加熱圈（加熱帶）、加熱棒
@@ -115,7 +115,7 @@
 
 ---
 
-### 3.2 熱電偶 Thermocouples
+### [3.2 熱電偶 Thermocouples](https://www.hsinchan.com/product-thermocouple.html)
 
 **支援型號：**
 | 型號 | 測溫範圍 | 特性 |
@@ -140,7 +140,7 @@
 
 ---
 
-### 3.3 一體式料管 Integrated Barrels
+### [3.3 一體式料管 Integrated Barrels](https://www.hsinchan.com/product-integrated-barrel.html)
 
 **設計特點：**
 - 一體成型，無接縫滲漏風險
@@ -156,9 +156,11 @@
 
 **可配套提供：** 螺桿、料嘴、加熱圈完整組合（完整射出成型機前段耗材）
 
+**適用設備：** 壓鑄機（宇部 UBE / 東芝 Toshiba / 芝浦 Shibaura）、射出成型機
+
 ---
 
-### 3.4 碳化矽保護管 SiC Protection Tubes
+### [3.4 碳化矽保護管 SiC Protection Tubes](https://www.hsinchan.com/product-sic-tube.html)
 
 - **材質純度**: 高純度 SiC（>99%）
 - **最高使用溫度**: >1600°C（連續使用）
@@ -168,7 +170,7 @@
 
 ---
 
-### 3.5 耐火材料 Refractory Materials
+### [3.5 耐火材料 Refractory Materials](https://www.hsinchan.com/product-refractory.html)
 
 - **耐火磚**: 高鋁磚、矽磚、鎂磚、碳化矽磚
 - **耐火泥**: 不定形耐火材料，澆注料、可塑料、噴射料
@@ -178,7 +180,7 @@
 
 ---
 
-### 3.6 高濃度奈米氣泡流體模組 High-Concentration Nano-Bubble Fluid Module
+### [3.6 高濃度奈米氣泡流體模組 High-Concentration Nano-Bubble Fluid Module](https://www.hsinchan.com/product-graphite-tube.html)
 
 - **氣泡尺寸**: < 100nm
 - **氣泡濃度**: > 10⁸ 顆/mL（高密度）
@@ -278,6 +280,22 @@
 | IoT 模組 | 採集電流、溫度、振動數據，上傳 MQTT/OPC-UA |
 | 雲端儀表板 | Grafana / Node-RED 實時監控 |
 | 異常通報 | Email / Line Notify 自動告警 |
+
+---
+
+### [4.6 高濃度奈米氣泡流體產業應用 Nano-Bubble Fluid Industrial Application](https://www.hsinchan.com/product-graphite-tube.html)
+
+針對客戶產線導入高濃度奈米氣泡流體模組的整合應用服務，涵蓋選型評估、管路整合安裝、效能驗證。
+
+**應用場域：**
+
+| 場域 | 應用內容 |
+|------|---------|
+| 半導體製程用水 | 提升製程用水水質、輔助晶圓清洗 |
+| 生醫設備 | 清洗與滅菌輔助，降低化學藥劑依賴 |
+| 資料中心液冷 | 提升散熱效率、抑制管路結垢與生物膜增生 |
+
+**優勢：** 物理性奈米氣泡崩潰產生微衝擊力，取代化學藥劑，達成節能、免化學添加的製程升級，降低廢液處理成本與環境負擔。
 
 ---
 
@@ -389,7 +407,7 @@ A: 目前招募資深機械設計工程師、產品業務工程師、自動化�
 | 首頁 | https://www.hsinchan.com/ | TPS哲學、產品概覽、服務統計、FAQ |
 | 公司簡介 | https://www.hsinchan.com/about.html | 歷史、理念、團隊 |
 | 產品資訊 | https://www.hsinchan.com/products.html | 六大耗材規格、品質保證 |
-| 服務項目 | https://www.hsinchan.com/services.html | 六大自動化服務詳情 |
+| 服務項目 | https://www.hsinchan.com/services.html | 七大自動化服務詳情 |
 | 新技術討論 | https://www.hsinchan.com/technology.html | 半導體/EV/機器人/矽光子/量子應用 |
 | 人力資源 | https://www.hsinchan.com/careers.html | 職缺、福利、應徵 |
 | 聯絡我們 | https://www.hsinchan.com/contact.html | 地址地圖、電話、線上詢問表單 |
