@@ -2512,7 +2512,7 @@ h1, h2, h3, h4, h5, h6 {
 .srv-vis--nanobubble::before { content: ''; position: absolute; inset: 0;
   background-image:
     linear-gradient(135deg, rgba(4,10,20,0.55) 0%, rgba(8,20,36,0.20) 50%, rgba(4,10,20,0.68) 100%),
-    url('https://images.unsplash.com/photo-1668600418844-5b3d2e381e10?auto=format&fit=crop&w=1200&q=80');
+    url('photo/semi-factory.jfif');
   background-size: cover;
   background-position: center;
 }
