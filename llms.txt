@@ -82,45 +82,46 @@
 
 ## 服務項目 / Services
 
-### 機械手臂整合 Robot System Integration
+### [數位雙生自動化設計規劃 Digital Twin](https://www.hsinchan.com/services.html#digital-twin)
+- IoT 感測器建立設備即時虛擬模型
+- 虛擬產線佈局規劃、動作模擬與設備干涉檢查
+- 節拍時間（Takt Time）分析最佳化
+- 不停機模擬、監控、優化生產流程
+
+### [機械手臂應用 Robot System Integration](https://www.hsinchan.com/services.html#robot-integration)
 - 支援品牌：FANUC、ABB、KUKA、Yaskawa（安川）、Universal Robots（UR）
 - 應用：上下料、焊接、組裝、噴塗、視覺引導定位
 - 第七軸線性走行軸設計與製造
 - 協作機器人（Cobot）規劃與安全整合
 - 離線程式規劃（OLP）與路徑優化
 
-### 數位雙生 Digital Twin
-- IoT 感測器建立設備即時虛擬模型
-- 不停機模擬、監控、優化生產流程
-- 預測性維護：減少非計畫停機最多 30%
-- 雲端監控儀表板（OEE 效率分析）
-
-### 視覺檢測 AOI Machine Vision & AOI
-- 工業相機 + 高精度鏡頭 + AI 影像分析
-- 外觀瑕疵偵測（刮傷、污點、缺料）
-- 高精度尺寸量測（±0.01mm）
-- QR Code / Barcode / OCR 辨識
-- 自動不良品排除（PLC 連動）
-
-### 單機自動化設計製造 Custom Automation Build
+### [單機自動化設計製造 Custom Automation Build](https://www.hsinchan.com/services.html#custom-automation)
 - 需求分析 → 機構設計（SolidWorks / Solid Edge）→ 製造 → 調機
 - PLC 程式設計：三菱 iQ-F / iQ-R 系列
 - 伺服系統：三菱 MR-J5（SSCNET III/H）
 - HMI：Pro-face、Weintek
 - 全包服務：設計、製造、現場安裝、人員培訓
 
-### 夾治具設計製造 Fixture Design & Manufacturing
+### [視覺檢測 Machine Vision & AOI](https://www.hsinchan.com/services.html#machine-vision)
+- 工業相機 + 高精度鏡頭 + AI 影像分析
+- 外觀瑕疵偵測（刮傷、污點、缺料）
+- 高精度尺寸量測（±0.01mm）
+- QR Code / Barcode / OCR 辨識
+- 自動不良品排除（PLC 連動）
+
+### [夾治具設計製造 Fixture Design & Manufacturing](https://www.hsinchan.com/services.html#fixture-design)
 - 機加工夾具、焊接治具、組裝工裝
 - 重複定位精度：±0.02mm
 - 材質：鋁合金、工具鋼、不鏽鋼
 - 快拆設計，縮短換線時間（SMED）
 
-### 設備智能化 Equipment Intelligence Upgrade
+### [設備智能化 Equipment Intelligence Upgrade](https://www.hsinchan.com/services.html#smart-upgrade)
 - 既有設備加裝 PLC / HMI / IoT 模組
 - 遠端監控、資料蒐集、預知保養
+- OEE 設備效率分析與異常通報系統
 - 無需全面換新，最低投資提升數位化水準
 
-### 高濃度奈米氣泡流體產業應用 Nano-Bubble Fluid Industrial Application
+### [高濃度奈米氣泡流體產業應用 Nano-Bubble Fluid Industrial Application](https://www.hsinchan.com/services.html#nano-bubble-application)
 - 針對半導體製程用水、生醫設備清洗、資料中心液冷等場域導入高濃度奈米氣泡流體模組
 - 提供選型評估、管路整合安裝、效能驗證
 - 物理性奈米氣泡取代化學藥劑，節能、免化學添加

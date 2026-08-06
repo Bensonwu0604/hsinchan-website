@@ -68,7 +68,7 @@ const translations = {
     srv_5_title: '夾治具設計製造',         srv_5_desc: '高精度夾具治具，提升一致性',
     srv_6_title: '設備智能化',             srv_6_desc: '既有設備升級 PLC / HMI / IoT',
     srv_7_title: '高濃度奈米氣泡流體產業應用', srv_7_desc: '半導體、生醫、液冷免化學導入',
-    cta_learn: '了解更多', cta_all_services: '了解全部服務',
+    cta_learn: '了解更多', cta_all_services: '了解全部服務', cta_view_specs: '查看完整規格 →',
 
     partners_eyebrow: 'TRUSTED BY INDUSTRY LEADERS',
 
@@ -596,7 +596,7 @@ const translations = {
     srv_5_title: '治具設計製造',             srv_5_desc: '高精度治具で品質一貫性向上',
     srv_6_title: '設備インテリジェント化',   srv_6_desc: '既存設備を PLC / HMI / IoT へアップグレード',
     srv_7_title: '高濃度ナノバブル流体産業応用', srv_7_desc: '半導体・生医・液冷を化学薬品不使用で導入',
-    cta_learn: '詳しく見る', cta_all_services: 'すべてのサービスを見る',
+    cta_learn: '詳しく見る', cta_all_services: 'すべてのサービスを見る', cta_view_specs: '詳細仕様を見る →',
 
     partners_eyebrow: 'TRUSTED BY INDUSTRY LEADERS',
 
@@ -1118,7 +1118,7 @@ const translations = {
     srv_5_title: 'Fixture & Jig Design',             srv_5_desc: 'High-precision fixtures for consistent quality',
     srv_6_title: 'Equipment Intelligence Upgrade',   srv_6_desc: 'Retrofit existing equipment with PLC / HMI / IoT',
     srv_7_title: 'High-Concentration Nano-Bubble Fluid Applications', srv_7_desc: 'Chemical-free adoption for semiconductor, biomedical, liquid cooling',
-    cta_learn: 'Learn More', cta_all_services: 'View All Services',
+    cta_learn: 'Learn More', cta_all_services: 'View All Services', cta_view_specs: 'View Full Specs →',
 
     partners_eyebrow: 'TRUSTED BY INDUSTRY LEADERS',
 

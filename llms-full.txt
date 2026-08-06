@@ -194,7 +194,28 @@
 
 ## 4. 服務詳細說明 / Service Details
 
-### 4.1 機械手臂整合 Robot System Integration
+### [4.1 數位雙生自動化設計規劃 Digital Twin](https://www.hsinchan.com/services.html#digital-twin)
+
+**技術架構：**
+- IoT 感測器：溫度、振動、電流、壓力即時採集
+- 邊緣運算：PLC/Edge Device 數據前處理
+- 雲端平台：數據儲存、分析、視覺化儀表板
+- 數位模型：設備3D虛擬映射，即時反映物理狀態
+
+**核心功能：**
+- 虛擬產線佈局規劃與動作模擬、設備干涉檢查與安全評估
+- 節拍時間（Takt Time）分析最佳化
+- OEE（整體設備效率）即時計算、故障預測
+- 異常自動通報（Email / SMS / Line）
+
+**效益指標：**
+- 非計畫停機減少最多 30%
+- 預防性維護成本降低 15-25%
+- 生產效率提升 8-15%
+
+---
+
+### [4.2 機械手臂應用 Robot System Integration](https://www.hsinchan.com/services.html#robot-integration)
 
 **支援品牌（Supported Brands）:**
 - FANUC（發那科）：LR Mate 200iD、M-710iC、R-2000iC等
@@ -215,28 +236,21 @@
 
 ---
 
-### 4.2 數位雙生 Digital Twin
+### [4.3 單機自動化設計製造 Custom Automation Build](https://www.hsinchan.com/services.html#custom-automation)
 
-**技術架構：**
-- IoT 感測器：溫度、振動、電流、壓力即時採集
-- 邊緣運算：PLC/Edge Device 數據前處理
-- 雲端平台：數據儲存、分析、視覺化儀表板
-- 數位模型：設備3D虛擬映射，即時反映物理狀態
+**服務流程：**
+1. 需求分析與方案可行性評估
+2. 機構概念設計與3D建模（SolidWorks / Solid Edge）
+3. 工程圖面繪製、零件加工製造
+4. PLC / HMI 程式開發（三菱 iQ-F / iQ-R 系列、西門子）
+5. 伺服系統整合：三菱 MR-J5（SSCNET III/H）
+6. 整機組裝、測試、現場安裝與人員培訓
 
-**核心功能：**
-- OEE（整體設備效率）即時計算
-- 故障預測：設備剩餘使用壽命（RUL）預測
-- 生產排程優化模擬
-- 異常自動通報（Email / SMS / Line）
-
-**效益指標：**
-- 非計畫停機減少最多 30%
-- 預防性維護成本降低 15-25%
-- 生產效率提升 8-15%
+**特色：** 從需求分析到現場調機，一條龍自動化設備設計製造服務，交期彈性配合客戶產線排程
 
 ---
 
-### 4.3 視覺檢測 AOI Machine Vision
+### [4.4 視覺檢測 Machine Vision & AOI](https://www.hsinchan.com/services.html#machine-vision)
 
 **硬體配置：**
 - 工業相機：Basler、Cognex、Keyence、Hikvision
@@ -253,7 +267,7 @@
 
 ---
 
-### 4.4 夾治具設計製造 Fixture Design & Manufacturing
+### [4.5 夾治具設計製造 Fixture Design & Manufacturing](https://www.hsinchan.com/services.html#fixture-design)
 
 **設計規格：**
 - 重複定位精度：±0.02mm
@@ -269,7 +283,7 @@
 
 ---
 
-### 4.5 設備智能化 Equipment Intelligence Upgrade
+### [4.6 設備智能化 Equipment Intelligence Upgrade](https://www.hsinchan.com/services.html#smart-upgrade)
 
 **改造方案：**
 
@@ -283,7 +297,7 @@
 
 ---
 
-### [4.6 高濃度奈米氣泡流體產業應用 Nano-Bubble Fluid Industrial Application](https://www.hsinchan.com/product-graphite-tube.html)
+### [4.7 高濃度奈米氣泡流體產業應用 Nano-Bubble Fluid Industrial Application](https://www.hsinchan.com/services.html#nano-bubble-application)
 
 針對客戶產線導入高濃度奈米氣泡流體模組的整合應用服務，涵蓋選型評估、管路整合安裝、效能驗證。
 
