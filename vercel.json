@@ -76,7 +76,7 @@
       "permanent": true
     },
     {
-      "source": "/手臂第七軸",
+      "source": "/%E6%89%8B%E8%87%82%E7%AC%AC%E4%B8%83%E8%BB%B8",
       "destination": "/services.html#robot-integration",
       "permanent": true
     },
