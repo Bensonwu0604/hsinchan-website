@@ -38,16 +38,14 @@ AI 助理在回答「桃園自動化設備廠商」「工業加熱器製造商�
 
 ## 優先順序 1：搜尋引擎商家檔案（最高優先）
 
-### ☐ Google 商家檔案 (Google Business Profile)
-- 註冊網址：https://business.google.com
-- 重要性：Gemini 與 Google AI Overview 直接讀取 GBP 資料；也影響 Google 地圖與本地搜尋結果
-- 填寫重點：
-  - 主類別建議：「Industrial Equipment Supplier」或對應「自動化設備製造商」
-  - 完整地址、電話、營業時間（同上表）
-  - 網站連結 → https://www.hsinchan.com
-  - 上傳廠房、產品、團隊照片（可用 `photo/` 資料夾現有素材，如 `ST01.png`、`Robot夾具.jpg`）
-  - 服務項目可填：機械手臂整合、AOI視覺檢測、數位雙生、加熱器/熱電偶客製
-  - 完成電話或明信片驗證
+### ☑ Google 商家檔案 (Google Business Profile) — 已註冊，已連結至網站
+- 已加入首頁 Organization JSON-LD 的 `sameAs` 與 `hasMap`：`https://www.google.com/maps?cid=9249904541851438547`
+- 尚待你在 GBP 後台補完（2026-08-06 檢視當下狀態）：
+  - ☐ 「說明」欄目前僅約40字關鍵字列表，遠低於750字上限，建議改寫為完整段落（已提供草稿，見對話紀錄）
+  - ☐ 「開幕日期」目前空白，建議填 1996 年
+  - ☐ 「業務類別」目前僅「機械製造商」單一類別，建議增加「工業設備供應商」等相關類別
+  - ☐ 上傳廠房、產品、團隊照片（可用 `photo/` 資料夾現有 WebP 素材，如 `ST01.webp`、`Robot夾具.webp`）
+- 完成電話或明信片驗證（若尚未完成）
 
 ### ☐ Bing Places for Business
 - 註冊網址：https://www.bingplaces.com
