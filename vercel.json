@@ -74,6 +74,21 @@
       "source": "/index",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/手臂第七軸",
+      "destination": "/services.html#robot-integration",
+      "permanent": true
+    },
+    {
+      "source": "/3d-printing",
+      "destination": "/services.html",
+      "permanent": true
+    },
+    {
+      "source": "/laser-cutting",
+      "destination": "/services.html",
+      "permanent": true
     }
   ],
 

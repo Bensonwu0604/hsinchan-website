@@ -955,7 +955,7 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   background-image:
     linear-gradient(to bottom, rgba(4,8,14,0.08) 0%, rgba(4,8,14,0.02) 50%, rgba(4,8,14,0.12) 100%),
-    url('photo/員工福利.jpg');
+    url('photo/員工福利.webp');
   background-size: cover;
   background-position: center;
 }
@@ -1289,7 +1289,7 @@ h1, h2, h3, h4, h5, h6 {
 .product-hl__img--kaizen::before {
   background-image:
     linear-gradient(160deg, rgba(4,8,18,0.58) 0%, rgba(10,20,40,0.22) 55%, rgba(4,8,18,0.65) 100%),
-    url('photo/kaizen-factory.jfif');
+    url('photo/kaizen-factory.webp');
   background-size: cover;
   background-position: center;
 }
@@ -1620,7 +1620,7 @@ h1, h2, h3, h4, h5, h6 {
 .tech-card__img--semi::before {
   background-image:
     linear-gradient(135deg, rgba(4,9,26,0.68) 0%, rgba(8,20,45,0.32) 50%, rgba(4,9,26,0.78) 100%),
-    url('photo/semi-factory.jfif');
+    url('photo/semi-factory.webp');
   background-size: cover;
   background-position: center;
 }
@@ -1629,7 +1629,7 @@ h1, h2, h3, h4, h5, h6 {
 .tech-card__img--ev::before {
   background-image:
     linear-gradient(145deg, rgba(4,7,14,0.65) 0%, rgba(10,18,36,0.28) 50%, rgba(4,7,14,0.72) 100%),
-    url('photo/ev-factory.png');
+    url('photo/ev-factory.webp');
   background-size: cover;
   background-position: center;
 }
@@ -1638,7 +1638,7 @@ h1, h2, h3, h4, h5, h6 {
 .tech-card__img--robot::before {
   background-image:
     linear-gradient(180deg, rgba(4,4,10,0.60) 0%, rgba(8,8,14,0.24) 50%, rgba(4,4,10,0.68) 100%),
-    url('photo/Robot夾具.jpg');
+    url('photo/Robot夾具.webp');
   background-size: cover;
   background-position: center;
 }
@@ -2480,7 +2480,7 @@ h1, h2, h3, h4, h5, h6 {
 .srv-vis--single::before { content: ''; position: absolute; inset: 0;
   background-image:
     linear-gradient(160deg, rgba(4,5,10,0.50) 0%, rgba(10,14,22,0.18) 55%, rgba(4,5,10,0.60) 100%),
-    url('photo/ST01.png');
+    url('photo/ST01.webp');
   background-size: cover;
   background-position: center;
 }
@@ -2488,7 +2488,7 @@ h1, h2, h3, h4, h5, h6 {
 .srv-vis--vision::before { content: ''; position: absolute; inset: 0;
   background-image:
     linear-gradient(135deg, rgba(4,8,22,0.55) 0%, rgba(8,16,40,0.20) 50%, rgba(4,8,22,0.65) 100%),
-    url('photo/Cognex.jpg');
+    url('photo/Cognex.webp');
   background-size: cover;
   background-position: center;
 }
@@ -2496,7 +2496,7 @@ h1, h2, h3, h4, h5, h6 {
 .srv-vis--fixture::before { content: ''; position: absolute; inset: 0;
   background-image:
     linear-gradient(135deg, rgba(5,7,12,0.50) 0%, rgba(10,14,20,0.18) 50%, rgba(5,7,12,0.60) 100%),
-    url('photo/Robot夾具.jpg');
+    url('photo/Robot夾具.webp');
   background-size: cover;
   background-position: center;
 }
@@ -2512,7 +2512,7 @@ h1, h2, h3, h4, h5, h6 {
 .srv-vis--nanobubble::before { content: ''; position: absolute; inset: 0;
   background-image:
     linear-gradient(135deg, rgba(4,10,20,0.55) 0%, rgba(8,20,36,0.20) 50%, rgba(4,10,20,0.68) 100%),
-    url('photo/semi-factory.jfif');
+    url('photo/semi-factory.webp');
   background-size: cover;
   background-position: center;
 }

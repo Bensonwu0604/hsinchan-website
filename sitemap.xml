@@ -6,7 +6,7 @@
   <!-- 首頁 -->
   <url>
     <loc>https://www.hsinchan.com/</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-08-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/"/>
@@ -28,7 +28,7 @@
   <!-- 產品資訊 -->
   <url>
     <loc>https://www.hsinchan.com/products.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-08-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/products.html"/>
@@ -39,7 +39,7 @@
   <!-- 服務項目 -->
   <url>
     <loc>https://www.hsinchan.com/services.html</loc>
-    <lastmod>2026-05-09</lastmod>
+    <lastmod>2026-08-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/services.html"/>
