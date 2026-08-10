@@ -2517,6 +2517,28 @@ h1, h2, h3, h4, h5, h6 {
   background-position: center;
 }
 
+/* ESG pillar visuals — gradient only, no external photo dependency */
+.esg-vis--environment::before { content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 22% 28%, rgba(58,100,147,0.45) 0%, transparent 45%),
+    radial-gradient(circle at 78% 68%, rgba(74,122,181,0.35) 0%, transparent 50%),
+    linear-gradient(150deg, rgba(4,10,20,0.92) 0%, rgba(10,26,44,0.82) 55%, rgba(4,10,20,0.94) 100%);
+}
+
+.esg-vis--social::before { content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(154,124,69,0.40) 0%, transparent 45%),
+    radial-gradient(circle at 75% 70%, rgba(122,98,53,0.32) 0%, transparent 50%),
+    linear-gradient(150deg, rgba(10,8,4,0.92) 0%, rgba(28,22,12,0.82) 55%, rgba(10,8,4,0.94) 100%);
+}
+
+.esg-vis--governance::before { content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(196,30,30,0.30) 0%, transparent 45%),
+    radial-gradient(circle at 75% 70%, rgba(58,100,147,0.35) 0%, transparent 50%),
+    linear-gradient(150deg, rgba(6,6,10,0.92) 0%, rgba(16,16,26,0.82) 55%, rgba(6,6,10,0.94) 100%);
+}
+
 .tech-article__body {}
 
 .tech-article__tag {

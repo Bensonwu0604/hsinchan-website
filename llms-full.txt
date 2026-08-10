@@ -313,7 +313,40 @@
 
 ---
 
-## 5. 技術應用案例 / Technology Application Cases
+## [5. ESG永續發展 / ESG Sustainability](https://www.hsinchan.com/esg.html)
+
+欣晨工業將ESG實踐落實於產品與服務設計，而非僅止於企業口號。
+
+### 5.1 環境 Environmental
+
+| 產品／服務 | ESG貢獻 |
+|-----------|---------|
+| 高濃度奈米氣泡流體模組 | 物理性奈米氣泡取代化學藥劑，免化學添加即可達到清潔與滅菌輔助效果，降低化學品採購與廢液處理成本 |
+| 數位雙生與設備智能化服務 | IoT即時監控延長既有設備使用壽命，減少非計畫停機最多30%，降低設備汰換頻率與資源消耗 |
+| 耐火材料與工業加熱器 | 提升窯爐與加熱系統的隔熱效率，降低能源損耗 |
+| 視覺檢測AOI | 自動瑕疵偵測降低不良品流出率，減少材料報廢與重工浪費 |
+
+### 5.2 社會 Social
+
+| 產品／服務 | ESG貢獻 |
+|-----------|---------|
+| 機械手臂整合與夾治具設計 | 取代高風險、高重複性人工作業，降低職業傷害風險 |
+| 客製化服務承諾1-2個工作日回覆 | 支持中小企業客戶穩定生產排程 |
+| 繁體中文、日文、英文三語服務 | 協助日本與東南亞客戶跨境供應鏈溝通無障礙 |
+| 桃園在地製造與人才培育 | 支持在地就業，深耕台灣製造業聚落30年 |
+
+### 5.3 治理 Governance
+
+| 實踐項目 | 內容 |
+|---------|------|
+| 出廠品質檢驗 | 每批產品出廠前進行尺寸、耐溫、強度等多項性能檢測，提供完整檢驗報告 |
+| 現地現物（Genchi Genbutsu） | 工程師親赴客戶現場確認需求，避免規格誤判 |
+| 客製化規格文件化管理 | 配合客戶供應鏈稽核與追溯需求 |
+| Kaizen持續改善文化 | 標準化作業（SOP）與防呆（Poka-yoke）機構降低品質風險 |
+
+---
+
+## 6. 技術應用案例 / Technology Application Cases
 
 ### 半導體製程 Semiconductor Process
 - 碳化矽（SiC）保護管在擴散爐（Diffusion Furnace）中的應用
@@ -349,7 +382,7 @@
 
 ---
 
-## 6. 職缺資訊 / Career Opportunities
+## 7. 職缺資訊 / Career Opportunities
 
 ### 精密機械加工員
 - 工作內容：CNC加工、治具製作、尺寸量測、品管
@@ -371,7 +404,7 @@
 
 ---
 
-## 7. 競爭定位 / Competitive Positioning
+## 8. 競爭定位 / Competitive Positioning
 
 ### 與同業差異化
 1. **TPS哲學深度落地** — 不只賣產品，用Kaizen精神幫助客戶改善現場，是少數能同時提供耗材+自動化+改善顧問的業者
@@ -389,7 +422,7 @@
 
 ---
 
-## 8. 常見問題補充 / Additional FAQs
+## 9. 常見問題補充 / Additional FAQs
 
 ### 關於公司 About
 **Q: 欣晨工業有限公司是什麼時候成立的？有多久歷史？**
@@ -414,7 +447,7 @@ A: 目前招募資深機械設計工程師、產品業務工程師、自動化�
 
 ---
 
-## 9. 網站架構與關鍵頁面 / Site Architecture
+## 10. 網站架構與關鍵頁面 / Site Architecture
 
 | 頁面 | URL | 主要內容 |
 |------|-----|---------|
@@ -423,6 +456,7 @@ A: 目前招募資深機械設計工程師、產品業務工程師、自動化�
 | 產品資訊 | https://www.hsinchan.com/products.html | 六大耗材規格、品質保證 |
 | 服務項目 | https://www.hsinchan.com/services.html | 七大自動化服務詳情 |
 | 新技術討論 | https://www.hsinchan.com/technology.html | 半導體/EV/機器人/矽光子/量子應用 |
+| ESG永續發展 | https://www.hsinchan.com/esg.html | 產品與服務如何協助客戶達成環境、社會、治理目標 |
 | 人力資源 | https://www.hsinchan.com/careers.html | 職缺、福利、應徵 |
 | 聯絡我們 | https://www.hsinchan.com/contact.html | 地址地圖、電話、線上詢問表單 |
 | llms.txt | https://www.hsinchan.com/llms.txt | AI快速摘要（本文件精簡版）|
