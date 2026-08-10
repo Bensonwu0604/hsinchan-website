@@ -2517,26 +2517,29 @@ h1, h2, h3, h4, h5, h6 {
   background-position: center;
 }
 
-/* ESG pillar visuals — gradient only, no external photo dependency */
+/* ESG pillar visuals */
 .esg-vis--environment::before { content: ''; position: absolute; inset: 0;
   background-image:
-    radial-gradient(circle at 22% 28%, rgba(58,100,147,0.45) 0%, transparent 45%),
-    radial-gradient(circle at 78% 68%, rgba(74,122,181,0.35) 0%, transparent 50%),
-    linear-gradient(150deg, rgba(4,10,20,0.92) 0%, rgba(10,26,44,0.82) 55%, rgba(4,10,20,0.94) 100%);
+    linear-gradient(150deg, rgba(4,10,20,0.62) 0%, rgba(10,26,44,0.30) 55%, rgba(4,10,20,0.72) 100%),
+    url('https://images.unsplash.com/photo-1658242106760-7a5c8f177180?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
 }
 
 .esg-vis--social::before { content: ''; position: absolute; inset: 0;
   background-image:
-    radial-gradient(circle at 25% 30%, rgba(154,124,69,0.40) 0%, transparent 45%),
-    radial-gradient(circle at 75% 70%, rgba(122,98,53,0.32) 0%, transparent 50%),
-    linear-gradient(150deg, rgba(10,8,4,0.92) 0%, rgba(28,22,12,0.82) 55%, rgba(10,8,4,0.94) 100%);
+    linear-gradient(150deg, rgba(10,8,4,0.60) 0%, rgba(28,22,12,0.28) 55%, rgba(10,8,4,0.70) 100%),
+    url('https://images.unsplash.com/photo-1759763823587-c8bd07fca246?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
 }
 
 .esg-vis--governance::before { content: ''; position: absolute; inset: 0;
   background-image:
-    radial-gradient(circle at 25% 30%, rgba(196,30,30,0.30) 0%, transparent 45%),
-    radial-gradient(circle at 75% 70%, rgba(58,100,147,0.35) 0%, transparent 50%),
-    linear-gradient(150deg, rgba(6,6,10,0.92) 0%, rgba(16,16,26,0.82) 55%, rgba(6,6,10,0.94) 100%);
+    linear-gradient(150deg, rgba(6,6,10,0.60) 0%, rgba(16,16,26,0.28) 55%, rgba(6,6,10,0.70) 100%),
+    url('https://images.unsplash.com/photo-1758873263563-5ba4aa330799?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
 }
 
 .tech-article__body {}
