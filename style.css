@@ -516,6 +516,11 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
 }
 
+.nav__link--esg {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
 .nav__link::after {
   content: '';
   position: absolute;
@@ -2606,6 +2611,16 @@ h1, h2, h3, h4, h5, h6 {
   flex-shrink: 0;
   margin-top: 0.52rem;
 }
+
+.tech-article__point-link {
+  display: inline-block;
+  margin-left: 0.35em;
+  color: var(--c-accent-light);
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tech-article__point-link:hover { text-decoration: underline; }
 
 /* ── About Page ──────────────────────────────────────────────────────── */
 .about-history {
