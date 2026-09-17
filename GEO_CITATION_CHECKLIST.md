@@ -20,8 +20,8 @@ AI 助理在回答「桃園自動化設備廠商」「工業加熱器製造商�
 |---|---|
 | 公司名稱（中） | 欣晨工業有限公司 |
 | 公司名稱（英） | Hsin-Chan Industrial Co., Ltd. |
-| 地址 | 33841 台灣桃園市大園區中正東路三段490號 |
-| 地址（英） | No. 490, Sec. 3, Zhongzheng E. Rd., Dayuan District, Taoyuan City 33841, Taiwan |
+| 地址 | 33755 台灣桃園市大園區中正東路三段490號 |
+| 地址（英） | No. 490, Sec. 3, Zhongzheng E. Rd., Dayuan District, Taoyuan City 33755, Taiwan |
 | 電話 | +886-3-381-4497（03-381-4497） |
 | 傳真 | 03-381-4536 |
 | Email | hc3814497@gmail.com |
@@ -97,7 +97,8 @@ AI 助理在回答「桃園自動化設備廠商」「工業加熱器製造商�
 
 ### ☐ Bing Webmaster Tools
 - 網址：https://www.bing.com/webmasters
-- 動作：加入網站、提交 sitemap.xml；可啟用 IndexNow 即時通知 Bing 內容更新，加快 ChatGPT/Copilot 取得最新資料
+- 動作：加入網站、提交 sitemap.xml
+- ☑ IndexNow 金鑰已設定完成（2026-09-17）：`https://www.hsinchan.com/7e19d612360c86de1ba45b3cd77a568c.txt`，可直接呼叫 API 通知 Bing / Microsoft Edge 即時重新索引，不需等 Bing Webmaster Tools 帳號建立完成
 
 ---
 

@@ -114,3 +114,6 @@ Allow: /
 Sitemap: https://www.hsinchan.com/sitemap.xml
 LLMs: https://www.hsinchan.com/llms.txt
 LLMs-Full: https://www.hsinchan.com/llms-full.txt
+
+# ── IndexNow（Bing / Microsoft Edge 即時索引通知協議）───────────────────────────
+# 金鑰檔：https://www.hsinchan.com/7e19d612360c86de1ba45b3cd77a568c.txt
