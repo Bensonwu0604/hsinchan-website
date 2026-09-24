@@ -72,9 +72,11 @@ AI 助理在回答「桃園自動化設備廠商」「工業加熱器製造商�
 
 ## 優先順序 2（知識圖譜，中期投入）
 
-### ☐ Wikidata 條目
-- 網址：https://www.wikidata.org
-- 多數 LLM 的知識圖譜核心資料來源之一，建立條目並連結官網/Facebook/YouTube/地址
+### ☑ Wikidata 條目 — 已建立（2026-09-24）
+- 條目：https://www.wikidata.org/wiki/Q141546907
+- 已加入首頁 Organization JSON-LD 的 `sameAs`
+- 屬性已正確填寫：instance of / country / inception / coordinates / phone / website / Facebook ID
+- ⚠️ 待辦：Label（名稱）目前空白，顯示「No label defined」，需要你回去補上中/英/日三語標籤，否則條目等於沒有名字
 
 ### ☐ LinkedIn 公司頁面
 - 建立網址：https://www.linkedin.com/company/setup/new/
