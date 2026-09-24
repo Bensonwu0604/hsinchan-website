@@ -36,69 +36,82 @@ AI 助理在回答「桃園自動化設備廠商」「工業加熱器製造商�
 
 ---
 
-## 優先順序 1：搜尋引擎商家檔案（最高優先）
+## 現況總覽（2026-09-24 更新）
 
-### ☑ Google 商家檔案 (Google Business Profile) — 已註冊，已連結至網站
-- 已加入首頁 Organization JSON-LD 的 `sameAs` 與 `hasMap`：`https://www.google.com/maps?cid=9249904541851438547`
-- 尚待你在 GBP 後台補完（2026-08-06 檢視當下狀態）：
-  - ☐ 「說明」欄目前僅約40字關鍵字列表，遠低於750字上限，建議改寫為完整段落（已提供草稿，見對話紀錄）
-  - ☐ 「開幕日期」目前空白，建議填 1996 年
-  - ☐ 「業務類別」目前僅「機械製造商」單一類別，建議增加「工業設備供應商」等相關類別
-  - ☐ 上傳廠房、產品、團隊照片（可用 `photo/` 資料夾現有 WebP 素材，如 `ST01.webp`、`Robot夾具.webp`）
-- 完成電話或明信片驗證（若尚未完成）
+| # | 項目 | 狀態 | 誰來做 |
+|---|------|------|--------|
+| 1 | Google 商家檔案 — 註冊、連結網站 | ☑ 已完成 | — |
+| 2 | Google 商家檔案 — 說明/開幕日期/類別/照片 | ☐ **未完成** | 你 |
+| 3 | Bing Places for Business | ☐ **未完成** | 你 |
+| 4 | Wikidata 條目 | ☐ **未完成** | 你 |
+| 5 | LinkedIn 公司頁面 | ☐ **未完成** | 你 |
+| 6 | Google Search Console | ☑ 已完成（已驗證、sitemap 已提交、有成效數據） | — |
+| 7 | Rich Results Test | 🔶 部分完成，見下方說明 | 你（重測）+ 我（已修3個錯誤） |
+| 8 | Bing Webmaster Tools 帳號 | ☐ **未完成**（但 IndexNow 已頂替部分功能） | 你 |
+| 9 | Taiwantrade | ☐ **未完成** | 你 |
+| 10 | ThomasNet | ☐ **未完成** | 你 |
+| 11 | EC21 / Alibaba | ☐ **未完成** | 你 |
+
+---
+
+## 優先順序 1（先做這兩個，效益最高、最省時間）
+
+### ☐ Google 商家檔案補完資料
+帳號已經在，只是內容沒填滿：
+- 「說明」欄目前只有約40字關鍵字列表，離750字上限還很遠——之前對話裡已經給過完整草稿，可直接貼上
+- 「開幕日期」空白，填 1996 年
+- 「業務類別」目前只有「機械製造商」一個，建議加「工業設備供應商」等相關類別
+- 上傳廠房/產品/團隊照片（`photo/` 資料夾裡有現成的 WebP 素材）
 
 ### ☐ Bing Places for Business
-- 註冊網址：https://www.bingplaces.com
-- 重要性：Bing 是 ChatGPT（Bing 搜尋整合）與 Microsoft Copilot 的主要資料來源之一
-- 填寫重點：可直接從 Google 商家檔案匯入資料，加快流程
+- 網址：https://www.bingplaces.com
+- 可直接從已有的 Google 商家檔案匯入資料，幾分鐘就能完成
+- 重要性：Bing 是 ChatGPT 的 Bing 搜尋整合、Microsoft Copilot 的主要資料來源
 
 ---
 
-## 優先順序 2：產業 B2B 平台（國際曝光）
-
-### ☐ Taiwantrade（台灣經貿網）
-- 網址：https://www.taiwantrade.com
-- 重要性：台灣官方外貿平台，內容常被收錄於各類語料中；適合「Taiwan heater manufacturer」「Taiwan automation equipment」等英文查詢
-
-### ☐ ThomasNet
-- 網址：https://www.thomasnet.com
-- 重要性：北美最大工業供應商目錄，提升英文/北美市場曝光
-
-### ☐ EC21 / Alibaba 企業檔案
-- 網址：https://www.ec21.com 、 https://www.alibaba.com
-- 重要性：覆蓋全球採購商搜尋習慣，補強多語言（中/英/日）曝光，與官網的三語版本相呼應
-
----
-
-## 優先順序 3：專業社群與知識圖譜
-
-### ☐ LinkedIn 公司頁面
-- 建立網址：https://www.linkedin.com/company/setup/new/
-- 重要性：LinkedIn 企業頁面內容常被各大 LLM 收錄；可同步分享 technology.html 的技術文章、產品更新
+## 優先順序 2（知識圖譜，中期投入）
 
 ### ☐ Wikidata 條目
 - 網址：https://www.wikidata.org
-- 重要性：Wikidata 是多數 LLM 知識圖譜的核心資料來源之一。建立公司條目（Q-item）並連結官網、Facebook、YouTube、地址等，有助 AI 將「欣晨工業」與正確實體資訊綁定
+- 多數 LLM 的知識圖譜核心資料來源之一，建立條目並連結官網/Facebook/YouTube/地址
+
+### ☐ LinkedIn 公司頁面
+- 建立網址：https://www.linkedin.com/company/setup/new/
+- 常被各大 LLM 收錄，可同步分享 technology.html 的技術文章
 
 ---
 
-## 優先順序 4：技術驗證（確認結構化資料正確被讀取）
+## 優先順序 3：技術驗證回頭確認
 
-### ☐ Google Search Console
-- 網址：https://search.google.com/search-console
-- 動作：
-  1. 加入並驗證 https://www.hsinchan.com
-  2. 提交 sitemap：`https://www.hsinchan.com/sitemap.xml`
-  3. 用「網址檢查」工具確認首頁 FAQPage / Organization 結構化資料被正確解析（無錯誤或警告）
+### ☑ Google Search Console — 已完成
+帳號已驗證、sitemap 已提交且讀取成功（13個網頁），之前對話中已一起看過「成效」報表數據（「欣晨工業有限公司」平均排序 1.6）。**現在可以做的**：用「網址檢查」工具重新檢查 products.html / services.html，確認這幾輪新加的 Speakable、Product category、hreflang 都正確被 Google 解析。
 
-### ☐ Rich Results Test
-- 網址：https://search.google.com/test/rich-results
-- 動作：貼上 https://www.hsinchan.com，確認 FAQPage（13 題）、Organization、Speakable 等 JSON-LD 全部通過驗證
+### 🔶 Rich Results Test — 部分完成
+你先前測出首頁 3 個 Product 錯誤，我已修好並部署。**建議動作**：
+1. 重新測 `https://www.hsinchan.com/` 確認錯誤已消失
+2. 若想測 `products.html` 或個別產品頁，會看到同類型「必須指定 offers/review/aggregateRating」的警告——這是刻意保留的（見對話紀錄說明：客製報價制沒有固定價格，不會為了消除警告捏造價格或評論），不影響一般收錄與 AI 引用，只影響是否顯示 Google 特定的商品卡片視覺效果
 
-### ☐ Bing Webmaster Tools
+### ☐ Bing Webmaster Tools 帳號
 - 網址：https://www.bing.com/webmasters
-- 動作：加入網站、提交 sitemap.xml
-- ☑ IndexNow 金鑰已設定完成（2026-09-17）：`https://www.hsinchan.com/7e19d612360c86de1ba45b3cd77a568c.txt`，可直接呼叫 API 通知 Bing / Microsoft Edge 即時重新索引，不需等 Bing Webmaster Tools 帳號建立完成
+- ☑ IndexNow 金鑰已設定並已主動推播多個網址（`https://www.hsinchan.com/7e19d612360c86de1ba45b3cd77a568c.txt`），這解決了「即時通知重新索引」的核心需求
+- 但要看 Bing 的完整分析報表、手動排查索引問題，還是需要註冊帳號
+
+---
+
+## 優先順序 4（國際 B2B 曝光，效益中等、需要較多時間填資料）
+
+### ☐ Taiwantrade（台灣經貿網）
+- 網址：https://www.taiwantrade.com
+- 適合「Taiwan heater manufacturer」等英文查詢
+
+### ☐ ThomasNet
+- 網址：https://www.thomasnet.com
+- 北美最大工業供應商目錄
+
+### ☐ EC21 / Alibaba 企業檔案
+- 網址：https://www.ec21.com 、 https://www.alibaba.com
+- 覆蓋全球採購商搜尋習慣，與官網三語版本相呼應
 
 ---
 
@@ -106,7 +119,7 @@ AI 助理在回答「桃園自動化設備廠商」「工業加熱器製造商�
 
 完成上述項目後，請告知我：
 1. 是否取得新的外部連結（LinkedIn 公司頁、Wikidata 條目網址等）
-2. 是否需要將新連結加入網站 JSON-LD 的 `sameAs` 欄位（目前 index.html 的 Organization schema 已包含 Facebook 與 YouTube，可一併補上其他平台連結，進一步強化 AI 對「欣晨工業」實體的辨識）
+2. 需不需要把新連結加入網站 JSON-LD 的 `sameAs` 欄位（目前已包含 Facebook、YouTube、Google Maps）
 
 ---
 
