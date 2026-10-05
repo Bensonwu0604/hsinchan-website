@@ -94,6 +94,8 @@
 
 ### [3.1 工業加熱器 Industrial Heaters](https://www.hsinchan.com/product-heater.html)
 
+**分類（Category）：** 工業加熱設備 Industrial Heating Equipment
+
 **產品類型：**
 - 電熱管（Tubular Heater）：射出成型機用加熱圈（加熱帶）、加熱棒
 - 陶瓷加熱器（Ceramic Heater）：耐高溫環境特殊用途
@@ -116,6 +118,8 @@
 ---
 
 ### [3.2 熱電偶 Thermocouples](https://www.hsinchan.com/product-thermocouple.html)
+
+**分類（Category）：** 工業溫度感測器 Industrial Temperature Sensors
 
 **支援型號：**
 | 型號 | 測溫範圍 | 特性 |
@@ -142,6 +146,8 @@
 
 ### [3.3 一體式料管 Integrated Barrels](https://www.hsinchan.com/product-integrated-barrel.html)
 
+**分類（Category）：** 射出成型機零件 Injection Molding Machine Components
+
 **設計特點：**
 - 一體成型，無接縫滲漏風險
 - 消除傳統分段式料管的熱損耗不均問題
@@ -162,6 +168,7 @@
 
 ### [3.4 碳化矽保護管 SiC Protection Tubes](https://www.hsinchan.com/product-sic-tube.html)
 
+- **分類（Category）**: 高溫保護管 High-Temperature Protection Tubes
 - **材質純度**: 高純度 SiC（>99%）
 - **最高使用溫度**: >1600°C（連續使用）
 - **抗熱衝擊**: 優異，可承受急冷急熱
@@ -172,6 +179,7 @@
 
 ### [3.5 耐火材料 Refractory Materials](https://www.hsinchan.com/product-refractory.html)
 
+- **分類（Category）**: 工業耐火材料 Industrial Refractory Materials
 - **耐火磚**: 高鋁磚、矽磚、鎂磚、碳化矽磚
 - **耐火泥**: 不定形耐火材料，澆注料、可塑料、噴射料
 - **最高耐溫**: 依材質達1800°C
@@ -182,6 +190,7 @@
 
 ### [3.6 高濃度奈米氣泡流體模組 High-Concentration Nano-Bubble Fluid Module](https://www.hsinchan.com/product-graphite-tube.html)
 
+- **分類（Category）**: 工業製程設備 Industrial Process Equipment
 - **氣泡尺寸**: < 100nm
 - **氣泡濃度**: > 10⁸ 顆/mL（高密度）
 - **適用介質**: 純水、半導體製程用水、冷卻液、生醫用水
@@ -316,6 +325,19 @@
 ## [5. ESG永續發展 / ESG Sustainability](https://www.hsinchan.com/esg.html)
 
 欣晨工業將ESG實踐落實於產品與服務設計，而非僅止於企業口號。
+
+**ESG 實踐數據：**
+
+| 指標 | 說明 |
+|------|------|
+| 0 | 化學藥劑添加（奈米氣泡流體模組） |
+| 30% | 最高降低非計畫停機（數位雙生・設備智能化） |
+| 25% | 最高降低營運成本（預防性維護成本節省） |
+| 30年 | 治理與品質實績（Est. 1996） |
+| AI × 永續 | AOI瑕疵偵測 × 設備智能化，AI驅動的雙重減碳能力 |
+| 碳足跡 | 桃園單一基地服務六大市場（台灣、日本、新加坡、馬來西亞、泰國、越南），降低跨境運輸碳排 |
+| 創造企業價值 | 服務半導體、量子運算、人形機器人等12大前瞻應用領域 |
+| 循環經濟 | 免化學添加・設備延壽・降低報廢，三大循環實踐面向 |
 
 ### 5.1 環境 Environmental
 
@@ -464,7 +486,7 @@ A: 目前招募資深機械設計工程師、產品業務工程師、自動化�
 
 ---
 
-*最後更新 Last updated: 2026-09-17*
+*最後更新 Last updated: 2026-10-05*
 *語言 Language: zh-TW / en / ja*
 *© 欣晨工業有限公司 Hsin-Chan Industrial Co., Ltd.*
 *Contact: hc3814497@gmail.com | +886-3-381-4497*
