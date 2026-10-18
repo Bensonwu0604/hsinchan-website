@@ -525,7 +525,7 @@ const translations = {
     esg_cta_btn: '立即聯繫',
 
     // Careers page
-    career_page_title: '欣晨工業 人力資源',
+    career_page_title: '人力資源',
     career_page_lead: '加入欣晨工業有限公司，與我們一同傳承30年精密製造工藝，共同迎接自動化與新材料時代的機遇與挑戰。',
     career_eyebrow_top: 'CAREERS',
     career_apply_label: 'Email 應徵',
@@ -1124,7 +1124,7 @@ const translations = {
     esg_cta_desc: 'プロセスの脱炭素化、サプライチェーンガバナンス、サステナブル調達など、どのようなご要望でも欣晨工業の技術チームまでお気軽にお問い合わせください。最適な製品・サービスソリューションをご提案いたします。',
     esg_cta_btn: '今すぐお問い合わせ',
 
-    career_page_title: '欣晨工業 採用情報',
+    career_page_title: '採用情報',
     career_page_lead: '欣晨工業有限公司に加わり、30年の精密製造技術を受け継ぎ、自動化と新材料時代の機会と挑戦を共に迎えましょう。',
     career_eyebrow_top: '採用情報',
     career_apply_label: 'メール応募',
@@ -1722,7 +1722,7 @@ const translations = {
     esg_cta_desc: 'Whether it\'s process decarbonization, supply chain governance, or sustainable procurement needs, reach out to Hsin-Chan Industrial\'s technical team — we\'ll help you find the right product and service solution.',
     esg_cta_btn: 'Contact Us Now',
 
-    career_page_title: 'Hsin-Chan Industrial Careers',
+    career_page_title: 'Careers',
     career_page_lead: 'Join Hsin-Chan Industrial Co., Ltd., carry forward 30 years of precision manufacturing craftsmanship, and embrace the opportunities and challenges of the automation and new materials era together.',
     career_eyebrow_top: 'CAREERS',
     career_apply_label: 'Apply by Email',
