@@ -400,7 +400,7 @@ const translations = {
     // Services page
     srv_eyebrow_top: 'SERVICES', srv_eyebrow_cta: 'START PROJECT',
     srv_page_title: '服務項目',
-    srv_page_lead: '欣晨工業有限公司是台灣桃園自動化設備廠商，提供七大自動化服務，從數位規劃、機械手臂整合、視覺檢測，到設備智能化升級、奈米氣泡流體應用，一站式滿足您的製造需求。',
+    srv_page_lead: '七大服務涵蓋規劃到交機全流程，適用於精密製造與自動化產線。',
     srv_d1_num: 'SERVICE 01', srv_d1_tag: 'Digital Twin', srv_d1_title: '數位雙生自動化設計規劃',
     srv_d1_desc: '在實體建造前，先以數位雙生技術於虛擬環境中完整模擬產線運作。透過3D模型與動態模擬，提前發現設計缺陷，大幅降低建造風險與修改成本。',
     srv_d1_p1: '虛擬產線佈局規劃與動作模擬', srv_d1_p2: '設備干涉檢查與安全評估',
@@ -1001,7 +1001,7 @@ const translations = {
 
     srv_eyebrow_top: 'サービス', srv_eyebrow_cta: 'プロジェクト開始',
     srv_page_title: 'サービス項目',
-    srv_page_lead: '欣晨工業有限公司は台湾桃園の自動化設備メーカーです。7つの自動化サービスを提供し、デジタル計画からロボットアーム統合・画像検査・設備インテリジェント化・ナノバブル流体応用まで、製造ニーズをワンストップで満たします。',
+    srv_page_lead: '7つのサービスで計画から納品までを網羅し、精密製造・自動化ラインに対応します。',
     srv_d1_num: 'SERVICE 01', srv_d1_tag: 'デジタルツイン', srv_d1_title: 'デジタルツイン自動化設計',
     srv_d1_desc: '実体構築前にデジタルツイン技術で仮想環境において生産ラインの運用を完全シミュレーション。3Dモデルと動的シミュレーションで設計上の欠陥を事前に発見し、建設リスクと修正コストを大幅に削減します。',
     srv_d1_p1: '仮想ライン配置計画と動作シミュレーション', srv_d1_p2: '設備干渉チェックと安全評価',
@@ -1599,7 +1599,7 @@ const translations = {
 
     srv_eyebrow_top: 'SERVICES', srv_eyebrow_cta: 'START PROJECT',
     srv_page_title: 'Services',
-    srv_page_lead: 'Hsin-Chan Industrial Co., Ltd. is an automation equipment manufacturer based in Taoyuan, Taiwan, offering seven automation services covering digital planning, robotic arm integration, machine vision inspection, equipment intelligence upgrades, and nano-bubble fluid applications — one-stop manufacturing solutions.',
+    srv_page_lead: 'Seven services spanning planning to handover, suited to precision manufacturing and automation lines.',
     srv_d1_num: 'SERVICE 01', srv_d1_tag: 'Digital Twin', srv_d1_title: 'Digital Twin Automation Planning',
     srv_d1_desc: 'Before physical construction, simulate the entire production line operation virtually using digital twin technology. 3D models and dynamic simulation identify design flaws early, significantly reducing construction risk and modification costs.',
     srv_d1_p1: 'Virtual line layout planning and motion simulation', srv_d1_p2: 'Equipment interference checking and safety assessment',
