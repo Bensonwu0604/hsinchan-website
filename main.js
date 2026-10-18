@@ -578,7 +578,7 @@ const translations = {
 
     // Contact page
     contact_eyebrow_top: 'CONTACT US',
-    contact_page_title: '聯絡欣晨工業',
+    contact_page_title: '聯絡我們',
     contact_page_lead: '無論是產品詢價、技術合作或服務洽談，歡迎透過以下方式與欣晨工業有限公司聯繫，我們將於1-2個工作日內回覆。',
     contact_info_title: '公司資訊',
     contact_label_addr: '地址', contact_addr_value: '33841 桃園市大園區中正東路三段490號',
@@ -1179,7 +1179,7 @@ const translations = {
     career_cta_btn: '今すぐ履歴書を送る',
 
     contact_eyebrow_top: 'お問い合わせ',
-    contact_page_title: '欣晨工業へのお問い合わせ',
+    contact_page_title: 'お問い合わせ',
     contact_page_lead: '製品の見積もり、技術協力、サービス交渉など、以下の方法で欣晨工業有限公司へご連絡ください。1〜2営業日以内にご回答します。',
     contact_info_title: '会社情報',
     contact_label_addr: '住所', contact_addr_value: '桃園市大園区中正東路三段490号',
@@ -1780,7 +1780,7 @@ const translations = {
     career_cta_btn: 'Submit Your Resume Now',
 
     contact_eyebrow_top: 'CONTACT US',
-    contact_page_title: 'Contact Hsin-Chan Industrial',
+    contact_page_title: 'Contact Us',
     contact_page_lead: 'Whether for product quotations, technical collaboration, or service discussions, contact Hsin-Chan Industrial Co., Ltd. through the methods below. We respond within 1–2 business days.',
     contact_info_title: 'Company Information',
     contact_label_addr: 'Address', contact_addr_value: 'No. 490, Sec. 3, Zhongzheng E. Rd., Dayuan Dist., Taoyuan City 33841, Taiwan',
