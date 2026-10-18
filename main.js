@@ -25,7 +25,7 @@ const translations = {
     nav_careers: '人力資源', nav_contact: '聯絡我們',
 
     hero_badge: '以豐田生產哲學淬鍊的製造夥伴 · Since 1996',
-    hero_h1_line1: '精密驅動，', hero_h1_line2: '智造未來',
+    hero_h1_line1: '精密驅動 &', hero_h1_line2: '製造未來',
     hero_h2: '欣晨工業有限公司 — 以改善、即時生產與自働化為核心，提供精密自動化解決方案',
     cta_products: '查看產品', cta_contact_ask: '聯絡詢問',
     metric_years: '年經驗', metric_products: '大產品線',
@@ -629,7 +629,7 @@ const translations = {
     nav_contact: 'お問い合わせ',
 
     hero_badge: '精密自動化ソリューション · Since 1996',
-    hero_h1_line1: '精密が駆動する、', hero_h1_line2: '未来を創る',
+    hero_h1_line1: '精密駆動 &', hero_h1_line2: '未来製造',
     hero_h2: '欣晨工業有限公司 — カイゼン・JIT・自働化を核に、精密自動化ソリューションを提供',
     cta_products: '製品を見る', cta_contact_ask: 'お問い合わせ',
     metric_years: '年の経験', metric_products: '製品ライン',
@@ -1227,7 +1227,7 @@ const translations = {
     nav_contact: 'Contact',
 
     hero_badge: 'Precision Automation Solutions · Since 1996',
-    hero_h1_line1: 'Precision Drives,', hero_h1_line2: 'Future Forged',
+    hero_h1_line1: 'Precision Driven &', hero_h1_line2: 'Future Manufactured',
     hero_h2: 'Hsin-Chan Industrial Co., Ltd. — Precision automation rooted in Kaizen, Just-In-Time, and Jidoka.',
     cta_products: 'View Products', cta_contact_ask: 'Contact Us',
     metric_years: 'Years Experience', metric_products: 'Product Lines',
