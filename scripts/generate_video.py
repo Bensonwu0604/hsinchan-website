@@ -644,8 +644,8 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
     {{ "name": "產線設計", "icon": "{ICON_ENUM_HINT} 其中一個",
        "beats": [
          {{ "label": "傳統做法", "photo": "素材代號", "image_prompt": "英文畫面描述", "bullets": ["...","..."], "dialogue": [...] }},   // 總字數約150-180字（約35-42秒）
-         {{ "label": "第一性原理拆解", "bullets": ["...","..."], "dialogue": [...] }},
-         {{ "label": "智慧製造應用", "bullets": ["...","..."], "dialogue": [...] }}
+         {{ "label": "第一性原理拆解", "photo": "素材代號", "image_prompt": "英文畫面描述", "bullets": ["...","..."], "dialogue": [...] }},
+         {{ "label": "智慧製造應用", "photo": "素材代號", "image_prompt": "英文畫面描述", "bullets": ["...","..."], "dialogue": [...] }}
        ] }},
     {{ "name": "數據與軟體", "icon": "...", "beats": [ ... 同上 3 個 ... ] }},
     {{ "name": "供應鏈與物流", "icon": "...", "beats": [ ... 同上 3 個 ... ] }}
@@ -1122,14 +1122,19 @@ def main():
             for j, beat in enumerate(script["reflection_beats"], 1):
                 jobs.append((f"03_reflect_{j}", beat.get("image_prompt"), "4:5"))
             print(f"\n🖼️  依台詞生成畫面（{IMAGE_MODEL}，共 {len(jobs)} 張）")
+            no_prompt = []
             for tag, prompt_text, aspect in jobs:
                 if not prompt_text:
+                    # 腳本沒給畫面描述，和「生圖失敗」是兩回事，要分開記
+                    no_prompt.append(tag)
                     continue
                 got = generate_beat_image(prompt_text, aspect, tmp / f"{tag}_gen.png")
                 if got:
                     images[tag] = got
                     print(f"   ✅ {tag}")
             print(f"   生成 {len(images)}/{len(jobs)} 張，其餘用本地素材")
+            if no_prompt:
+                print(f"   ⚠️  有 {len(no_prompt)} 段腳本未提供 image_prompt：{', '.join(no_prompt)}")
         else:
             print("\n🖼️  未設定 GOOGLE_API_KEY，全部使用 repo 內素材")
 
