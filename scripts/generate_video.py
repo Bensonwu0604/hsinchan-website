@@ -85,6 +85,8 @@ for _n, _v in (("BG", BG), ("ACCENT", ACCENT), ("ACCENT_LT", ACCENT_LT),
                ("WHITE", WHITE), ("GRAY", GRAY), ("DARK_GRAY", DARK_GRAY)):
     setattr(diagrams, _n, _v)      # 品牌色單一來源，避免兩邊不同步
 
+DISPLAY_FONT = None   # 標題字型，main() 啟動時載入
+
 GLOW_SIZE  = 1100                  # 左上角光暈直徑
 GLOW_PEAK  = 70                    # 光暈中心最大不透明度（0-255）
 
@@ -144,6 +146,24 @@ def load_fonts():
     if not bold_path:
         raise FileNotFoundError("找不到 CJK 字型，請確認已安裝 fonts-noto-cjk")
     return bold_path, reg_path or bold_path
+
+
+def load_display_font(fallback_bold):
+    """標題用的第二套字型（思源宋體）
+
+    標題和內文若是同一套字的不同粗細，只有粗細差、沒有個性差，
+    看起來就像系統預設。襯線標題配無襯線內文才是真正的字型搭配。
+    字型由 workflow 下載到 scripts/fonts/；抓不到就退回原本的黑體，
+    不讓字型問題害整支影片失敗。
+    """
+    here = Path(__file__).resolve().parent
+    for p in (here / "fonts" / "NotoSerifTC-Bold.otf",
+              Path("/usr/share/fonts/opentype/noto/NotoSerifCJK-Bold.ttc"),
+              Path("/usr/share/fonts/opentype/noto/NotoSerifCJKtc-Bold.otf")):
+        if p.exists():
+            return str(p)
+    print("   ⚠️  找不到標題字型，改用黑體（視覺層次會較弱）")
+    return fallback_bold
 
 # ── 文字換行 ─────────────────────────────────────────────────────────────────
 def wrap_text(draw, text, font, max_width):
@@ -438,7 +458,7 @@ def make_title_slide(topic_title, topic_tag, bold_path, reg_path, out_path, asse
     draw = ImageDraw.Draw(img)
 
     font_eyebrow  = ImageFont.truetype(bold_path, 30)
-    font_title    = ImageFont.truetype(bold_path, 96)
+    font_title    = ImageFont.truetype(DISPLAY_FONT or bold_path, 96)
     font_subtitle = ImageFont.truetype(reg_path,  38)
     font_brand    = ImageFont.truetype(bold_path, 32)
     font_small    = ImageFont.truetype(reg_path,  26)
@@ -485,7 +505,7 @@ def make_chapter_slide(index, total, title, bullets, icon_key, asset_key, bold_p
     draw = ImageDraw.Draw(img)
 
     font_eyebrow = ImageFont.truetype(bold_path, 28)
-    font_title   = ImageFont.truetype(bold_path, 66)
+    font_title   = ImageFont.truetype(DISPLAY_FONT or bold_path, 66)
     font_bullet  = ImageFont.truetype(reg_path,  38)
     font_small   = ImageFont.truetype(reg_path,  24)
     font_host    = ImageFont.truetype(reg_path,  24)
@@ -541,7 +561,7 @@ def make_cta_slide(quote, cta_question, bold_path, reg_path, out_path):
     draw_bg_gradient(img)
 
     font_tag   = ImageFont.truetype(reg_path,  24)
-    font_cta   = ImageFont.truetype(bold_path, 50)
+    font_cta   = ImageFont.truetype(DISPLAY_FONT or bold_path, 50)
     font_q     = ImageFont.truetype(reg_path,  32)
     font_info  = ImageFont.truetype(reg_path,  34)
     font_sub   = ImageFont.truetype(reg_path,  30)
@@ -1441,7 +1461,9 @@ def main():
 
     # 2. 載入字型
     bold_path, reg_path = load_fonts()
-    print(f"\n🔤 字型：{Path(bold_path).name}")
+    global DISPLAY_FONT
+    DISPLAY_FONT = load_display_font(bold_path)
+    print(f"\n🔤 字型：標題 {Path(DISPLAY_FONT).name} ／ 內文 {Path(reg_path).name}")
 
     # 章節編號只算「有章節卡」的 beats：核心觀念 + 三維度 + 反思，不含 hook/outro
     total_chapters = len(script["concept_beats"]) \

@@ -40,3 +40,4 @@ deploy.bat
 preview/
 __pycache__/
 *.pyc
+scripts/fonts/
