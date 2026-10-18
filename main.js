@@ -96,7 +96,7 @@ const translations = {
     footer_est: 'Est. 1996 · 30年製造經驗',
 
     // About page
-    about_banner_title: '欣晨工業 公司簡介',
+    about_banner_title: '公司簡介',
     about_banner_lead: '欣晨工業有限公司 — 30年精密製造經驗，深根桃園大園，服務全台灣工業客戶。以技術立業，以品質興業，以服務創業。',
     about_eyebrow_top: 'ABOUT US',
     about_eyebrow_story: 'OUR STORY',
@@ -142,7 +142,7 @@ const translations = {
 
     // Products page
     pp_eyebrow_top: 'PRODUCTS', pp_eyebrow_lineup: 'PRODUCT LINEUP', pp_eyebrow_qa: 'QUALITY ASSURANCE', pp_eyebrow_quote: 'REQUEST QUOTE',
-    pp_banner_title: '欣晨工業 產品資訊',
+    pp_banner_title: '產品資訊',
     pp_banner_lead: '欣晨工業有限公司六大高溫工業耗材產品線，為半導體、鑄造、能源等產業提供嚴苛環境下的可靠材料解決方案。',
     pp_overview_title: '六大產品線', pp_overview_lead: '所有產品均通過嚴格品質管控，適用於高溫、腐蝕性、精密工業環境。',
     pp_p1_tag: '射出成形耗材', pp_p1_title: '一體式料管',
@@ -399,7 +399,7 @@ const translations = {
 
     // Services page
     srv_eyebrow_top: 'SERVICES', srv_eyebrow_cta: 'START PROJECT',
-    srv_page_title: '欣晨工業 服務項目',
+    srv_page_title: '服務項目',
     srv_page_lead: '欣晨工業有限公司是台灣桃園自動化設備廠商，提供七大自動化服務，從數位規劃、機械手臂整合、視覺檢測，到設備智能化升級、奈米氣泡流體應用，一站式滿足您的製造需求。',
     srv_d1_num: 'SERVICE 01', srv_d1_tag: 'Digital Twin', srv_d1_title: '數位雙生自動化設計規劃',
     srv_d1_desc: '在實體建造前，先以數位雙生技術於虛擬環境中完整模擬產線運作。透過3D模型與動態模擬，提前發現設計缺陷，大幅降低建造風險與修改成本。',
@@ -448,7 +448,7 @@ const translations = {
     // Technology page
     tech_eyebrow_top: 'TECHNOLOGY INSIGHT',
     tech_eyebrow_cta: 'COLLABORATE WITH US',
-    tech_page_title: '欣晨工業 新技術討論',
+    tech_page_title: '新技術討論',
     tech_page_lead: '從半導體製程到人形機器人，探討欣晨工業精密零件與耐高溫材料在六大前沿領域中的關鍵應用與技術貢獻。',
     tech_d1_num: 'TOPIC 01', tech_d1_tag: 'Semiconductor', tech_d1_title: '半導體製程',
     tech_d1_desc: '半導體晶圓製程需要在超高溫、強腐蝕性環境中精準操控熔融金屬與化學材料，同時對製程用水與清洗品質有極高要求。欣晨的碳化矽（SiC）保護管以其卓越的耐熱衝擊性與化學惰性，成為擴散爐管、長晶設備等核心製程設備的關鍵耗材；高濃度奈米氣泡流體模組則用於晶圓清洗與製程用水品質提升，達到節能且免化學添加的潔淨效果。',
@@ -699,7 +699,7 @@ const translations = {
     footer_tagline_1: '精密が駆動する', footer_tagline_2: '未来を創る',
     footer_est: 'Est. 1996 · 製造30年の歴史',
 
-    about_banner_title: '欣晨工業 会社概要',
+    about_banner_title: '会社概要',
     about_banner_lead: '欣晨工業有限公司 — 30年の精密製造経験、桃園市大園区を拠点に台湾全土の産業顧客にサービスを提供。技術・品質・サービスを事業の礎に。',
     about_eyebrow_top: '会社概要',
     about_eyebrow_story: 'ストーリー',
@@ -744,7 +744,7 @@ const translations = {
     about_cta_btn: 'お問い合わせ',
 
     pp_eyebrow_top: '製品情報', pp_eyebrow_lineup: '製品ライン', pp_eyebrow_qa: '品質保証', pp_eyebrow_quote: 'お見積り依頼',
-    pp_banner_title: '欣晨工業 製品情報',
+    pp_banner_title: '製品情報',
     pp_banner_lead: '欣晨工業有限公司の6大高温工業用消耗品ラインは、半導体・鋳造・エネルギーなどの産業に、過酷な環境下でも信頼性の高い素材ソリューションを提供します。',
     pp_overview_title: '6つの製品ライン', pp_overview_lead: 'すべての製品は厳格な品質管理を経ており、高温・腐食性・精密工業環境に対応しています。',
     pp_p1_tag: '射出成形消耗品', pp_p1_title: '一体型バレル',
@@ -1000,7 +1000,7 @@ const translations = {
     pp_cta_btn: '今すぐ見積依頼',
 
     srv_eyebrow_top: 'サービス', srv_eyebrow_cta: 'プロジェクト開始',
-    srv_page_title: '欣晨工業 サービス項目',
+    srv_page_title: 'サービス項目',
     srv_page_lead: '欣晨工業有限公司は台湾桃園の自動化設備メーカーです。7つの自動化サービスを提供し、デジタル計画からロボットアーム統合・画像検査・設備インテリジェント化・ナノバブル流体応用まで、製造ニーズをワンストップで満たします。',
     srv_d1_num: 'SERVICE 01', srv_d1_tag: 'デジタルツイン', srv_d1_title: 'デジタルツイン自動化設計',
     srv_d1_desc: '実体構築前にデジタルツイン技術で仮想環境において生産ラインの運用を完全シミュレーション。3Dモデルと動的シミュレーションで設計上の欠陥を事前に発見し、建設リスクと修正コストを大幅に削減します。',
@@ -1048,7 +1048,7 @@ const translations = {
 
     tech_eyebrow_top: 'テクノロジーインサイト',
     tech_eyebrow_cta: '共同開発のご相談',
-    tech_page_title: '欣晨工業 新技術の展望',
+    tech_page_title: '新技術の展望',
     tech_page_lead: '半導体プロセスからヒューマノイドロボットまで、欣晨工業の精密部品・耐高温材料の6大先端分野における重要な応用と技術貢献を探ります。',
     tech_d1_num: 'TOPIC 01', tech_d1_tag: '半導体', tech_d1_title: '半導体製造プロセス',
     tech_d1_desc: '半導体ウェーハ製造は超高温・強腐食環境での精密な制御が必要であり、プロセス用水と洗浄品質にも高い要求があります。欣晨のSiC保護管は、優れた耐熱衝撃性と化学的不活性により、拡散炉管・結晶成長装置などの核心製造設備の重要消耗品となっています。高濃度ナノバブル流体モジュールは、ウェーハ洗浄とプロセス用水の水質向上に用いられ、省エネかつ化学薬品不使用の洗浄効果を実現します。',
@@ -1297,7 +1297,7 @@ const translations = {
     footer_tagline_1: 'Precision Drives', footer_tagline_2: 'Future Forged',
     footer_est: 'Est. 1996 · 30 Years of Manufacturing',
 
-    about_banner_title: 'About Hsin-Chan Industrial',
+    about_banner_title: 'About Us',
     about_banner_lead: 'Hsin-Chan Industrial Co., Ltd. — 30 years of precision manufacturing expertise, rooted in Dayuan, Taoyuan, serving industrial clients across Taiwan. Built on technology, quality, and service.',
     about_eyebrow_top: 'ABOUT US',
     about_eyebrow_story: 'OUR STORY',
@@ -1342,7 +1342,7 @@ const translations = {
     about_cta_btn: 'Contact Us',
 
     pp_eyebrow_top: 'PRODUCTS', pp_eyebrow_lineup: 'PRODUCT LINEUP', pp_eyebrow_qa: 'QUALITY ASSURANCE', pp_eyebrow_quote: 'REQUEST QUOTE',
-    pp_banner_title: 'Hsin-Chan Industrial Products',
+    pp_banner_title: 'Products',
     pp_banner_lead: 'Hsin-Chan Industrial Co., Ltd.\'s six high-temperature industrial consumable product lines deliver reliable material solutions for demanding environments across the semiconductor, foundry, and energy industries.',
     pp_overview_title: 'Six Product Lines', pp_overview_lead: 'All products pass rigorous quality control and are designed for high-temperature, corrosive, and precision industrial environments.',
     pp_p1_tag: 'Injection Molding Consumables', pp_p1_title: 'One-Piece Barrel',
@@ -1598,7 +1598,7 @@ const translations = {
     pp_cta_btn: 'Get a Quote Now',
 
     srv_eyebrow_top: 'SERVICES', srv_eyebrow_cta: 'START PROJECT',
-    srv_page_title: 'Hsin-Chan Industrial Services',
+    srv_page_title: 'Services',
     srv_page_lead: 'Hsin-Chan Industrial Co., Ltd. is an automation equipment manufacturer based in Taoyuan, Taiwan, offering seven automation services covering digital planning, robotic arm integration, machine vision inspection, equipment intelligence upgrades, and nano-bubble fluid applications — one-stop manufacturing solutions.',
     srv_d1_num: 'SERVICE 01', srv_d1_tag: 'Digital Twin', srv_d1_title: 'Digital Twin Automation Planning',
     srv_d1_desc: 'Before physical construction, simulate the entire production line operation virtually using digital twin technology. 3D models and dynamic simulation identify design flaws early, significantly reducing construction risk and modification costs.',
@@ -1646,7 +1646,7 @@ const translations = {
 
     tech_eyebrow_top: 'TECHNOLOGY INSIGHT',
     tech_eyebrow_cta: 'COLLABORATE WITH US',
-    tech_page_title: 'Hsin-Chan Industrial Technology Insights',
+    tech_page_title: 'Technology Insights',
     tech_page_lead: 'From semiconductor processes to humanoid robots, exploring Hsin-Chan Industrial Co., Ltd.\'s precision components and high-temperature materials across six cutting-edge application fields.',
     tech_d1_num: 'TOPIC 01', tech_d1_tag: 'Semiconductor', tech_d1_title: 'Semiconductor Process',
     tech_d1_desc: 'Semiconductor wafer processing requires precise control of molten metals and chemical materials in ultra-high-temperature, highly corrosive environments, along with stringent requirements for process water and cleaning quality. Hsin-Chan Industrial Co., Ltd.\'s SiC protection tubes, with their outstanding thermal shock resistance and chemical inertness, serve as critical consumables in diffusion furnace tubes and crystal growth equipment. The High-Concentration Nano-Bubble Fluid Module is used for wafer cleaning and process water quality improvement, delivering energy-efficient, chemical-additive-free cleaning.',
