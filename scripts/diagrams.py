@@ -22,7 +22,7 @@ DARK_GRAY = (55, 70, 90)
 
 # 圖解類型與它適合表達的關係（這份說明會餵給編劇，讓它挑對類型）
 DIAGRAM_TYPES = {
-    "flow":    "線性流程：A 造成 B、B 造成 C。用在講一連串因果或製程順序。需要 3-4 個標籤。",
+    "flow":    "線性流程：A 造成 B、B 造成 C。用在講一連串因果、製程順序，或馬斯克五步演算法。需要 3-5 個標籤。",
     "loop":    "閉環循環：最後一步回饋到第一步。用在講閉環控制、持續改善、數據回饋。需要 3-4 個標籤。",
     "layers":  "堆疊層級：下層支撐上層。用在講架構分層（感測層／邊緣層／控制層）。需要 3-4 個標籤，由下往上排。",
     "compare": "左右對比：傳統做法 vs 拆解後的做法。用在講迷思與反轉。需要正好 2 個標籤。",
@@ -194,6 +194,8 @@ def draw_diagram(img, spec, x0, W, H, font_path):
         return False
     if kind == "compare":
         labels = labels[:2]
+    elif kind == "flow":
+        labels = labels[:5]        # 馬斯克五步演算法需要容納 5 步
     else:
         labels = labels[:4]
 
