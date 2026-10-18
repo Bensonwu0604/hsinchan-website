@@ -1272,6 +1272,18 @@ def main():
         + len(script["reflection_beats"])
     chapter_idx = 0
 
+    # 圖解覆蓋率：教學內容靠圖解傳達結構，退回照片的比例過高代表提示詞引導不夠
+    _all_beats = (script["concept_beats"] + script["reflection_beats"]
+                  + [b for d in script["dimensions"] for b in d["beats"]])
+    _kinds = {}
+    for _b in _all_beats:
+        if isinstance(_b.get("diagram"), dict):
+            _k = _b["diagram"].get("type", "?")
+            _kinds[_k] = _kinds.get(_k, 0) + 1
+    _n = sum(_kinds.values())
+    print(f"📐 圖解覆蓋：{_n}/{len(_all_beats)} 段"
+          + (f"（{', '.join(f'{k}×{v}' for k, v in sorted(_kinds.items()))}）" if _kinds else ""))
+
     # 3. 逐段生成語音旁白 + 畫面 + 合成片段
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp = Path(tmpdir)
