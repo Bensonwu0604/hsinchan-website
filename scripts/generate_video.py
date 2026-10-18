@@ -52,12 +52,21 @@ SCRIPT_EST_MAX = 14.5 * 60    # 粗估高於此值就請 Claude 縮短
 MAX_RATE_ADJ   = 15           # 語速調整上限 ±15%（再多就不自然）
 
 # tts-1-hd 比 tts-1 貴一倍，但整支影片也只差約 $0.04，為成片品質值得
-TTS_MODEL = os.environ.get("TTS_MODEL", "tts-1-hd")
+# 配音來源：edge-tts 用的 zh-TW-*Neural 是微軟 Azure 的官方台灣中文語音，
+# 母語腔調且免費；OpenAI 的聲線是英語母語，唸中文會有明顯外國腔。
+# 但 edge-tts 走非官方免費端點，所以保留 OpenAI 作為端點不可用時的備援，
+# 由 preflight 探測一次後決定整支影片的來源，避免同一支影片混用兩種聲線。
+TTS_PROVIDER = os.environ.get("TTS_PROVIDER", "edge")
+TTS_MODEL = os.environ.get("TTS_MODEL", "tts-1-hd")   # 僅 OpenAI 備援時使用
 TTS_SPEED = float(os.environ.get("TTS_SPEED", "1.0"))
-HOST_VOICES = {
-    "A": os.environ.get("HOST_A_VOICE", "onyx"),   # 男主持人：低沉
-    "B": os.environ.get("HOST_B_VOICE", "nova"),   # 女主持人：明亮
+VOICES = {
+    "edge":   {"A": os.environ.get("HOST_A_VOICE", "zh-TW-YunJheNeural"),
+               "B": os.environ.get("HOST_B_VOICE", "zh-TW-HsiaoChenNeural")},
+    "openai": {"A": "onyx", "B": "nova"},
 }
+HOST_VOICES = VOICES[TTS_PROVIDER if TTS_PROVIDER in VOICES else "edge"]
+# preflight 探測後填入，整支影片共用同一個來源
+ACTIVE_TTS = {"provider": TTS_PROVIDER if TTS_PROVIDER in VOICES else "edge"}
 HOST_LABELS = {"A": "主持人 A", "B": "主持人 B"}
 
 ICON_KEYS = ["gear", "sensor", "chip", "heat", "data", "network",
@@ -821,30 +830,42 @@ def validate_script(script):
         )
 
 # ── 語音旁白（雙主持人對話）──────────────────────────────────────────────────
+def _tts_edge(text, voice, out_path):
+    """edge-tts：微軟 Azure 官方台灣中文語音，母語腔調"""
+    import asyncio, edge_tts
+
+    async def _run():
+        await edge_tts.Communicate(text, voice).save(str(out_path))
+
+    asyncio.run(_run())
+
+
+def _tts_openai(text, voice, out_path):
+    """OpenAI TTS：端點穩定但聲線是英語母語，唸中文有外國腔，僅作備援"""
+    from openai import OpenAI
+    resp = OpenAI(api_key=os.environ["OPENAI_API_KEY"]).audio.speech.create(
+        model=TTS_MODEL, voice=voice, input=text,
+        response_format="mp3", speed=TTS_SPEED,
+    )
+    Path(out_path).write_bytes(resp.read())
+
+
 def synthesize_line(text, voice, out_path, retries=TTS_RETRIES):
-    """用 OpenAI TTS 生成單句語音
+    """生成單句語音
 
     單次執行要發約 50 次請求，偶發網路失敗屬正常；
     這裡逐次退避重試，避免一句失敗就讓整個長片流程報銷。
+    來源由 ACTIVE_TTS 決定，整支影片一致，不會中途換聲線。
     """
     text = (text or "").strip()
     if not text:
         raise ValueError("旁白台詞為空，無法配音")
 
-    from openai import OpenAI
-    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-
+    fn = _tts_edge if ACTIVE_TTS["provider"] == "edge" else _tts_openai
     last_err = None
     for attempt in range(1, retries + 1):
         try:
-            resp = client.audio.speech.create(
-                model=TTS_MODEL,
-                voice=voice,
-                input=text,
-                response_format="mp3",
-                speed=TTS_SPEED,
-            )
-            Path(out_path).write_bytes(resp.read())
+            fn(text, voice, out_path)
             if Path(out_path).exists() and Path(out_path).stat().st_size > 0:
                 return
             last_err = RuntimeError("TTS 回傳空音檔")
@@ -1074,7 +1095,26 @@ def preflight_check():
             "請到 https://platform.openai.com/api-keys 重新產生，"
             "並更新 repo 的 OPENAI_API_KEY secret（注意結尾不要帶換行或空白）"
         ) from None
-    print("   ✅ 金鑰可用\n")
+    print("   ✅ 金鑰可用")
+
+    # 探測配音來源：edge-tts 腔調自然但走非官方端點，先試一句短的確認可用；
+    # 不通就整支改用 OpenAI，而不是跑到一半才發現、或讓同一支影片混用兩種聲線。
+    if ACTIVE_TTS["provider"] == "edge":
+        probe = Path(tempfile.gettempdir()) / "_tts_probe.mp3"
+        try:
+            _tts_edge("測試", VOICES["edge"]["A"], probe)
+            if not (probe.exists() and probe.stat().st_size > 0):
+                raise RuntimeError("edge-tts 回傳空音檔")
+            print("🎙️  配音來源：edge-tts（台灣中文原生語音）\n")
+        except Exception as e:                  # noqa: BLE001
+            ACTIVE_TTS["provider"] = "openai"
+            HOST_VOICES.update(VOICES["openai"])
+            print(f"   ⚠️  edge-tts 無法使用（{str(e)[:80]}），改用 OpenAI TTS")
+            print("🎙️  配音來源：OpenAI TTS（備援，中文腔調較不自然）\n")
+        finally:
+            probe.unlink(missing_ok=True)
+    else:
+        print(f"🎙️  配音來源：{ACTIVE_TTS['provider']}\n")
 
 # ── 主程式 ───────────────────────────────────────────────────────────────────
 def main():
