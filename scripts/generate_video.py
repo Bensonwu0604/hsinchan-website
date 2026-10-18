@@ -10,6 +10,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 import topics
+import diagrams
 
 import anthropic
 import requests
@@ -71,6 +72,10 @@ HOST_LABELS = {"A": "主持人 A", "B": "主持人 B"}
 
 ICON_KEYS = ["gear", "sensor", "chip", "heat", "data", "network",
              "check", "warning", "cycle", "robot", "idea", "factory"]
+
+for _n, _v in (("BG", BG), ("ACCENT", ACCENT), ("ACCENT_LT", ACCENT_LT),
+               ("WHITE", WHITE), ("GRAY", GRAY), ("DARK_GRAY", DARK_GRAY)):
+    setattr(diagrams, _n, _v)      # 品牌色單一來源，避免兩邊不同步
 
 GLOW_SIZE  = 1100                  # 左上角光暈直徑
 GLOW_PEAK  = 70                    # 光暈中心最大不透明度（0-255）
@@ -196,8 +201,8 @@ def load_generated_image(path):
     """生成圖也要壓暗偏藍，才能和整體深色設計同調"""
     src = Image.open(path).convert("RGB")
     tinted = _tint_by_luminance(src, (6, 9, 18), (120, 165, 225), 120)
-    out = Image.blend(src, tinted, 0.48).convert("RGBA")
-    return Image.blend(Image.new("RGB", src.size, BG).convert("RGBA"), out, 0.84)
+    out = Image.blend(src, tinted, 0.30).convert("RGBA")
+    return Image.blend(Image.new("RGB", src.size, BG).convert("RGBA"), out, 0.93)
 
 def _chroma_key_alpha(img):
     """綠幕去背：綠底從飽和綠一路褪成近白，固定門檻會漏，改用綠偏移判定
@@ -330,12 +335,8 @@ def draw_accent_line(draw, y, width=120):
     draw.rectangle([80, y, 80 + width, y + 5], fill=ACCENT_LT)
 
 def draw_logo_watermark(draw, font_small, right_edge=None):
-    """品牌浮水印，預設貼右下；給 right_edge 可改貼在文字欄內，不壓到照片"""
-    text = "欣晨工業 Hsin-Chan Industrial"
-    bbox = draw.textbbox((0, 0), text, font=font_small)
-    tw = bbox[2] - bbox[0]
-    x = (right_edge if right_edge is not None else W - 50) - tw
-    draw.text((x, H - 65), text, font=font_small, fill=DARK_GRAY)
+    """品牌浮水印：靠左對齊 80px 邊距，與左上角系列標上下呼應成一個框架"""
+    draw.text((80, H - 72), "欣晨工業 HSIN-CHAN INDUSTRIAL", font=font_small, fill=DARK_GRAY)
 
 def draw_icon(draw, key, cx, cy, r, color=ACCENT_LT):
     """用幾何圖形畫簡易圖示（不依賴外部圖示檔，CI 環境免安裝）"""
@@ -412,15 +413,6 @@ def draw_icon(draw, key, cx, cy, r, color=ACCENT_LT):
     else:
         draw.ellipse([cx-r*0.6, cy-r*0.6, cx+r*0.6, cy+r*0.6], outline=color, width=lw)
 
-def draw_host_badge(draw, x, y, font, label, color=ACCENT_LT):
-    """畫一個簡易人形圖示＋標籤，標示雙主持人對談格式"""
-    r = 24
-    cx, cy = x + r, y + r
-    draw.ellipse([cx-r, cy-r, cx+r, cy+r], outline=color, width=3)
-    draw.ellipse([cx-r*0.32, cy-r*0.55, cx+r*0.32, cy+r*0.05], fill=color)
-    draw.pieslice([cx-r*0.6, cy, cx+r*0.6, cy+r*0.95], 180, 360, fill=color)
-    draw.text((x + r*2 + 14, y + r - 15), label, font=font, fill=GRAY)
-
 def make_title_slide(topic_title, topic_tag, bold_path, reg_path, out_path, asset_key="ev_line", image_path=None):
     img  = Image.new("RGB", (W, H))
     draw = ImageDraw.Draw(img)
@@ -455,25 +447,29 @@ def make_title_slide(topic_title, topic_tag, bold_path, reg_path, out_path, asse
     draw.text((80, H - 115), "Hsin-Chan Industrial Co., Ltd. · Since 1996", font=font_small, fill=GRAY)
 
     # 雙主持人標示
-    draw_host_badge(draw, int(W * 0.68), 70, font_small, "主持人 A")
-    draw_host_badge(draw, int(W * 0.68) + 220, 70, font_small, "主持人 B")
 
     img.save(out_path)
 
-def make_chapter_slide(index, total, title, bullets, icon_key, asset_key, bold_path, reg_path, out_path, image_path=None):
-    """每個 beat 一張：左欄圖說文字，右側鋪實拍照或 CAD 線框，構成圖文版面"""
+def make_chapter_slide(index, total, title, bullets, icon_key, asset_key, bold_path, reg_path, out_path,
+                       image_path=None, diagram=None):
+    """每個 beat 一張：左欄圖說文字，右側放圖解或照片
+
+    右側優先畫「圖解」——教學型內容靠結構圖傳達關係，照片只能營造氣氛。
+    沒有圖解時才退回照片，讓畫面仍有內容。
+    """
     img  = Image.new("RGB", (W, H))
     draw = ImageDraw.Draw(img)
     draw_bg_gradient(img)
 
     # 圖先鋪，文字後畫，確保文字永遠在最上層
     panel_x = int(W * 0.54)
-    draw_asset_panel(img, asset_key, panel_x, image_path=image_path)
+    if not (diagram and diagrams.draw_diagram(img, diagram, panel_x, W, H, bold_path)):
+        draw_asset_panel(img, asset_key, panel_x, image_path=image_path)
     draw = ImageDraw.Draw(img)
 
     font_eyebrow = ImageFont.truetype(bold_path, 28)
-    font_title   = ImageFont.truetype(bold_path, 58)
-    font_bullet  = ImageFont.truetype(reg_path,  34)
+    font_title   = ImageFont.truetype(bold_path, 66)
+    font_bullet  = ImageFont.truetype(reg_path,  38)
     font_small   = ImageFont.truetype(reg_path,  24)
     font_host    = ImageFont.truetype(reg_path,  24)
 
@@ -481,7 +477,7 @@ def make_chapter_slide(index, total, title, bullets, icon_key, asset_key, bold_p
     draw.text((80, 110), f"CHAPTER {index:02d} / {total:02d}", font=font_eyebrow, fill=ACCENT_LT)
     draw_accent_line(draw, 155, 160)
 
-    text_w   = panel_x - 150          # 文字欄保留與圖片的間距
+    text_w   = panel_x - 110          # 文字欄保留與圖片的間距
     bullet_w = text_w - 40
 
     # 先量「圖示＋標題＋分隔線＋條列」整塊高度，再置中於可用區間
@@ -509,8 +505,6 @@ def make_chapter_slide(index, total, title, bullets, icon_key, asset_key, bold_p
         y = draw_wrapped(draw, bullet, font_bullet, 114, y, bullet_w, GRAY, 1.45)
         y += 26
 
-    draw_host_badge(draw, 80, H - 140, font_host, "主持人 A")
-    draw_host_badge(draw, 300, H - 140, font_host, "主持人 B")
     draw_logo_watermark(draw, font_small, right_edge=80 + text_w)
     img.save(out_path)
 
@@ -554,8 +548,6 @@ def make_cta_slide(quote, cta_question, bold_path, reg_path, out_path):
     draw.text((80, H - 160), "欣晨工業有限公司", font=font_sub,   fill=WHITE)
     draw.text((80, H - 115), "台灣桃園 · 1996年創立 · 30年精密製造經驗", font=font_small, fill=GRAY)
 
-    draw_host_badge(draw, W - 420, quote_top, font_small, "主持人 A")
-    draw_host_badge(draw, W - 420, quote_top + 70, font_small, "主持人 B")
 
     img.save(out_path)
 
@@ -580,6 +572,7 @@ def get_today_topic():
 
 ICON_ENUM_HINT = "gear / sensor / chip / heat / data / network / check / warning / cycle / robot / idea / factory"
 PHOTO_ENUM_HINT = " / ".join(f"{k}（{v['desc']}）" for k, v in ASSETS.items())
+DIAGRAM_HINT = "\n".join(f"  * {k}：{v}" for k, v in diagrams.DIAGRAM_TYPES.items())
 
 def generate_video_script(topic_title, topic_angle):
     print(f"🤖 呼叫 {SCRIPT_MODEL} 生成 11-12 分鐘長片腳本...")
@@ -601,12 +594,15 @@ def generate_video_script(topic_title, topic_angle):
 【行銷目標】看完後，觀眾對欣晨工業應該產生的印象是：
   「這是一家真正懂製造本質、而且能把原理落地成實體設備的公司」——而不是「這家公司很會打廣告」。
   達成方式是**展現思考深度**，不是增加曝光次數。因此：
-  - 全片提到「欣晨」最多 3 次，且只能出現在各維度的「智慧製造應用」beat 裡
-  - 每次提及都必須是「因為剛剛拆解出這個原理，所以對應到某項實際能力」的自然銜接，
-    不能是插播式的自我介紹或產品型錄朗讀
+  - **正片完全不要提到欣晨**。開場、核心觀念、三大維度、反思這四幕都是純粹的教學內容，
+    一次都不要出現公司名稱或產品。觀眾在學東西的時候不該被廣告打斷。
+  - **只有第五幕結語可以帶出欣晨**，而且只用一到兩句話，做法是：
+    把本集拆解出的原理，連回欣晨實際在做的事，讓它成為「這個原理有人真的做出來了」的例證，
+    而不是「順便介紹一下我們公司」。
   - 可動用的可信度資產：1996 年創立、30 年精密製造經驗、以 TPS 為核心哲學、
     1200°C 工業加熱器、熱電偶、一體式料管、碳化矽保護管、機械手臂整合、AOI 視覺檢測
-  - 寧可一次都不提而讓內容夠強，也不要為了提及而破壞敘事
+    （挑與本集主題最相關的一項，不要列清單）
+  - 前面十分鐘的內容夠強，片尾這一句才有說服力。順序不能顛倒。
 
 欣晨工業是台灣桃園1996年創立的精密自動化設備製造商，以豐田生產方式（TPS）為核心哲學。
 主要業務：工業加熱器（1200°C）、熱電偶、一體式料管、碳化矽保護管、機械手臂整合、AOI視覺檢測。
@@ -629,11 +625,13 @@ def generate_video_script(topic_title, topic_angle):
   維度依序為「產線設計」「數據與軟體」「供應鏈與物流」，每個維度都要包含恰好 3 個 beats：
     beat A：傳統做法是什麼、為什麼大家這樣做
     beat B：第一性原理拆解——問「為什麼非得這樣？」，拆到物理/成本/資料的根本限制
-    beat C：智慧製造應用——拆解後得出的新做法，並自然連結到今日主題／欣晨工業技術能對應的部分
+    beat C：智慧製造應用——拆解後得出的新做法，落回今日主題。這裡仍是教學，不要提到任何公司名稱
 第四幕 深度反思與盲點警示（約 2 分鐘，2 個 beats）：
   beat 1：盲目套用第一性原理的風險——不是所有工廠都該追求極致自動化/一體化，高客製化、小批量的工廠反而可能資本支出回不來；
   beat 2：第一性原理的終極考量是「資本效率」，不是為拆解而拆解。
-第五幕 Outro 結語（約 60 秒，1 個 cta）：
+第五幕 Outro 結語（約 60 秒，1 個 cta）：這是全片唯一可以提到欣晨工業的地方。
+  結語的順序是：先用金句收束本集原理 → 再用一到兩句把這個原理連回欣晨實際在做的事
+  （例證式，不是自我介紹）→ 最後邀請觀眾留言。
   一句濃縮全片核心的金句（例如精神類似「智慧製造的終點不是買最貴的機器人，而是敢不敢把現有的行業規矩歸零重來」，但要換成貼合今日主題的原創金句）；
   再加一個邀請觀眾留言互動的 CTA 問句（例如精神類似「你所在的產業，有哪些『大家都這麼做』的潛規則？留言告訴我們」，換成貼合今日主題的原創版本）。
 
@@ -644,17 +642,17 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
   "hook_dialogue": [ {{"speaker":"A","line":"..."}}, {{"speaker":"B","line":"..."}}, ... ]  // 3-4 輪對話，總字數約230-260字（唸出約55-62秒）
   ,
   "concept_beats": [
-    {{ "title": "beat標題（12字內）", "icon": "{ICON_ENUM_HINT} 其中一個", "photo": "{PHOTO_ENUM_HINT} 其中一個的代號", "image_prompt": "英文，描述這段要搭配的畫面",
-       "bullets": ["重點短句1（12字內）","重點短句2（12字內）"],
+    {{ "title": "beat標題（12字內）", "icon": "{ICON_ENUM_HINT} 其中一個", "photo": "{PHOTO_ENUM_HINT} 其中一個的代號", "image_prompt": "英文，描述這段要搭配的畫面", "diagram": {{"type":"...","labels":["...","..."]}} 或 null,
+       "bullets": ["重點短句1（14-22字，要是讀得通的完整短句，不是關鍵字堆疊）","重點短句2（14-22字）"],
        "dialogue": [ {{"speaker":"A","line":"..."}}, {{"speaker":"B","line":"..."}}, ... ] }}  // 總字數約230-260字（約55-62秒）
     // 正好 2 個，對應核心觀念 beat1、beat2
   ],
   "dimensions": [
     {{ "name": "產線設計", "icon": "{ICON_ENUM_HINT} 其中一個",
        "beats": [
-         {{ "label": "傳統做法", "photo": "素材代號", "image_prompt": "英文畫面描述", "bullets": ["...","..."], "dialogue": [...] }},   // 總字數約150-180字（約35-42秒）
-         {{ "label": "第一性原理拆解", "photo": "素材代號", "image_prompt": "英文畫面描述", "bullets": ["...","..."], "dialogue": [...] }},
-         {{ "label": "智慧製造應用", "photo": "素材代號", "image_prompt": "英文畫面描述", "bullets": ["...","..."], "dialogue": [...] }}
+         {{ "label": "傳統做法", "photo": "素材代號", "image_prompt": "英文畫面描述", "diagram": {{"type":"...","labels":[...]}} 或 null, "bullets": ["...","..."], "dialogue": [...] }},   // 總字數約150-180字（約35-42秒）
+         {{ "label": "第一性原理拆解", "photo": "素材代號", "image_prompt": "英文畫面描述", "diagram": {{"type":"...","labels":[...]}} 或 null, "bullets": ["...","..."], "dialogue": [...] }},
+         {{ "label": "智慧製造應用", "photo": "素材代號", "image_prompt": "英文畫面描述", "diagram": {{"type":"...","labels":[...]}} 或 null, "bullets": ["...","..."], "dialogue": [...] }}
        ] }},
     {{ "name": "數據與軟體", "icon": "...", "beats": [ ... 同上 3 個 ... ] }},
     {{ "name": "供應鏈與物流", "icon": "...", "beats": [ ... 同上 3 個 ... ] }}
@@ -667,7 +665,7 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
   "outro_image_prompt": "英文畫面描述，給結語用的收束畫面",
   "outro_quote": "結尾金句（30字以內，原創、貼合今日主題，不是書面摘要而是一句可以被記住的話）",
   "outro_cta_question": "邀請觀眾留言互動的問句（30字以內，貼合今日主題）",
-  "outro_dialogue": [ {{"speaker":"A","line":"..."}}, {{"speaker":"B","line":"..."}}, ... ]  // 3-4 輪，總字數約230-260字（約55-62秒），口語版的結語，可以呼應金句但不用逐字重複，不用唸出電話或網址（畫面會顯示聯絡資訊）
+  "outro_dialogue": [ {{"speaker":"A","line":"..."}}, {{"speaker":"B","line":"..."}}, ... ]  // 3-4 輪，總字數約230-260字（約55-62秒），口語版的結語。順序：收束原理 → 用一兩句把原理連回欣晨實際做的事（全片唯一一次提到公司）→ 邀請留言。不用唸出電話或網址，畫面會顯示聯絡資訊
   ,
   "fb_caption": "Facebook 貼文說明（300-400字）。這是觀眾滑過動態牆時唯一會先看到的文字，要能獨立成立。結構：第一行用一句反直覺的鉤子讓人停下來（不要寫「本集介紹…」這種開頭）；中段用 2-3 句說明這集拆解了什麼、觀眾會學到哪個可複用的思考工具；接著一句不推銷的可信度陳述（欣晨 30 年精密製造的實作視角）；最後用影片的互動問句邀請留言。專業、不說教、不用驚嘆號堆疊。\\n\\n#hashtag1 #hashtag2 #hashtag3 #hashtag4 #hashtag5"
 }}
@@ -693,6 +691,14 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
   * 畫面中不要有任何文字、標誌、招牌
   * 例：an empty legacy factory floor with idle CNC machines and stacked work-in-process pallets
   * 每段的畫面要有差異，不要每段都是同一種機械手臂特寫
+- diagram 是這段的「圖解」，**比照片重要得多**：教學型內容靠結構圖傳達關係，照片只能營造氣氛。
+  只要這段在講「關係、流程、層次、對比、數量差距」，就一定要給 diagram；
+  真的只是在描述現場場景時才留空（填 null）。格式為
+  {{"type":"類型","labels":["標籤1","標籤2",...]}}，可用類型：
+{DIAGRAM_HINT}
+  標籤規則：每個標籤 4-8 個字、是名詞或動作短語，不要寫整句話；
+  bars 類型的每個標籤寫成「名稱|數值」，例如 "傳統沖壓焊接|70 個零件"。
+  圖解必須和該段 bullets 講的是同一件事，不要另起爐灶。
 - 欣晨工業的置入規則見前述【行銷目標】，嚴格遵守「最多 3 次、只在應用 beat、必須自然銜接」
 - 只輸出JSON，不要前言說明"""
 
@@ -1208,7 +1214,8 @@ def main():
                 f"01_concept_{j}",
                 lambda p, beat=beat, idx=chapter_idx, tag=f"01_concept_{j}": make_chapter_slide(
                     idx, total_chapters, beat["title"], beat["bullets"], beat["icon"],
-                    beat["photo"], bold_path, reg_path, p, image_path=images.get(tag)
+                    beat["photo"], bold_path, reg_path, p, image_path=images.get(tag),
+                    diagram=beat.get("diagram")
                 ),
                 beat["dialogue"],
             )
@@ -1222,7 +1229,8 @@ def main():
                     f"02_dim{d}_{j}",
                     lambda p, dim=dim, beat=beat, title=title, idx=chapter_idx, tag=f"02_dim{d}_{j}": make_chapter_slide(
                         idx, total_chapters, title, beat["bullets"], dim["icon"],
-                        beat["photo"], bold_path, reg_path, p, image_path=images.get(tag)
+                        beat["photo"], bold_path, reg_path, p, image_path=images.get(tag),
+                    diagram=beat.get("diagram")
                     ),
                     beat["dialogue"],
                 )
@@ -1234,7 +1242,8 @@ def main():
                 f"03_reflect_{j}",
                 lambda p, beat=beat, idx=chapter_idx, tag=f"03_reflect_{j}": make_chapter_slide(
                     idx, total_chapters, beat["title"], beat["bullets"], beat["icon"],
-                    beat["photo"], bold_path, reg_path, p, image_path=images.get(tag)
+                    beat["photo"], bold_path, reg_path, p, image_path=images.get(tag),
+                    diagram=beat.get("diagram")
                 ),
                 beat["dialogue"],
             )
