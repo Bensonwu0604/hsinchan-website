@@ -1873,7 +1873,8 @@ const i18n = (() => {
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => apply(btn.getAttribute('data-lang')));
     });
-    apply(saved());
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
+    apply(SUPPORTED.includes(urlLang) ? urlLang : saved());
   }
 
   return { init, apply, current: () => current };
