@@ -1,6 +1,9 @@
-name: 每3天智慧製造 FB + YouTube 影片自動發文
+name: 每週智慧製造 FB + YouTube 影片自動發文
 
 on:
+  # 每週一次：台灣時間星期二 10:30（UTC 02:30），沿用先前排程時段
+  schedule:
+    - cron: '30 2 * * 2'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -12,9 +15,9 @@ on:
 
 jobs:
   generate-and-post:
-    name: 生成智慧製造影片並發布至 FB + YouTube
+    name: 生成智慧製造長片並發布至 FB + YouTube
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -44,6 +47,7 @@ jobs:
         working-directory: scripts
         env:
           ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY:     ${{ secrets.OPENAI_API_KEY }}
           FB_PAGE_ID:         ${{ secrets.FB_PAGE_ID }}
           FB_ACCESS_TOKEN:    ${{ secrets.FB_ACCESS_TOKEN }}
           YT_CLIENT_ID:       ${{ secrets.YT_CLIENT_ID }}
