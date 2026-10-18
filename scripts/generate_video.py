@@ -422,6 +422,8 @@ def draw_icon(draw, key, cx, cy, r, color=ACCENT_LT):
     else:
         draw.ellipse([cx-r*0.6, cy-r*0.6, cx+r*0.6, cy+r*0.6], outline=color, width=lw)
 
+diagrams._ICON_FN = draw_icon   # 圖示繪製注入，必須在 draw_icon 定義之後
+
 def make_title_slide(topic_title, topic_tag, bold_path, reg_path, out_path, asset_key="ev_line", image_path=None):
     img  = Image.new("RGB", (W, H))
     draw = ImageDraw.Draw(img)
@@ -810,8 +812,10 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
 - diagram 是這段的「圖解」，**比照片重要得多**：教學型內容靠結構圖傳達關係，照片只能營造氣氛。
   只要這段在講「關係、流程、層次、對比、數量差距」，就一定要給 diagram；
   真的只是在描述現場場景時才留空（填 null）。格式為
-  {{"type":"類型","labels":["標籤1","標籤2",...]}}，可用類型：
+  {{"type":"類型","labels":["標籤1","標籤2",...],"icons":["圖示1","圖示2",...]}}，可用類型：
 {DIAGRAM_HINT}
+  icons 可選填，長度與 labels 相同，每個從前述 icon 清單挑一個視覺上貼切的，
+  flow 與 layers 會把它畫成方塊左側的圖示徽章；不填就改用序號，兩者都好看。
   標籤規則：每個標籤 4-8 個字、是名詞或動作短語，不要寫整句話；
   bars 類型的每個標籤寫成「名稱|數值」，例如 "傳統沖壓焊接|70 個零件"。
   圖解必須和該段 bullets 講的是同一件事，不要另起爐灶。

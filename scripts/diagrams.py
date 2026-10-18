@@ -12,6 +12,9 @@
 
 from PIL import ImageDraw, ImageFont
 
+# 由 generate_video 注入 draw_icon，避免循環匯入
+_ICON_FN = None
+
 # 由 generate_video 注入，避免兩邊的品牌色不同步
 BG = (10, 13, 21)
 ACCENT = (26, 63, 152)
@@ -41,17 +44,40 @@ def _fit_font(draw, text, font_path, max_w, start, min_size=20):
     return ImageFont.truetype(font_path, min_size)
 
 
-def _box(draw, x, y, w, h, label, font_path, fill_bg=True):
-    """圓角方塊＋置中標籤"""
-    r = 14
+def _box(draw, x, y, w, h, label, font_path, fill_bg=True, badge=None, icon=None):
+    """圓角方塊：左側強調條 ＋ 圖示／序號徽章 ＋ 左對齊標籤
+
+    置中的純文字方塊資訊密度低、也缺少視覺層次。改成左側有強調條與徽章，
+    文字左對齊並與徽章對齊基準線，閱讀動線從左到右一致。
+    """
+    r = 16
+    body = (18, 28, 54) if fill_bg else None
+    draw.rounded_rectangle([x, y, x + w, y + h], radius=r, fill=body,
+                           outline=ACCENT_LT if fill_bg else DARK_GRAY, width=2)
+
+    # 左側強調條：給方塊一個視覺起點，也讓一整排方塊形成對齊的邊
     if fill_bg:
-        draw.rounded_rectangle([x, y, x + w, y + h], radius=r, fill=(18, 28, 54), outline=ACCENT_LT, width=3)
-    else:
-        draw.rounded_rectangle([x, y, x + w, y + h], radius=r, outline=DARK_GRAY, width=3)
-    f = _fit_font(draw, label, font_path, w - 40, 34)
+        draw.rounded_rectangle([x + 3, y + 12, x + 9, y + h - 12], radius=3, fill=ACCENT_LT)
+
+    text_x = x + 36
+    cy = y + h / 2
+    if badge is not None or icon is not None:
+        br = min(int(h * 0.30), 34)
+        bx = x + 36 + br
+        draw.ellipse([bx - br, cy - br, bx + br, cy + br],
+                     fill=(26, 44, 86), outline=ACCENT_LT, width=2)
+        if icon is not None and _ICON_FN is not None:
+            _ICON_FN(draw, icon, bx, cy, br * 0.62, ACCENT_LT)
+        else:
+            fb = ImageFont.truetype(font_path, int(br * 0.95))
+            bb = draw.textbbox((0, 0), str(badge), font=fb)
+            draw.text((bx - (bb[2] - bb[0]) / 2, cy - (bb[3] - bb[1]) / 2 - bb[1]),
+                      str(badge), font=fb, fill=WHITE)
+        text_x = bx + br + 28
+
+    f = _fit_font(draw, label, font_path, x + w - text_x - 26, 34)
     bb = draw.textbbox((0, 0), label, font=f)
-    draw.text((x + (w - (bb[2] - bb[0])) / 2, y + (h - (bb[3] - bb[1])) / 2 - bb[1]),
-              label, font=f, fill=WHITE)
+    draw.text((text_x, cy - (bb[3] - bb[1]) / 2 - bb[1]), label, font=f, fill=WHITE)
 
 
 def _arrow_down(draw, cx, y0, y1, color=ACCENT_LT, width=4):
@@ -60,7 +86,7 @@ def _arrow_down(draw, cx, y0, y1, color=ACCENT_LT, width=4):
     draw.polygon([(cx, y1), (cx - head, y1 - head), (cx + head, y1 - head)], fill=color)
 
 
-def _draw_flow(draw, box, labels, font_path):
+def _draw_flow(draw, box, labels, font_path, icons=None):
     x, y, w, h = box
     n = len(labels)
     gap = 54
@@ -69,12 +95,13 @@ def _draw_flow(draw, box, labels, font_path):
     cy = y + (h - total) // 2
     for i, label in enumerate(labels):
         top = cy + i * (bh + gap)
-        _box(draw, x, top, w, bh, label, font_path)
+        ic = icons[i] if icons and i < len(icons) else None
+        _box(draw, x, top, w, bh, label, font_path, badge=i + 1, icon=ic)
         if i < n - 1:
             _arrow_down(draw, x + w // 2, top + bh + 8, top + bh + gap - 8)
 
 
-def _draw_loop(draw, box, labels, font_path):
+def _draw_loop(draw, box, labels, font_path, icons=None):
     """環形排列，箭頭首尾相接，最後一步回到第一步"""
     import math
     x, y, w, h = box
@@ -111,7 +138,7 @@ def _draw_loop(draw, box, labels, font_path):
         draw.text((px - (bb[2] - bb[0]) / 2, py - (bb[3] - bb[1]) / 2 - bb[1]), label, font=f, fill=WHITE)
 
 
-def _draw_layers(draw, box, labels, font_path):
+def _draw_layers(draw, box, labels, font_path, icons=None):
     """由下往上堆疊，下層較寬，表達「下層支撐上層」"""
     x, y, w, h = box
     n = len(labels)
@@ -120,14 +147,12 @@ def _draw_layers(draw, box, labels, font_path):
     total = bh * n + gap * (n - 1)
     top0 = y + (h - total) // 2
     for i, label in enumerate(labels):           # labels[0] 是最底層
-        shrink = int((n - 1 - i) * 0)            # 等寬較穩重，不做梯形
-        bx = x + shrink
-        bw = w - shrink * 2
         top = top0 + (n - 1 - i) * (bh + gap)
-        _box(draw, bx, top, bw, bh, label, font_path)
+        ic = icons[i] if icons and i < len(icons) else None
+        _box(draw, x, top, w, bh, label, font_path, badge=i + 1, icon=ic)
 
 
-def _draw_compare(draw, box, labels, font_path):
+def _draw_compare(draw, box, labels, font_path, icons=None):
     """上下兩塊對比，中間以「VS」分隔"""
     x, y, w, h = box
     bh = min((h - 120) // 2, 230)
@@ -140,7 +165,7 @@ def _draw_compare(draw, box, labels, font_path):
     _box(draw, x, top_y + bh + 120, w, bh, labels[1], font_path)
 
 
-def _draw_bars(draw, box, items, font_path):
+def _draw_bars(draw, box, items, font_path, icons=None):
     """水平長條對比，長度正比於數值，用來呈現倍率差距"""
     x, y, w, h = box
     parsed = []
@@ -202,5 +227,5 @@ def draw_diagram(img, spec, x0, W, H, font_path):
     draw = ImageDraw.Draw(img)
     pad_x, pad_y = 90, 150
     box = (x0 + pad_x, pad_y, W - x0 - pad_x * 2, H - pad_y * 2)
-    _RENDERERS[kind](draw, box, labels, font_path)
+    _RENDERERS[kind](draw, box, labels, font_path, spec.get("icons"))
     return True
