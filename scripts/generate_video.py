@@ -40,6 +40,7 @@ TTS_RETRIES  = 4    # 單句配音失敗重試次數
 TTS_BACKOFF  = 3    # 重試退避基數（秒）
 SCRIPT_RETRIES = 3  # 腳本生成/驗證失敗重試次數
 SCRIPT_MODEL = os.environ.get("SCRIPT_MODEL", "claude-opus-5-5")
+WEB_SEARCH_MAX_USES = int(os.environ.get("WEB_SEARCH_MAX_USES", "6"))
 
 # ── 片長控制（目標 10-13 分鐘）──────────────────────────────────────────────
 TARGET_MIN_SEC = 10 * 60      # 成片下限
@@ -47,9 +48,9 @@ TARGET_MAX_SEC = 13 * 60      # 成片上限
 TARGET_MID_SEC = 11.5 * 60    # 微調時瞄準的中心值
 # 腳本階段的粗估語速（字/秒）。只用來決定「要不要請 Claude 重寫」，
 # 真正的片長微調是依據配音後量到的實際秒數，所以這個常數不準也不會失準。
-CHARS_PER_SEC  = 4.6
+CHARS_PER_SEC  = 4.3   # 依 edge-tts 實測校正：同腳本比 OpenAI 慢約 6%
 SCRIPT_EST_MIN = 9 * 60       # 粗估低於此值就請 Claude 加長
-SCRIPT_EST_MAX = 14.5 * 60    # 粗估高於此值就請 Claude 縮短
+SCRIPT_EST_MAX = 13.5 * 60    # 粗估高於此值就請 Claude 縮短（首次實測落在 13.0，上緣太近）
 MAX_RATE_ADJ   = 15           # 語速調整上限 ±15%（再多就不自然）
 
 # tts-1-hd 比 tts-1 貴一倍，但整支影片也只差約 $0.04，為成片品質值得
@@ -574,6 +575,38 @@ ICON_ENUM_HINT = "gear / sensor / chip / heat / data / network / check / warning
 PHOTO_ENUM_HINT = " / ".join(f"{k}（{v['desc']}）" for k, v in ASSETS.items())
 DIAGRAM_HINT = "\n".join(f"  * {k}：{v}" for k, v in diagrams.DIAGRAM_TYPES.items())
 
+def extract_script_json(msg):
+    """從回應中取出腳本 JSON
+
+    回應裡不只有答案：思考開啟時 content[0] 可能是 thinking block，
+    開放網頁搜尋後還會夾雜搜尋結果區塊與模型的說明文字。
+    直接把所有 text 串起來會讓 JSON 解析失敗，所以逐層退讓：
+    整段能解析就用整段，否則取最外層的大括號區間。
+    """
+    raw = "".join(
+        b.text for b in msg.content
+        if getattr(b, "type", None) == "text" and getattr(b, "text", None)
+    ).strip()
+
+    if raw.startswith("```"):
+        parts = raw.split("```")
+        if len(parts) > 1:
+            raw = parts[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+    raw = raw.strip()
+
+    try:
+        json.loads(raw)
+        return raw
+    except json.JSONDecodeError:
+        pass
+
+    # 退而求其次：取第一個 { 到最後一個 } 之間，剝掉前後的說明文字
+    start, end = raw.find("{"), raw.rfind("}")
+    return raw[start:end + 1] if start != -1 and end > start else raw
+
+
 def generate_video_script(topic_title, topic_angle):
     print(f"🤖 呼叫 {SCRIPT_MODEL} 生成 11-12 分鐘長片腳本...")
     ac = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
@@ -673,9 +706,18 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
 要求：
 - 繁體中文，口語自然、像真人對話（這是要被語音合成唸出來的雙主持人台詞，不是書面文章）
 
+── 先查資料，再動筆（這個節目必須與時俱進）──
+你有網頁搜尋工具。動筆前**先針對今日主題搜尋 2-4 次**，弄清楚：
+  - 這個技術在最近一兩年的實際進展、成熟度、普及程度
+  - 有沒有具體、可查證的案例、數據或價格水準
+  - 業界現在真正在爭論或踩雷的點是什麼
+觀眾是製造業從業者，他們分辨得出「教科書式的通論」和「真的在追這個領域的人」。
+搜尋到的內容要融進論證裡，不要只是把新聞唸一遍。
+查不到可靠資料的主張，就改用物理與成本推理，不要硬掰。
+
 ── 事實準確性（最高優先，違反會毀掉整個頻道的可信度）──
 這支影片會以欣晨工業的名義公開發布。捏造的數據一旦被同業指出來，傷害遠大於內容無聊。
-- 只使用你有把握、屬於公開常識等級的事實（例：Giga Press 把數十個沖壓件整合成極少數鑄件）
+- 數字優先來自剛剛搜尋到的可查證來源；查得到就給精確值，查不到才退回數量級
 - **不確定就不要給精確數字**。改用數量級、比例或推理式表述
   （「從數十個零件變成個位數」「能耗大概是原本的幾分之一」），不要編造「降低 37.2%」這種假精確
 - **絕對不要把查不到的數據掛在具名公司上**（不可出現「台積電良率提升 23.7%」這類虛構統計）
@@ -708,10 +750,14 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
         # 相對於生圖成本（約 $0.47/支），換上最強模型每支只多約 $0.12。
         # Opus 5.5 思考永遠開啟，effort 預設是 medium，這裡明確拉到 high；
         # 思考 token 會計入 max_tokens，所以改用串流並放寬上限，避免 JSON 被截斷。
+        # 開放網頁搜尋，讓每一集都能接上該主題的當下發展，而不是只複述
+        # 訓練資料裡的通論。這也讓「數字要有根據」從靠記憶變成可查證。
         with ac.messages.stream(
             model=SCRIPT_MODEL,
             max_tokens=32000,
             output_config={"effort": "high"},
+            tools=[{"type": "web_search_20260209", "name": "web_search",
+                    "max_uses": WEB_SEARCH_MAX_USES}],
             messages=[{"role": "user", "content": prompt}],
         ) as stream:
             msg = stream.get_final_message()
@@ -721,15 +767,9 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
             print(f"   ⚠️  腳本生成第 {attempt}/{SCRIPT_RETRIES} 次：{last_err}")
             continue
 
-        # 思考開啟後 content[0] 可能是 thinking block，必須挑出 text block 再合併
-        raw = "".join(b.text for b in msg.content if getattr(b, "type", None) == "text").strip()
-        # 去掉可能的 markdown code block
-        if raw.startswith("```"):
-            raw = raw.split("```")[1]
-            if raw.startswith("json"):
-                raw = raw[4:]
+        raw = extract_script_json(msg)
         try:
-            script = json.loads(raw.strip())
+            script = json.loads(raw)
             validate_script(script)
             return script
         except (json.JSONDecodeError, ValueError) as e:
