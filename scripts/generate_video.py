@@ -50,7 +50,8 @@ TARGET_MID_SEC = 11.5 * 60    # 微調時瞄準的中心值
 # 真正的片長微調是依據配音後量到的實際秒數，所以這個常數不準也不會失準。
 CHARS_PER_SEC  = 4.3   # 依 edge-tts 實測校正：同腳本比 OpenAI 慢約 6%
 SCRIPT_EST_MIN = 9 * 60       # 粗估低於此值就請 Claude 加長
-SCRIPT_EST_MAX = 13.5 * 60    # 粗估高於此值就請 Claude 縮短（首次實測落在 13.0，上緣太近）
+SCRIPT_EST_MAX = 14.0 * 60    # 粗估高於此值才重寫。估算誤差約 ±10%，
+                              # 卡太緊會讓邊界值白白重跑一次最貴的呼叫
 MAX_RATE_ADJ   = 15           # 語速調整上限 ±15%（再多就不自然）
 
 # tts-1-hd 比 tts-1 貴一倍，但整支影片也只差約 $0.04，為成片品質值得
@@ -255,12 +256,19 @@ def load_asset(key):
     return out
 
 def _edge_fade_mask(size, fade_px):
-    """左緣淡出遮罩，讓照片自然融進深色底，不留硬邊"""
+    """左緣淡出遮罩
+
+    淡出太短太陡會在照片左緣留下一道看得見的垂直接縫。
+    用較長的過渡距離搭配平滑曲線（smoothstep），兩端斜率為零，
+    才不會在淡出起點與終點各留下一條可辨識的邊。
+    """
     w, h = size
     mask = Image.new("L", (w, h), 255)
     md = ImageDraw.Draw(mask)
-    for x in range(min(fade_px, w)):
-        md.line([(x, 0), (x, h)], fill=int(255 * (x / fade_px) ** 1.5))
+    span = min(fade_px, w)
+    for x in range(span):
+        t = x / span
+        md.line([(x, 0), (x, h)], fill=int(255 * (t * t * (3 - 2 * t))))
     return mask
 
 def _resolve_visual(key, image_path):
@@ -269,7 +277,7 @@ def _resolve_visual(key, image_path):
         return load_generated_image(image_path), "photo"
     return load_asset(key), ASSETS.get(key, {}).get("kind", "photo")
 
-def draw_asset_panel(img, key, x0, fade_px=260, image_path=None):
+def draw_asset_panel(img, key, x0, fade_px=440, image_path=None):
     """把素材鋪在畫面右側：實拍／生成圖做滿版裁切並左緣淡出，CAD 置中擺放"""
     asset, kind = _resolve_visual(key, image_path)
     pw, ph = W - x0, H
@@ -505,6 +513,16 @@ def make_chapter_slide(index, total, title, bullets, icon_key, asset_key, bold_p
         draw.ellipse([80, y + 14, 93, y + 27], fill=ACCENT_LT)
         y = draw_wrapped(draw, bullet, font_bullet, 114, y, bullet_w, GRAY, 1.45)
         y += 26
+
+    # 章節進度條：用有功能的元素填滿下方留白，順便把「第幾章 / 共幾章」
+    # 從文字變成一眼可見的視覺資訊，觀眾知道自己看到哪裡了。
+    bar_y, bar_h = H - 150, 4
+    draw.rectangle([80, bar_y, 80 + text_w, bar_y + bar_h], fill=(26, 34, 54))
+    done = int(text_w * index / max(total, 1))
+    draw.rectangle([80, bar_y, 80 + done, bar_y + bar_h], fill=ACCENT_LT)
+    for i in range(1, total):                      # 每章一個刻度
+        tick = 80 + int(text_w * i / total)
+        draw.rectangle([tick, bar_y - 3, tick + 1, bar_y + bar_h + 3], fill=BG)
 
     draw_logo_watermark(draw, font_small, right_edge=80 + text_w)
     img.save(out_path)
@@ -811,6 +829,7 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
 - 只輸出JSON，不要前言說明"""
 
     last_err = None
+    feedback = ""
     for attempt in range(1, SCRIPT_RETRIES + 1):
         # 腳本決定整支影片的教育價值與行銷品質，是最值得投資的一環。
         # 相對於生圖成本（約 $0.47/支），換上最強模型每支只多約 $0.12。
@@ -824,13 +843,14 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
             output_config={"effort": "high"},
             tools=[{"type": "web_search_20260209", "name": "web_search",
                     "max_uses": WEB_SEARCH_MAX_USES}],
-            messages=[{"role": "user", "content": prompt}],
+            messages=[{"role": "user", "content": prompt + feedback}],
         ) as stream:
             msg = stream.get_final_message()
 
         if msg.stop_reason == "max_tokens":
             last_err = "輸出被 max_tokens 截斷，JSON 不完整"
             print(f"   ⚠️  腳本生成第 {attempt}/{SCRIPT_RETRIES} 次：{last_err}")
+            feedback = "\n\n【上次失敗】輸出過長被截斷，請縮短台詞總字數後重新輸出完整 JSON。"
             continue
 
         raw = extract_script_json(msg)
@@ -841,6 +861,8 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
         except (json.JSONDecodeError, ValueError) as e:
             last_err = e
             print(f"   ⚠️  腳本生成第 {attempt}/{SCRIPT_RETRIES} 次不合格：{e}")
+            # 盲目重試只會再寫出一份同樣的腳本，必須告訴它哪裡不合格
+            feedback = f"\n\n【上次失敗的原因，請針對這點修正後重新輸出】\n{e}"
 
     raise RuntimeError(f"腳本連續 {SCRIPT_RETRIES} 次不合格：{last_err}")
 
