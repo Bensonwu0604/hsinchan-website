@@ -618,6 +618,33 @@ def generate_video_script(topic_title, topic_angle):
 目標受眾：製造業從業者、工程師、科技創業者，以及對特斯拉/馬斯克式創新邏輯有興趣的知識型觀眾。
 風格：快節奏、語氣像在拆解一個被大家誤解的行業迷思。
 
+── 節目的核心論點（整個系列共用的脊椎，每一集都要服膺它）──
+這個節目存在的理由，是用第一性原理**重新定義智慧製造**，而不是介紹一堆技術名詞。
+
+業界現行的定義是一份採購清單，而且是典型的類比推理：
+  「裝感測器 ＋ 全廠聯網 ＋ 加上 AI ＝ 工業 4.0 ＝ 智慧製造」
+它回答的是「要買什麼」，不是「為什麼」。所以工廠花了大錢，卻說不出到底變聰明在哪裡。
+
+本節目主張的定義，是從製造的物理與經濟本質推導出來的：
+  製造的本質，是把物質重新排列成更高價值的形態。
+  而所有的浪費，最終都來自同一件事——**決策發生的當下，資訊不足或來得太晚**。
+  因此：
+
+    ★ 智慧製造 ＝ 讓決策所需的資訊，在決策發生的地點與時刻就位。★
+
+  它跟「買了多少設備」無關，跟「資訊與決策之間的距離」有關。
+
+這個定義會推導出一切，每一集都要用它當試金石：
+  - 感測器的價值，只在於它產出「與某個決策相關」的資訊；量了沒人用的數據是零
+  - 網路與邊緣運算的價值，只在於把資訊在「還來得及反應」的時間內送到
+  - AI 的價值，只在於把資料變成決策；做不出決策的模型只是昂貴的報表
+  - 沒有人會依據它採取行動的儀表板，價值為零——無論它多好看
+  - 自動化若沒縮短這個距離，只是把原本愚蠢的動作做得更快
+
+所以每一集在談它的主題時，都要回答同一個問題：
+**這項技術，究竟縮短了「哪一個決策」與「哪一份資訊」之間的距離？**
+如果答不出來，就要誠實指出它在多數工廠其實是浪費——這種誠實正是本節目的價值所在。
+
 ── 這支影片同時要達成兩個目標，缺一不可 ──
 【教育目標】觀眾看完要帶走一個「可以自己拿去用」的思考工具，而不只是聽了一集有趣的故事。
   具體要求：每個維度的「第一性原理拆解」beat，都要示範一個**可以套用到任何產業的提問句**
@@ -671,7 +698,7 @@ def generate_video_script(topic_title, topic_angle):
 請以 JSON 格式輸出，嚴格遵守以下結構。"dialogue" 都是陣列，每個元素是 {{"speaker":"A"或"B","line":"該句台詞"}}，
 A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語唸出的字數，不是書面字數：
 {{
-  "video_title": "影片主標題（15字以內，有衝擊力，可以是挑戰常規假設的問句或反直覺陳述）",
+  "video_title": "影片主標題（18-28字）。標題是觀眾唯一的進入點，必須讓他在三秒內知道『看完我會得到什麼』。結構＝具體主題＋可驗證的結果或代價。只有好奇心、看不出效益的標題不合格。例：『IIoT 導入順序搞錯，三年白花錢：先接一個溫度點就夠』。反例：『工業物聯網，別從網路開始』（有懸念但不知道能學到什麼）、『淺談智慧製造』（兩者皆無）。不要用驚嘆號或『震驚』『必看』這類詞。",
   "hook_dialogue": [ {{"speaker":"A","line":"..."}}, {{"speaker":"B","line":"..."}}, ... ]  // 3-4 輪對話，總字數約230-260字（唸出約55-62秒）
   ,
   "concept_beats": [
@@ -700,6 +727,9 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
   "outro_cta_question": "邀請觀眾留言互動的問句（30字以內，貼合今日主題）",
   "outro_dialogue": [ {{"speaker":"A","line":"..."}}, {{"speaker":"B","line":"..."}}, ... ]  // 3-4 輪，總字數約230-260字（約55-62秒），口語版的結語。順序：收束原理 → 用一兩句把原理連回欣晨實際做的事（全片唯一一次提到公司）→ 邀請留言。不用唸出電話或網址，畫面會顯示聯絡資訊
   ,
+  "key_points": ["本集重點1", "本集重點2", "..."],
+  "sop_steps": ["步驟1", "步驟2", "..."],
+  "benefits": ["效益1", "效益2", "..."],
   "fb_caption": "Facebook 貼文說明（300-400字）。這是觀眾滑過動態牆時唯一會先看到的文字，要能獨立成立。結構：第一行用一句反直覺的鉤子讓人停下來（不要寫「本集介紹…」這種開頭）；中段用 2-3 句說明這集拆解了什麼、觀眾會學到哪個可複用的思考工具；接著一句不推銷的可信度陳述（欣晨 30 年精密製造的實作視角）；最後用影片的互動問句邀請留言。專業、不說教、不用驚嘆號堆疊。\\n\\n#hashtag1 #hashtag2 #hashtag3 #hashtag4 #hashtag5"
 }}
 
@@ -741,6 +771,15 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
   標籤規則：每個標籤 4-8 個字、是名詞或動作短語，不要寫整句話；
   bars 類型的每個標籤寫成「名稱|數值」，例如 "傳統沖壓焊接|70 個零件"。
   圖解必須和該段 bullets 講的是同一件事，不要另起爐灶。
+- key_points / sop_steps / benefits 是影片說明欄的骨幹，要能**脫離影片獨立閱讀**，
+  讓沒看完影片的人光讀說明也學得到東西（說明欄會被搜尋索引，是引流的關鍵）：
+  * key_points：5-10 條本集重點。每條 20-40 字，是完整的陳述句，要帶具體的量級或條件，
+    不要寫「導入 IIoT 很重要」這種廢話。順序照影片推進。
+  * sop_steps：5-8 個「明天就能開始做」的執行步驟。每條 25-50 字，要有明確的動作與
+    可驗收的產出（例如「先挑一台稼動率最低的機台，只接一個溫度點，連續記錄兩週」）。
+    不要寫成抽象原則，要寫成一個廠務主管看得懂、能排進行程的動作。
+  * benefits：3-5 條執行後的實際效益。要講清楚「省到什麼、省多少量級、多久看得到」，
+    無法量化時就講可驗證的狀態改變，不要寫「提升競爭力」這種無法檢驗的話。
 - 欣晨工業的置入規則見前述【行銷目標】，嚴格遵守「最多 3 次、只在應用 beat、必須自然銜接」
 - 只輸出JSON，不要前言說明"""
 
@@ -835,7 +874,7 @@ def validate_script(script):
     """
     for key in ("video_title", "hook_dialogue", "concept_beats", "dimensions",
                 "reflection_beats", "outro_quote", "outro_cta_question",
-                "outro_dialogue", "fb_caption"):
+                "outro_dialogue", "fb_caption", "key_points", "sop_steps", "benefits"):
         if not script.get(key):
             raise ValueError(f"腳本缺少必要欄位：{key}")
 
@@ -1055,7 +1094,9 @@ def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_st
 
     youtube = build("youtube", "v3", credentials=creds, cache_discovery=False)
 
-    yt_title = f"【智慧製造】{slide_title}｜欣晨工業 Hsin-Chan Industrial"
+    # 標題前置：搜尋結果約 60 字就截斷，開頭字元最珍貴。
+    # 原本的「【智慧製造】」前綴與英文品牌後綴會把效益擠出顯示範圍。
+    yt_title = f"{slide_title}｜欣晨工業"
     if len(yt_title) > 100:
         yt_title = yt_title[:97] + "..."
 
@@ -1162,6 +1203,45 @@ def preflight_check():
     else:
         print(f"🎙️  配音來源：{ACTIVE_TTS['provider']}\n")
 
+def _hms(seconds):
+    """YouTube 章節格式：未滿一小時用 M:SS，超過才用 H:MM:SS"""
+    total = int(seconds)
+    h, m, sec = total // 3600, (total % 3600) // 60, total % 60
+    return f"{h}:{m:02d}:{sec:02d}" if h else f"{m}:{sec:02d}"
+
+
+def build_description(script, chapters):
+    """組出說明欄：重點、SOP、效益、章節
+
+    這段要能脫離影片獨立閱讀——說明欄會被搜尋索引，是引流的主要入口，
+    而且沒看完影片的人也該帶得走東西。
+    章節時間軸由實際段落長度算出，不是請模型猜的。
+    """
+    NL = "\n"
+    parts = [script["fb_caption"].split("#")[0].strip()]
+
+    if script.get("key_points"):
+        parts.append("【本集重點】" + NL + NL.join(
+            f"{i}. {pt}" for i, pt in enumerate(script["key_points"], 1)))
+
+    if script.get("sop_steps"):
+        parts.append("【導入 SOP：明天就能開始】" + NL + NL.join(
+            f"Step {i}　{st}" for i, st in enumerate(script["sop_steps"], 1)))
+
+    if script.get("benefits"):
+        parts.append("【執行效益】" + NL + NL.join(f"・{b}" for b in script["benefits"]))
+
+    if chapters:
+        # YouTube 章節規則：第一章必須是 0:00，且至少三章
+        parts.append("【章節】" + NL + NL.join(
+            f"{_hms(t)} {label}" for label, t in chapters))
+
+    tags = "#" + script["fb_caption"].split("#", 1)[1] if "#" in script["fb_caption"] else ""
+    if tags:
+        parts.append(tags.strip())
+    return (NL + NL).join(parts)
+
+
 # ── 主程式 ───────────────────────────────────────────────────────────────────
 def main():
     print("═══════════════════════════════════════════")
@@ -1225,10 +1305,12 @@ def main():
             print("\n🖼️  未設定 GOOGLE_API_KEY，全部使用 repo 內素材")
 
         clip_paths = []
+        chapters = []
         total_duration = 0.0
 
-        def build_segment(tag, draw_fn, dialogue):
+        def build_segment(tag, draw_fn, dialogue, label=None):
             nonlocal total_duration
+            chapters.append((label or tag, total_duration))   # 起點＝先前累計長度
             audio_path = synthesize_dialogue(dialogue, tmp, tag)
             duration = get_audio_duration(audio_path)
             image_path = tmp / f"{tag}.png"
@@ -1244,7 +1326,7 @@ def main():
             "00_hook",
             lambda p: make_title_slide(script["video_title"], topic_tag, bold_path, reg_path, p,
                                        image_path=images.get("00_hook")),
-            script["hook_dialogue"],
+            script["hook_dialogue"], label="開場",
         )
 
         # 第二幕：核心觀念
@@ -1257,7 +1339,7 @@ def main():
                     beat["photo"], bold_path, reg_path, p, image_path=images.get(tag),
                     diagram=beat.get("diagram")
                 ),
-                beat["dialogue"],
+                beat["dialogue"], label=beat["title"],
             )
 
         # 第三幕：三大維度案例拆解
@@ -1272,7 +1354,7 @@ def main():
                         beat["photo"], bold_path, reg_path, p, image_path=images.get(tag),
                     diagram=beat.get("diagram")
                     ),
-                    beat["dialogue"],
+                    beat["dialogue"], label=title,
                 )
 
         # 第四幕：深度反思與盲點警示
@@ -1285,7 +1367,7 @@ def main():
                     beat["photo"], bold_path, reg_path, p, image_path=images.get(tag),
                     diagram=beat.get("diagram")
                 ),
-                beat["dialogue"],
+                beat["dialogue"], label=beat["title"],
             )
 
         # 第五幕：Outro 結語（金句 + CTA 問句）
@@ -1294,7 +1376,7 @@ def main():
             lambda p: make_cta_slide(
                 script["outro_quote"], script["outro_cta_question"], bold_path, reg_path, p
             ),
-            script["outro_dialogue"],
+            script["outro_dialogue"], label="結語",
         )
 
         print(f"\n🎞️  共 {len(clip_paths)} 段，總長約 {total_duration/60:.1f} 分鐘")
@@ -1312,10 +1394,11 @@ def main():
 
         # 5. 同時上傳 Facebook + YouTube
         print("\n── 上傳至各平台 ────────────────────────────")
-        fb_id = upload_video_to_facebook(str(video_path), script["fb_caption"])
+        description = build_description(script, chapters)
+        fb_id = upload_video_to_facebook(str(video_path), description)
         yt_id = upload_video_to_youtube(
             str(video_path), script["video_title"],
-            script["fb_caption"], topic_tag, date_str
+            description, topic_tag, date_str
         )
 
         print(f"\n🎉 完成！{date_str} 影片已發布")
