@@ -1059,6 +1059,12 @@ def preflight_check():
         print("   ⚠️  OPENAI_API_KEY 前後有空白字元，已自動去除")
         os.environ["OPENAI_API_KEY"] = key.strip()
 
+    # 只印長度與前綴，不印任何金鑰內容：長度足以看出是否貼到截斷的 key，
+    # 而 GitHub 的遮罩對完整字串才有效，印出片段反而會造成外洩。
+    k = os.environ["OPENAI_API_KEY"]
+    prefix = "sk-proj-" if k.startswith("sk-proj-") else ("sk-" if k.startswith("sk-") else "（非 sk- 開頭）")
+    print(f"   OPENAI_API_KEY：長度 {len(k)}、前綴 {prefix}")
+
     from openai import OpenAI
     try:
         OpenAI(api_key=os.environ["OPENAI_API_KEY"]).models.list()
