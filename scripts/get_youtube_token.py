@@ -21,6 +21,7 @@ print("1. 到 https://console.cloud.google.com")
 print("2. 建立或選擇一個專案")
 print("3. 啟用「YouTube Data API v3」")
 print("4. 建立 OAuth 2.0 憑證（類型選「桌面應用程式」）")
+print("   ※ 本次授權會同時要求上傳影片與上傳字幕兩項權限")
 print("5. 下載 JSON 憑證檔案，儲存為 client_secrets.json")
 print()
 
@@ -38,7 +39,15 @@ client_config = {
 }
 
 flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
-creds = flow.run_local_server(port=0)
+# prompt="consent" 是必要的：這個應用先前已被授權過，
+# Google 預設不會再發新的 refresh token，會印出 None。
+creds = flow.run_local_server(port=0, access_type="offline", prompt="consent")
+
+if not creds.refresh_token:
+    print()
+    print("❌ 沒有取得 refresh token。")
+    print("   請到 https://myaccount.google.com/permissions 移除本應用的授權後重試。")
+    raise SystemExit(1)
 
 print()
 print("=" * 55)
