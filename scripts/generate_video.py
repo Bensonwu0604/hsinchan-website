@@ -44,13 +44,13 @@ WEB_SEARCH_MAX_USES = int(os.environ.get("WEB_SEARCH_MAX_USES", "6"))
 
 # ── 片長控制（目標 10-13 分鐘）──────────────────────────────────────────────
 TARGET_MIN_SEC = 10 * 60      # 成片下限
-TARGET_MAX_SEC = 13 * 60      # 成片上限
-TARGET_MID_SEC = 11.5 * 60    # 微調時瞄準的中心值
+TARGET_MAX_SEC = 15 * 60      # 成片上限
+TARGET_MID_SEC = 12.5 * 60    # 微調時瞄準的中心值
 # 腳本階段的粗估語速（字/秒）。只用來決定「要不要請 Claude 重寫」，
 # 真正的片長微調是依據配音後量到的實際秒數，所以這個常數不準也不會失準。
 CHARS_PER_SEC  = 4.3   # 依 edge-tts 實測校正：同腳本比 OpenAI 慢約 6%
-SCRIPT_EST_MIN = 9 * 60       # 粗估低於此值就請 Claude 加長
-SCRIPT_EST_MAX = 14.0 * 60    # 粗估高於此值才重寫。估算誤差約 ±10%，
+SCRIPT_EST_MIN = 9.5 * 60     # 粗估低於此值就請 Claude 加長
+SCRIPT_EST_MAX = 15.5 * 60    # 粗估高於此值才重寫。估算誤差約 ±10%，
                               # 卡太緊會讓邊界值白白重跑一次最貴的呼叫
 MAX_RATE_ADJ   = 15           # 語速調整上限 ±15%（再多就不自然）
 
@@ -626,7 +626,7 @@ def extract_script_json(msg):
 
 
 def generate_video_script(topic_title, topic_angle):
-    print(f"🤖 呼叫 {SCRIPT_MODEL} 生成 11-12 分鐘長片腳本...")
+    print(f"🤖 呼叫 {SCRIPT_MODEL} 生成 12-14 分鐘長片腳本...")
     ac = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
     prompt = f"""你是《{SERIES_NAME_ZH}》（{SERIES_NAME_EN}）節目的編劇，這是一個雙主持人對談節目：
 主持人 A 是男性，理性冷靜，擅長拆解數據與物理/成本根本原理；
@@ -719,13 +719,13 @@ def generate_video_script(topic_title, topic_angle):
 可以引用特斯拉 Giga Factory、一體化壓鑄（Giga Press）等公開案例作為示範性佐證；但如果今日主題離汽車製造較遠，
 就改用更貼切、可驗證的業界標竿案例，不要每集都硬套特斯拉——落地的主角終究要回到今日主題與欣晨工業的技術領域。
 
-── 全片架構（總長約 11-12 分鐘，五幕，缺一不可）──
+── 全片架構（總長約 12-14 分鐘，五幕，缺一不可）──
 第一幕 Hook 開場（約 60 秒）：用一個強烈對比畫面感破題（例如：傳統工廠的沉悶堆積 vs 高度自動化產線的特寫），
   點出一個大家以為是「錢」或「資源」的問題，但其實是「思考方式」的問題，拋出全片要拆解的疑問，並說明本集主旨。
 第二幕 核心觀念（約 2 分鐘，2 個 beats）：解釋「類比推理」vs「第一性原理」的差異——
   beat 1：業界迷思是什麼樣的類比推理（「大家都外包」「行業標準就是這個價」）；
   beat 2：製造的物理本質（把原物料重新排列組合成更高價值的形狀/功能）與經濟本質（減少能量損耗、時間成本、搬運無效率）。
-第三幕 三大維度案例拆解（約 6 分鐘，3 個維度 x 各 3 個 beats＝9 個 beats）：
+第三幕 三大維度案例拆解（約 7-8 分鐘，3 個維度 x 各 3 個 beats＝9 個 beats）：
   維度依序為「產線設計」「數據與軟體」「供應鏈與物流」，每個維度都要包含恰好 3 個 beats：
     beat A：傳統做法是什麼、為什麼大家這樣做
     beat B：第一性原理拆解——問「為什麼非得這樣？」，拆到物理/成本/資料的根本限制
@@ -754,7 +754,7 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
   "dimensions": [
     {{ "name": "產線設計", "icon": "{ICON_ENUM_HINT} 其中一個",
        "beats": [
-         {{ "label": "傳統做法", "photo": "素材代號", "image_prompt": "英文畫面描述", "diagram": {{"type":"...","labels":[...]}} 或 null, "bullets": ["...","..."], "dialogue": [...] }},   // 總字數約150-180字（約35-42秒）
+         {{ "label": "傳統做法", "photo": "素材代號", "image_prompt": "英文畫面描述", "diagram": {{"type":"...","labels":[...]}} 或 null, "bullets": ["...","..."], "dialogue": [...] }},   // 總字數約175-205字（約41-48秒）
          {{ "label": "第一性原理拆解", "photo": "素材代號", "image_prompt": "英文畫面描述", "diagram": {{"type":"...","labels":[...]}} 或 null, "bullets": ["...","..."], "dialogue": [...] }},
          {{ "label": "智慧製造應用", "photo": "素材代號", "image_prompt": "英文畫面描述", "diagram": {{"type":"...","labels":[...]}} 或 null, "bullets": ["...","..."], "dialogue": [...] }}
        ] }},
