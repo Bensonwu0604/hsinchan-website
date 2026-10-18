@@ -1898,19 +1898,11 @@ const nav = (() => {
   const menu   = document.getElementById('navMenu');
 
   let isOpen = false;
-  let lastScrollY = 0;
   const THRESHOLD = 60;
-  const HIDE_THRESHOLD = 300;
 
   const updateScroll = () => {
     const y = window.scrollY;
     header.classList.toggle('is-scrolled', y > THRESHOLD);
-    if (y > HIDE_THRESHOLD) {
-      header.classList.toggle('is-hidden', y > lastScrollY);
-    } else {
-      header.classList.remove('is-hidden');
-    }
-    lastScrollY = y;
   };
 
   function open() {
