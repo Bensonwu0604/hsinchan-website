@@ -606,6 +606,11 @@ h1, h2, h3, h4, h5, h6 {
 .icon-fb,
 .icon-yt { width: 16px; height: 16px; }
 
+/* YouTube 用品牌紅，與其他圖示的品牌藍區隔 */
+.icon-yt { color: #FF0000; }
+.nav__yt-link:hover .icon-yt,
+.contact-info__item:hover .icon-yt { color: #CC0000; }
+
 /* Mobile toggle */
 .nav__toggle {
   display: none;
