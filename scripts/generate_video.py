@@ -40,6 +40,9 @@ TTS_RETRIES  = 4    # 單句配音失敗重試次數
 TTS_BACKOFF  = 3    # 重試退避基數（秒）
 SCRIPT_RETRIES = 3  # 腳本生成/驗證失敗重試次數
 SCRIPT_MODEL = os.environ.get("SCRIPT_MODEL", "claude-opus-5-5")
+# 翻譯是機械性工作，不需要最強模型；用 Haiku 每支約 $0.05
+TRANSLATE_MODEL = os.environ.get("TRANSLATE_MODEL", "claude-haiku-4-5")
+SUBTITLE_LANGS = [x for x in os.environ.get("SUBTITLE_LANGS", "en,ja").split(",") if x]
 WEB_SEARCH_MAX_USES = int(os.environ.get("WEB_SEARCH_MAX_USES", "6"))
 
 # ── 片長控制（目標 10-13 分鐘）──────────────────────────────────────────────
@@ -1047,7 +1050,15 @@ def synthesize_dialogue(dialogue, tmp_dir, tag):
     result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if result.returncode != 0:
         raise RuntimeError(f"對話音檔串接失敗：{result.stderr[-800:]}")
-    return out_path
+
+    # 逐句配音的副產物：每句的實際長度已知，字幕時間軸可以精確算出來，
+    # 不必靠語音辨識回推。這裡回傳相對於本段開頭的 (起, 迄, 台詞)。
+    cues, t = [], 0.0
+    for k, (turn, lp) in enumerate(zip(dialogue, line_paths)):
+        dur = get_audio_duration(lp)
+        cues.append((t, t + dur, turn["line"].strip()))
+        t += dur + (DIALOGUE_GAP if k < len(line_paths) - 1 else 0)
+    return out_path, cues
 
 def get_audio_duration(path):
     result = subprocess.run(
@@ -1295,6 +1306,64 @@ def build_description(script, chapters):
     return (NL + NL).join(parts)
 
 
+def _srt_time(t):
+    ms = int(round(t * 1000))
+    h, ms = divmod(ms, 3600000)
+    m, ms = divmod(ms, 60000)
+    sec, ms = divmod(ms, 1000)
+    return f"{h:02d}:{m:02d}:{sec:02d},{ms:03d}"
+
+
+def build_srt(cues, texts=None):
+    """由時間軸組出 SRT；texts 可換成其他語言，順序必須與 cues 一致"""
+    lines = []
+    for i, (start, end, zh) in enumerate(cues, 1):
+        text = (texts[i - 1] if texts and i - 1 < len(texts) else zh).strip()
+        if not text:
+            continue
+        lines.append(f"{i}")
+        lines.append(f"{_srt_time(start)} --> {_srt_time(end)}")
+        lines.append(text)
+        lines.append("")
+    return "\n".join(lines)
+
+
+def translate_lines(lines, targets=("en", "ja")):
+    """把台詞整批翻譯成其他語言
+
+    逐句翻譯會失去上下文、也貴；整批送並要求回傳等長陣列，
+    數量對不上就放棄該語言，不讓字幕錯位。
+    """
+    import anthropic as _a
+    client = _a.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+    names = {"en": "English", "ja": "Japanese"}
+    out = {}
+    for lang in targets:
+        payload = json.dumps(lines, ensure_ascii=False)
+        prompt = (
+            "以下是一支繁體中文智慧製造教學影片的逐句字幕，JSON 陣列格式。\n"
+            f"請翻成{names[lang]}，用於影片字幕：口語、簡潔、一句對一句。\n"
+            "專有名詞（IIoT、OEE、SMED、AOI、PLC 等）保留原文。\n"
+            "只輸出一個等長的 JSON 字串陣列，不要任何說明文字。\n\n"
+            + payload
+        )
+        try:
+            msg = client.messages.create(
+                model=TRANSLATE_MODEL, max_tokens=16000,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            raw = "".join(b.text for b in msg.content if getattr(b, "type", None) == "text")
+            start, end = raw.find("["), raw.rfind("]")
+            got = json.loads(raw[start:end + 1])
+            if len(got) != len(lines):
+                raise ValueError(f"翻譯句數不符（{len(got)} vs {len(lines)}），會造成字幕錯位")
+            out[lang] = got
+            print(f"   ✅ {names[lang]} 字幕（{len(got)} 句）")
+        except Exception as e:                      # noqa: BLE001
+            print(f"   ⚠️  {names[lang]} 字幕翻譯失敗，略過：{e}")
+    return out
+
+
 # ── 主程式 ───────────────────────────────────────────────────────────────────
 def main():
     print("═══════════════════════════════════════════")
@@ -1379,12 +1448,15 @@ def main():
 
         clip_paths = []
         chapters = []
+        subtitles = []
         total_duration = 0.0
 
         def build_segment(tag, draw_fn, dialogue, label=None):
             nonlocal total_duration
             chapters.append((label or tag, total_duration))   # 起點＝先前累計長度
-            audio_path = synthesize_dialogue(dialogue, tmp, tag)
+            seg_start = total_duration
+            audio_path, cues = synthesize_dialogue(dialogue, tmp, tag)
+            subtitles.extend((seg_start + a, seg_start + b, txt) for a, b, txt in cues)
             duration = get_audio_duration(audio_path)
             image_path = tmp / f"{tag}.png"
             draw_fn(image_path)
