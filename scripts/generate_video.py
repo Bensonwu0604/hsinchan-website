@@ -111,7 +111,7 @@ IMAGE_STYLE = (
 )
 _asset_cache = {}
 
-SERIES_NAME_ZH = "第一性拆解製造"
+SERIES_NAME_ZH = "第一性原理拆解智慧製造"
 SERIES_NAME_EN = "FIRST PRINCIPLES MFG"
 
 # ── 字型 ────────────────────────────────────────────────────────────────────
