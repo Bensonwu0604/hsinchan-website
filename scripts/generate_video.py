@@ -43,6 +43,9 @@ SCRIPT_MODEL = os.environ.get("SCRIPT_MODEL", "claude-opus-5-5")
 # 翻譯是機械性工作，不需要最強模型；用 Haiku 每支約 $0.05
 TRANSLATE_MODEL = os.environ.get("TRANSLATE_MODEL", "claude-haiku-4-5")
 SUBTITLE_LANGS = [x for x in os.environ.get("SUBTITLE_LANGS", "en,ja").split(",") if x]
+# captions.insert 需要 force-ssl，比單純上傳影片的權限更大
+YT_SCOPES = ["https://www.googleapis.com/auth/youtube.upload",
+             "https://www.googleapis.com/auth/youtube.force-ssl"]
 WEB_SEARCH_MAX_USES = int(os.environ.get("WEB_SEARCH_MAX_USES", "6"))
 
 # ── 片長控制（目標 10-13 分鐘）──────────────────────────────────────────────
@@ -1152,7 +1155,7 @@ def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_st
         client_id=client_id,
         client_secret=client_secret,
         token_uri="https://oauth2.googleapis.com/token",
-        scopes=["https://www.googleapis.com/auth/youtube.upload"],
+        scopes=YT_SCOPES,
     )
     creds.refresh(GoogleRequest())
 
@@ -1364,6 +1367,58 @@ def translate_lines(lines, targets=("en", "ja")):
     return out
 
 
+def upload_captions(video_id, srt_files):
+    """把字幕軌上傳到 YouTube
+
+    captions.insert 需要 youtube.force-ssl 權限，比上傳影片的
+    youtube.upload 更大。若現有 refresh token 權限不足，就只記錄警告，
+    不讓字幕問題害掉已經成功上傳的影片。
+    """
+    if not video_id or not srt_files:
+        return
+    client_id     = os.environ.get("YT_CLIENT_ID")
+    client_secret = os.environ.get("YT_CLIENT_SECRET")
+    refresh_token = os.environ.get("YT_REFRESH_TOKEN")
+    if not all([client_id, client_secret, refresh_token]):
+        return
+
+    print("💬 上傳字幕軌...")
+    try:
+        creds = Credentials(
+            token=None, refresh_token=refresh_token,
+            client_id=client_id, client_secret=client_secret,
+            token_uri="https://oauth2.googleapis.com/token",
+            scopes=YT_SCOPES,
+        )
+        creds.refresh(GoogleRequest())
+        youtube = build("youtube", "v3", credentials=creds, cache_discovery=False)
+    except Exception as e:                          # noqa: BLE001
+        print(f"   ⚠️  字幕授權失敗，略過：{e}")
+        return
+
+    names = {"zh-TW": "繁體中文", "en": "English", "ja": "日本語"}
+    for lang, body in srt_files.items():
+        tmp_srt = Path(tempfile.gettempdir()) / f"cap_{lang}.srt"
+        tmp_srt.write_text(body, encoding="utf-8")
+        try:
+            youtube.captions().insert(
+                part="snippet",
+                body={"snippet": {"videoId": video_id, "language": lang,
+                                  "name": names.get(lang, lang), "isDraft": False}},
+                media_body=MediaFileUpload(str(tmp_srt), mimetype="application/octet-stream"),
+            ).execute()
+            print(f"   ✅ {names.get(lang, lang)}")
+        except Exception as e:                      # noqa: BLE001
+            msg = str(e)
+            if "insufficient" in msg.lower() or "forbidden" in msg.lower() or "403" in msg:
+                print(f"   ⚠️  {lang} 失敗：YT_REFRESH_TOKEN 權限不足。"
+                      "請用 scripts/get_youtube_token.py 重新授權（已含 force-ssl）")
+            else:
+                print(f"   ⚠️  {lang} 失敗：{msg[:160]}")
+        finally:
+            tmp_srt.unlink(missing_ok=True)
+
+
 # ── 主程式 ───────────────────────────────────────────────────────────────────
 def main():
     print("═══════════════════════════════════════════")
@@ -1530,14 +1585,24 @@ def main():
         video_path = tmp / f"hsinchan_{date_str}.mp4"
         concat_clips(clip_paths, video_path)
 
+        # 5. 字幕：中文由時間軸直接產生，其他語言整批翻譯
+        print(f"\n💬 產生字幕（{len(subtitles)} 句）")
+        srt_files = {"zh-TW": build_srt(subtitles)}
+        if SUBTITLE_LANGS:
+            for lang, texts in translate_lines([c[2] for c in subtitles], SUBTITLE_LANGS).items():
+                srt_files[lang] = build_srt(subtitles, texts)
+
         if dry_run:
             import shutil
             out = Path(f"hsinchan_video_{date_str}.mp4")
             shutil.copy(video_path, out)
+            for lang, body in srt_files.items():
+                Path(f"hsinchan_video_{date_str}.{lang}.srt").write_text(body, encoding="utf-8")
             print(f"\n✅ Dry run 完成，影片儲存為：{out}")
+            print(f"   字幕：{'、'.join(srt_files)}")
             return
 
-        # 5. 同時上傳 Facebook + YouTube
+        # 6. 同時上傳 Facebook + YouTube
         print("\n── 上傳至各平台 ────────────────────────────")
         description = build_description(script, chapters)
         fb_id = upload_video_to_facebook(str(video_path), description)

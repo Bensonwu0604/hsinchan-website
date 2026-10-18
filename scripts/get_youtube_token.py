@@ -8,7 +8,9 @@
 import json
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+SCOPES = ["https://www.googleapis.com/auth/youtube.upload",
+          # 上傳字幕軌需要 force-ssl，比單純上傳影片的權限更大
+          "https://www.googleapis.com/auth/youtube.force-ssl"]
 
 print("=" * 55)
 print("  欣晨工業 YouTube Refresh Token 取得工具")

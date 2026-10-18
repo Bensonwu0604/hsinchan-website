@@ -60,5 +60,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: preview-video
-          path: scripts/hsinchan_video_*.mp4
+          path: |
+            scripts/hsinchan_video_*.mp4
+            scripts/hsinchan_video_*.srt
           retention-days: 3
