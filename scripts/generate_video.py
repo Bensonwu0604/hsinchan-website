@@ -112,7 +112,7 @@ IMAGE_STYLE = (
 _asset_cache = {}
 
 SERIES_NAME_ZH = "第一性原理拆解智慧製造"
-SERIES_NAME_EN = "FIRST PRINCIPLES MFG"
+SERIES_NAME_EN = "FIRST PRINCIPLES OF SMART MFG"
 
 # ── 字型 ────────────────────────────────────────────────────────────────────
 def load_fonts():
