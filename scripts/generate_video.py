@@ -9,6 +9,8 @@ import os, sys, json, base64, subprocess, tempfile, textwrap, math, time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+import topics
+
 import anthropic
 import requests
 from PIL import Image, ImageDraw, ImageFont, ImageChops
@@ -549,39 +551,22 @@ def make_cta_slide(quote, cta_question, bold_path, reg_path, out_path):
     img.save(out_path)
 
 # ── Claude API ───────────────────────────────────────────────────────────────
-TOPICS = [
-    ("Kaizen 改善文化",   "Kaizen",    "Kaizen持續改善的工廠實踐：消除七大浪費，VSM價值流分析，SOP標準化 — 讓工廠每天比昨天好一點點的系統方法。"),
-    ("JIT 即時生產",      "JIT",       "JIT即時生產如何消滅庫存浪費：正確時間、正確數量、正確品項 — 拉式生產系統讓生產線流暢無阻的邏輯。"),
-    ("工業機械手臂整合",  "機器人",    "2025年工業機器人應用趨勢：FANUC、ABB、KUKA協作機器人在台灣製造業的落地案例，第七軸線性走行軸拓展工作範圍。"),
-    ("AI 視覺檢測 AOI",   "AI視覺",    "深度學習AOI如何把瑕疵偵測準確率從90%提升到99.5%：工業相機選型、打光設計、CNN模型訓練的實務重點。"),
-    ("數位雙生應用",      "數位雙生",  "數位雙生讓工廠在虛擬世界先跑模擬，再在真實世界執行：IoT感測器架構、OPC-UA通訊、預測性維護減少停機30%。"),
-    ("Poka-yoke 防呆設計","防呆",      "Poka-yoke防呆設計：用機構設計從源頭杜絕人為錯誤，讓新手工人也能零缺陷作業的工業工程思維。"),
-    ("OEE 設備效率提升",  "OEE",       "OEE整體設備效率：世界級工廠目標85%，台灣中小製造業平均55-65%。可用率×性能效率×良品率，每個數字背後的改善機會。"),
-    ("半導體精密製程",    "半導體",    "台灣半導體供應鏈的精密耗材需求：SiC保護管、精密夾治具、高溫熱電偶 — 支撐摩爾定律前進的關鍵材料技術。"),
-    ("電動車製造自動化",  "EV",        "電動車製造的自動化挑戰：電池組裝精密點焊、電機鋁殼鑄造脫氣、JIT生產排程 — EV時代對台灣零件廠的新機會。"),
-    ("工廠數位化轉型",    "工業4.0",   "工業4.0在台灣中小製造業的現實路徑：從連結設備、建立儀表板，到AI診斷、自主優化 — 分階段推進的務實策略。"),
-    ("SMED 快速換模",     "SMED",      "SMED快速換模如何讓換線時間從3小時縮到30分鐘：內外作業分離、標準化程序、模組化工裝設計的實際做法。"),
-    ("預測性維護 PdM",    "預測維護",  "預測性維護如何在設備壞掉前發出警報：振動分析、熱像儀診斷、電流頻譜 — 從被動維修到主動預防的轉型邏輯。"),
-    ("精密夾治具設計",    "夾治具",    "高精度夾治具如何實現±0.02mm重複定位精度：快拆設計縮短換線、模組化降低開發成本 — 自動化系統的基石。"),
-    ("高溫工業耗材",      "高溫材料",  "工業高溫材料的選材邏輯：SiC保護管、高純度石墨、耐火材料 — 在1200°C以上的極端環境中，材料選擇決定製程成敗。"),
-    ("人形機器人零件製造","人形機器人", "人形機器人崛起對精密製造的需求：關節傳動套筒、輕量鋁合金結構件、耐磨陶瓷導向件 — ±0.01mm加工精度的挑戰。"),
-    ("製造業供應鏈韌性",  "供應鏈",    "COVID後製造業供應鏈重組：台灣工廠如何在效率與韌性之間找平衡？近岸採購、安全庫存緩衝、供應商多元化策略。"),
-    ("協作機器人 Cobot",  "Cobot",     "協作機器人不是取代工人，而是解放工人：UR、FANUC CRX安全整合（ISO TS 15066），人機協作在台灣中小製造業的ROI計算。"),
-    ("碳中和製造",        "淨零碳排",  "製造業淨零路徑：能源監控ISO 50001、設備效率提升、廢熱回收 — 精實製造如何同時降低成本與碳排放量。"),
-    ("SPC 統計製程控制",  "品質管理",  "SPC統計製程控制：Cp/Cpk指數量化製程能力，把品質管制從結果端移到製程端 — 為什麼「預防」永遠比「檢驗」便宜。"),
-    ("IoT 工廠感測網路",  "IIoT",      "工業IoT架構設計：OPC-UA、MQTT、Modbus TCP通訊協定選型，如何讓工廠中所有設備都開口說話，建立數據驅動決策基礎。"),
-    ("智慧化自動化設備",  "智慧自動化", "智慧化自動化設備如何從單機自動化升級到互聯互通：整合感測器、PLC控制與AI演算法，讓設備自己判斷、自己調整、自己優化製程參數。"),
-    ("智慧化自動化設備",  "智慧自動化", "智慧化自動化設備的核心是數據閉環：感測層收集、邊緣運算分析、控制層即時反應 — 讓產線從「會動」進化到「會思考」。"),
-    ("智慧化自動化設備",  "智慧自動化", "智慧化自動化設備在台灣中小製造業的導入路徑：從單一工作站的感測升級開始，逐步串接成能自我優化的智慧產線網路。"),
-]
-
 def get_today_topic():
+    """從 50 個智慧製造概念的知識圖譜選出本集題目
+
+    每集是「主概念 × 相關概念 × 切入視角」的交會點，而不是單講一個名詞，
+    所以有限的概念能持續展開成新內容（實測 10 年內 289 集不重複）。
+    """
     tw_now   = datetime.now(timezone(timedelta(hours=8)))
-    day_idx  = tw_now.timetuple().tm_yday % len(TOPICS)
-    title, tag, angle = TOPICS[day_idx]
     date_str = tw_now.strftime("%Y-%m-%d")
-    print(f"📅 日期：{date_str}（年第{tw_now.timetuple().tm_yday}天）")
-    print(f"📌 今日題材：{title}（#{tag}）")
+
+    primary, partner, lens = topics.pick_episode(tw_now.date())
+    title, tag, angle = topics.describe(primary, partner, lens)
+
+    print(f"📅 日期：{date_str}（第 {topics.week_index(tw_now.date())} 週）")
+    print(f"📌 本集題目：{title}")
+    print(f"   維度：{topics.DIMENSIONS[primary['dim']]} × {topics.DIMENSIONS[partner['dim']]}")
+    print(f"   切入視角：{lens[0]}")
     return title, tag, angle, date_str
 
 ICON_ENUM_HINT = "gear / sensor / chip / heat / data / network / check / warning / cycle / robot / idea / factory"
@@ -1056,6 +1041,35 @@ def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_st
     print(f"\n✅ YouTube 影片發布成功！https://youtu.be/{video_id}")
     return video_id
 
+def preflight_check():
+    """開跑前先驗證金鑰
+
+    配音是流程最後才用到 OpenAI，但金鑰無效時整支影片已經跑了好幾分鐘、
+    腳本的模型費用也付掉了。這裡用一次免費的 models.list() 先確認，
+    讓失敗在幾秒內發生而不是七分鐘後。
+    """
+    print("🔑 檢查金鑰…")
+    missing = [k for k in ("ANTHROPIC_API_KEY", "OPENAI_API_KEY") if not os.environ.get(k)]
+    if missing:
+        raise RuntimeError(f"缺少必要的環境變數：{', '.join(missing)}")
+
+    key = os.environ["OPENAI_API_KEY"]
+    if key != key.strip():
+        # GitHub Secret 會原樣保存貼上的內容，多一個換行就會 401
+        print("   ⚠️  OPENAI_API_KEY 前後有空白字元，已自動去除")
+        os.environ["OPENAI_API_KEY"] = key.strip()
+
+    from openai import OpenAI
+    try:
+        OpenAI(api_key=os.environ["OPENAI_API_KEY"]).models.list()
+    except Exception as e:                      # noqa: BLE001
+        raise RuntimeError(
+            f"OPENAI_API_KEY 無法通過驗證：{e}\n"
+            "請到 https://platform.openai.com/api-keys 重新產生，"
+            "並更新 repo 的 OPENAI_API_KEY secret（注意結尾不要帶換行或空白）"
+        ) from None
+    print("   ✅ 金鑰可用\n")
+
 # ── 主程式 ───────────────────────────────────────────────────────────────────
 def main():
     print("═══════════════════════════════════════════")
@@ -1065,6 +1079,8 @@ def main():
     dry_run = os.environ.get("DRY_RUN", "false").lower() == "true"
     if dry_run:
         print("⚠️  DRY RUN：只產生影片，不上傳\n")
+
+    preflight_check()
 
     topic_title, topic_tag, topic_angle, date_str = get_today_topic()
 
