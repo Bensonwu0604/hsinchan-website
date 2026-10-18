@@ -581,8 +581,9 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0.22em 0.6em;
 }
 
-/* Facebook link */
-.nav__fb-link {
+/* 社群連結（Facebook / YouTube 共用同一組樣式）*/
+.nav__fb-link,
+.nav__yt-link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -593,14 +594,17 @@ h1, h2, h3, h4, h5, h6 {
   transition: color var(--t-base), border-color var(--t-base), background var(--t-base);
 }
 
-.nav__fb-link:hover {
+.nav__fb-link:hover,
+.nav__yt-link:hover {
   color: var(--c-text);
   border-color: var(--c-navy-light);
   background: rgba(43,75,107,0.2);
 }
 
-.nav__fb-link:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 2px; }
-.icon-fb { width: 16px; height: 16px; }
+.nav__fb-link:focus-visible,
+.nav__yt-link:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 2px; }
+.icon-fb,
+.icon-yt { width: 16px; height: 16px; }
 
 /* Mobile toggle */
 .nav__toggle {
