@@ -606,8 +606,12 @@ h1, h2, h3, h4, h5, h6 {
 .icon-fb,
 .icon-yt { width: 16px; height: 16px; }
 
-/* YouTube 用品牌紅，與其他圖示的品牌藍區隔 */
+/* 社群圖示一律使用各自的品牌色，hover 時加深 */
+.icon-fb { color: #1877F2; }
 .icon-yt { color: #FF0000; }
+.nav__fb-link:hover .icon-fb,
+.footer__fb-link:hover .icon-fb,
+.contact-info__item:hover .icon-fb { color: #0C63D4; }
 .nav__yt-link:hover .icon-yt,
 .contact-info__item:hover .icon-yt { color: #CC0000; }
 
