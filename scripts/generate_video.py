@@ -1318,14 +1318,22 @@ def main():
         # 先依每段台詞生成專屬畫面；沒金鑰或生圖失敗都會退回 repo 內的本地素材
         images = {}
         if os.environ.get("OPENAI_API_KEY"):
+            # 有圖解的段落在算圖時會優先畫圖解，那張生成圖根本不會出現在畫面上——
+            # 所以直接跳過，不要花錢生一張必定被丟掉的圖。
+            def _needs_image(beat):
+                return not isinstance(beat.get("diagram"), dict)
+
             jobs = [("00_hook", script.get("hero_image_prompt") or script["concept_beats"][0].get("image_prompt"), "16:9")]
             for j, beat in enumerate(script["concept_beats"], 1):
-                jobs.append((f"01_concept_{j}", beat.get("image_prompt"), "4:5"))
+                if _needs_image(beat):
+                    jobs.append((f"01_concept_{j}", beat.get("image_prompt"), "4:5"))
             for d, dim in enumerate(script["dimensions"], 1):
                 for j, beat in enumerate(dim["beats"], 1):
-                    jobs.append((f"02_dim{d}_{j}", beat.get("image_prompt"), "4:5"))
+                    if _needs_image(beat):
+                        jobs.append((f"02_dim{d}_{j}", beat.get("image_prompt"), "4:5"))
             for j, beat in enumerate(script["reflection_beats"], 1):
-                jobs.append((f"03_reflect_{j}", beat.get("image_prompt"), "4:5"))
+                if _needs_image(beat):
+                    jobs.append((f"03_reflect_{j}", beat.get("image_prompt"), "4:5"))
             print(f"\n🖼️  依台詞生成畫面（{IMAGE_MODEL}，共 {len(jobs)} 張）")
             no_prompt = []
             for tag, prompt_text, aspect in jobs:
