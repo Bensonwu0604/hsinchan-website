@@ -863,6 +863,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero__title-line      { display: inline-block; }
+/* 原本靠「&」分隔兩段，拿掉後需要自己補上間距 */
+.hero__title-line + .hero__title-line { margin-left: 0.45em; }
 .hero__title-line--accent {
   background: linear-gradient(135deg, var(--c-navy-vivid) 0%, var(--c-gold-dim) 100%);
   -webkit-background-clip: text;
