@@ -1853,6 +1853,28 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
 }
 
+/* 左側標語「精密驅動」：同一道掃光，但用深色文字的版本——
+   白底上的亮點會消失，所以高光取品牌藍而非白。
+   負的 animation-delay 讓它比右側早 0.8 秒掃過，視線由左而右。
+   選擇器不綁新的 class，避免為了動畫去動二十二個頁面。 */
+.footer__brand:not(.footer__brand--end) .footer__tagline {
+  display: inline-block;
+  background-image: linear-gradient(100deg,
+    var(--c-text) 0%,
+    var(--c-text) 38%,
+    var(--c-text-muted) 47%,
+    var(--c-navy-vivid) 50%,
+    var(--c-text-muted) 53%,
+    var(--c-text) 62%,
+    var(--c-text) 100%);
+  background-size: 280% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: taglineSheen 5.5s ease-in-out -0.8s infinite;
+}
+
 /* 標語的強調字：一道光定期掃過，為靜態的頁尾加一點生氣。
    用 background-clip 做漸層文字，掃光靠 background-position 位移，
    不觸發 layout 重算，對效能幾乎沒有影響。
