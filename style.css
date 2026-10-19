@@ -1880,14 +1880,40 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__tagline {
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 3.4vw, 2.75rem);
+  font-size: clamp(1.35rem, 1.9vw, 1.75rem);
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--c-text);
-  line-height: 1.15;
+  line-height: 1.35;
+  white-space: nowrap;
 }
 
-.footer__tagline--accent { color: var(--c-navy-vivid); }
+/* 標語的強調字：一道光定期掃過，為靜態的頁尾加一點生氣。
+   用 background-clip 做漸層文字，掃光靠 background-position 位移，
+   不觸發 layout 重算，對效能幾乎沒有影響。
+   全站的 prefers-reduced-motion 規則會自動把它停下來。 */
+.footer__tagline--accent {
+  color: var(--c-navy-vivid);
+  background-image: linear-gradient(100deg,
+    var(--c-navy-vivid) 0%,
+    var(--c-navy-vivid) 38%,
+    #9fc4ec 47%,
+    #ffffff 50%,
+    #9fc4ec 53%,
+    var(--c-navy-vivid) 62%,
+    var(--c-navy-vivid) 100%);
+  background-size: 280% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: taglineSheen 5.5s ease-in-out infinite;
+}
+
+@keyframes taglineSheen {
+  0%, 55%  { background-position: 100% 0; }
+  100%     { background-position: 0% 0; }
+}
 .footer__tagline { margin-bottom: 1rem; }
 
 .footer__est {
