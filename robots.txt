@@ -24,9 +24,19 @@ User-agent: PerplexityBot
 Allow: /
 
 # ── Anthropic Claude ─────────────────────────────────────────────────────────
+# 2026 起 Anthropic 把爬蟲拆成三個身分：ClaudeBot（訓練）、
+# Claude-SearchBot（搜尋索引）、Claude-User（使用者即時擷取）。
+# 只允許 ClaudeBot 不會讓另外兩個通行，三個都要列。
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# Claude-Web 為舊名稱，保留相容
 User-agent: Claude-Web
 Allow: /
 

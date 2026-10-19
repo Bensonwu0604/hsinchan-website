@@ -45,14 +45,21 @@
 
   <!-- JSON-LD 結構化資料 ── Organization + LocalBusiness + WebSite + WebPage -->
   <script type="application/ld+json">
-  {
+{
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["Organization", "LocalBusiness"],
+        "@type": [
+          "Organization",
+          "LocalBusiness"
+        ],
         "@id": "https://www.hsinchan.com/#organization",
         "name": "欣晨工業有限公司",
-        "alternateName": ["Hsin-Chan Industrial Co., Ltd.", "欣晨工業", "HC Industrial"],
+        "alternateName": [
+          "Hsin-Chan Industrial Co., Ltd.",
+          "欣晨工業",
+          "HC Industrial"
+        ],
         "url": "https://www.hsinchan.com/",
         "logo": {
           "@type": "ImageObject",
@@ -63,7 +70,10 @@
         "image": "https://www.hsinchan.com/Logo.jpg",
         "description": "以豐田生產哲學為核心的精密自動化設備製造商，自1996年成立，提供工業加熱元件及自動化整合服務，超過30年製造經驗。",
         "foundingDate": "1996",
-        "numberOfEmployees": { "@type": "QuantitativeValue", "minValue": 10 },
+        "numberOfEmployees": {
+          "@type": "QuantitativeValue",
+          "minValue": 10
+        },
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "中正東路三段490號",
@@ -92,11 +102,26 @@
             "@type": "ContactPoint",
             "telephone": "+886-3-381-4497",
             "contactType": "customer service",
-            "areaServed": ["TW", "JP", "SG", "MY"],
-            "availableLanguage": ["Chinese", "Japanese", "English"],
+            "areaServed": [
+              "TW",
+              "JP",
+              "SG",
+              "MY"
+            ],
+            "availableLanguage": [
+              "Chinese",
+              "Japanese",
+              "English"
+            ],
             "hoursAvailable": {
               "@type": "OpeningHoursSpecification",
-              "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+              "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+              ],
               "opens": "08:00",
               "closes": "17:30"
             }
@@ -105,39 +130,222 @@
             "@type": "ContactPoint",
             "email": "hc3814497@gmail.com",
             "contactType": "sales",
-            "areaServed": ["TW", "JP", "SG", "MY"],
-            "availableLanguage": ["Chinese", "Japanese", "English"]
+            "areaServed": [
+              "TW",
+              "JP",
+              "SG",
+              "MY"
+            ],
+            "availableLanguage": [
+              "Chinese",
+              "Japanese",
+              "English"
+            ]
           }
         ],
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
             "opens": "08:00",
             "closes": "17:30"
           }
         ],
-        "areaServed": ["TW", "JP", "SG", "MY", "TH", "VN"],
-        "makesOffer": [
-          { "@type": "Offer", "name": "工業加熱器", "url": "https://www.hsinchan.com/product-heater.html" },
-          { "@type": "Offer", "name": "熱電偶", "url": "https://www.hsinchan.com/product-thermocouple.html" },
-          { "@type": "Offer", "name": "一體式料管", "url": "https://www.hsinchan.com/product-integrated-barrel.html" },
-          { "@type": "Offer", "name": "機械手臂整合", "url": "https://www.hsinchan.com/services.html#robot-integration" },
-          { "@type": "Offer", "name": "視覺檢測 AOI", "url": "https://www.hsinchan.com/services.html#machine-vision" },
-          { "@type": "Offer", "name": "數位雙生", "url": "https://www.hsinchan.com/services.html#digital-twin" },
-          { "@type": "Offer", "name": "設備智能化", "url": "https://www.hsinchan.com/services.html#smart-upgrade" }
+        "areaServed": [
+          "TW",
+          "JP",
+          "SG",
+          "MY",
+          "TH",
+          "VN"
         ],
         "knowsAbout": [
-          "豐田生產方式 TPS", "Kaizen 改善", "Just-In-Time 即時生產",
-          "Jidoka 自働化", "工業自動化", "機械手臂系統整合",
-          "AOI 視覺檢測", "數位雙生", "預測性維護",
-          "單機自動化設計製造", "夾治具設計製造", "設備智能化",
-          "工業加熱器", "熱電偶", "溫控系統",
-          "一體式料管", "碳化矽保護管", "耐火材料", "高濃度奈米氣泡流體模組",
-          "高濃度奈米氣泡流體產業應用", "液冷系統", "射出成型機耗材", "半導體製程設備",
+          "豐田生產方式 TPS",
+          "Kaizen 改善",
+          "Just-In-Time 即時生產",
+          "Jidoka 自働化",
+          "工業自動化",
+          "機械手臂系統整合",
+          "AOI 視覺檢測",
+          "數位雙生",
+          "預測性維護",
+          "單機自動化設計製造",
+          "夾治具設計製造",
+          "設備智能化",
+          "工業加熱器",
+          "熱電偶",
+          "溫控系統",
+          "一體式料管",
+          "碳化矽保護管",
+          "耐火材料",
+          "高濃度奈米氣泡流體模組",
+          "高濃度奈米氣泡流體產業應用",
+          "液冷系統",
+          "射出成型機耗材",
+          "半導體製程設備",
           "電動車零組件製造"
         ],
-        "inLanguage": ["zh-TW", "en", "ja"]
+        "inLanguage": [
+          "zh-TW",
+          "en",
+          "ja"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "欣晨工業產品與服務總覽",
+          "itemListElement": [
+            {
+              "@type": "OfferCatalog",
+              "name": "產品 — 高溫工業耗材與製程模組",
+              "numberOfItems": 6,
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Product",
+                    "@id": "https://www.hsinchan.com/product-heater.html#product",
+                    "name": "工業加熱器",
+                    "url": "https://www.hsinchan.com/product-heater.html",
+                    "description": "欣晨工業是台灣專業加熱設備廠商：工業加熱器、電熱管、陶瓷加熱器、射出成型機加熱圈，最高工作溫度1200°C，支援客製化規格，台灣桃園製造，電話03-381-4497。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Product",
+                    "@id": "https://www.hsinchan.com/product-thermocouple.html#product",
+                    "name": "熱電偶",
+                    "url": "https://www.hsinchan.com/product-thermocouple.html",
+                    "description": "欣晨工業是台灣專業熱電偶廠商：K型、J型、T型、R型等全系列工業溫度感測器，測溫範圍-200°C～+1820°C，搭配各種保護管材質，台灣桃園製造，電話03-381-4497。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Product",
+                    "@id": "https://www.hsinchan.com/product-integrated-barrel.html#product",
+                    "name": "一體式料管",
+                    "url": "https://www.hsinchan.com/product-integrated-barrel.html",
+                    "description": "欣晨工業是台灣專業料管廠商：射出成型機用雙金屬合金、氮化合金料管，一體成型設計消除滲漏，高耐磨高耐腐蝕，台灣桃園製造，電話03-381-4497。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Product",
+                    "@id": "https://www.hsinchan.com/product-sic-tube.html#product",
+                    "name": "碳化矽保護管",
+                    "url": "https://www.hsinchan.com/product-sic-tube.html",
+                    "description": "欣晨工業是台灣專業碳化矽保護管廠商（SiC Protection Tube）：純度>99%，耐溫>1600°C，抗熱衝擊、抗腐蝕，適用半導體擴散爐管、鋁合金熔液保護，台灣桃園，電話03-381-4497。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Product",
+                    "@id": "https://www.hsinchan.com/product-refractory.html#product",
+                    "name": "耐火材料",
+                    "url": "https://www.hsinchan.com/product-refractory.html",
+                    "description": "欣晨工業是台灣專業耐火材料廠商：高鋁磚、矽磚、耐火泥、澆注料，耐溫達1800°C，適用冶金爐、工業窯爐、高溫設備爐膛砌築，台灣桃園，電話03-381-4497。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Product",
+                    "@id": "https://www.hsinchan.com/product-graphite-tube.html#product",
+                    "name": "高濃度奈米氣泡流體模組",
+                    "url": "https://www.hsinchan.com/product-graphite-tube.html",
+                    "description": "欣晨工業是台灣專業奈米氣泡設備廠商：高濃度奈米氣泡流體模組，氣泡尺寸<100nm，應用於半導體製程、生醫設備與液冷系統，節能、高密度、免化學添加，台灣桃園，電話03-381-4497。"
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "OfferCatalog",
+              "name": "服務 — 智慧製造與自動化整合",
+              "numberOfItems": 7,
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "@id": "https://www.hsinchan.com/service-digital-twin.html#service",
+                    "name": "數位雙生自動化設計規劃",
+                    "url": "https://www.hsinchan.com/service-digital-twin.html",
+                    "description": "在實體建造前，先以數位雙生技術於虛擬環境中完整模擬產線運作。透過3D模型與動態模擬，提前發現設計缺陷，大幅降低建造風險與修改成本。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "@id": "https://www.hsinchan.com/service-robot-integration.html#service",
+                    "name": "機械手臂應用",
+                    "url": "https://www.hsinchan.com/service-robot-integration.html",
+                    "description": "欣晨工業是台灣機械手臂整合廠商，整合各大品牌工業機器人（FANUC、ABB、KUKA、Yaskawa等），提供搬運、焊接、組裝、塗膠等多元應用，搭配末端夾爪設計與路徑規劃，打造高效柔性生產線。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "@id": "https://www.hsinchan.com/service-custom-automation.html#service",
+                    "name": "單機自動化設計製造",
+                    "url": "https://www.hsinchan.com/service-custom-automation.html",
+                    "description": "從客戶需求分析、機構概念設計、工程圖面繪製、零件加工製造，到整機組裝、程式撰寫與現場調機，提供完整的一條龍自動化設備設計製造服務。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "@id": "https://www.hsinchan.com/service-machine-vision.html#service",
+                    "name": "視覺檢測",
+                    "url": "https://www.hsinchan.com/service-machine-vision.html",
+                    "description": "欣晨工業是台灣視覺檢測廠商，結合工業相機、高精度鏡頭與AI影像分析技術，實現產品外觀瑕疵偵測、尺寸量測、條碼辨識及位置引導等功能，取代人工目視，大幅提升檢測效率與一致性。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "@id": "https://www.hsinchan.com/service-fixture-design.html#service",
+                    "name": "夾治具設計製造",
+                    "url": "https://www.hsinchan.com/service-fixture-design.html",
+                    "description": "欣晨工業是台灣夾治具廠商，設計並製造高精度工裝夾具與治具，用於自動化組裝、加工、檢測等製程。精確的定位與夾持設計，確保每一件產品的加工位置一致性，提升產品良率。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "@id": "https://www.hsinchan.com/service-smart-upgrade.html#service",
+                    "name": "設備智能化",
+                    "url": "https://www.hsinchan.com/service-smart-upgrade.html",
+                    "description": "為既有傳統設備加裝PLC、HMI、IoT模組，實現遠端監控、資料蒐集與預知保養功能。無需全面換新設備，以最低投資提升舊有產線的數位化水準。"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "@id": "https://www.hsinchan.com/service-nano-bubble.html#service",
+                    "name": "高濃度奈米氣泡流體產業應用",
+                    "url": "https://www.hsinchan.com/service-nano-bubble.html",
+                    "description": "針對半導體製程用水、生醫設備清洗、資料中心液冷等場域，導入高濃度奈米氣泡流體模組，提供選型評估、管路整合安裝與效能驗證，以物理性奈米氣泡取代化學藥劑，達成節能、免化學添加的製程升級。"
+                  }
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "@type": "WebSite",
@@ -145,8 +353,14 @@
         "url": "https://www.hsinchan.com/",
         "name": "欣晨工業有限公司",
         "description": "精密自動化設備製造商官方網站",
-        "publisher": { "@id": "https://www.hsinchan.com/#organization" },
-        "inLanguage": ["zh-TW", "en", "ja"]
+        "publisher": {
+          "@id": "https://www.hsinchan.com/#organization"
+        },
+        "inLanguage": [
+          "zh-TW",
+          "en",
+          "ja"
+        ]
       },
       {
         "@type": "WebPage",
@@ -154,15 +368,24 @@
         "url": "https://www.hsinchan.com/",
         "name": "欣晨工業有限公司 | 精密自動化設備製造商",
         "description": "以豐田生產哲學為核心的精密自動化設備製造商。提供加熱器、熱電偶、機械手臂整合、視覺檢測等服務，30年製造經驗。",
-        "isPartOf": { "@id": "https://www.hsinchan.com/#website" },
-        "about": { "@id": "https://www.hsinchan.com/#organization" },
+        "isPartOf": {
+          "@id": "https://www.hsinchan.com/#website"
+        },
+        "about": {
+          "@id": "https://www.hsinchan.com/#organization"
+        },
         "inLanguage": "zh-TW",
         "datePublished": "2026-05-09",
         "dateModified": "2026-09-24",
         "breadcrumb": {
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "首頁", "item": "https://www.hsinchan.com/" }
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "首頁",
+              "item": "https://www.hsinchan.com/"
+            }
           ]
         }
       }
@@ -540,7 +763,7 @@
             </div>
             <h3 class="srv-card__title" data-i18n="srv_1_title">數位雙生<br>自動化設計規劃</h3>
             <p class="srv-card__desc" data-i18n="srv_1_desc">虛擬驗證產線，降低建造風險</p>
-            <a href="services.html#digital-twin" class="srv-card__link" aria-label="了解數位雙生自動化設計規劃服務">
+            <a href="service-digital-twin.html" class="srv-card__link" aria-label="了解數位雙生自動化設計規劃服務">
               <span data-i18n="cta_learn">了解更多</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
             </a>
@@ -559,7 +782,7 @@
             </div>
             <h3 class="srv-card__title" data-i18n="srv_2_title">機械手臂應用</h3>
             <p class="srv-card__desc" data-i18n="srv_2_desc">搬運、焊接、組裝整合，路徑規劃</p>
-            <a href="services.html#robot-integration" class="srv-card__link" aria-label="了解機械手臂應用服務">
+            <a href="service-robot-integration.html" class="srv-card__link" aria-label="了解機械手臂應用服務">
               <span data-i18n="cta_learn">了解更多</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
             </a>
@@ -579,7 +802,7 @@
             </div>
             <h3 class="srv-card__title" data-i18n="srv_3_title">單機自動化<br>設計製造</h3>
             <p class="srv-card__desc" data-i18n="srv_3_desc">需求→設計→製造→調機，一條龍</p>
-            <a href="services.html#custom-automation" class="srv-card__link" aria-label="了解單機自動化設計製造服務">
+            <a href="service-custom-automation.html" class="srv-card__link" aria-label="了解單機自動化設計製造服務">
               <span data-i18n="cta_learn">了解更多</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
             </a>
@@ -598,7 +821,7 @@
             </div>
             <h3 class="srv-card__title" data-i18n="srv_4_title">視覺檢測</h3>
             <p class="srv-card__desc" data-i18n="srv_4_desc">工業相機 + AI 瑕疵偵測、尺寸量測</p>
-            <a href="services.html#machine-vision" class="srv-card__link" aria-label="了解視覺檢測服務">
+            <a href="service-machine-vision.html" class="srv-card__link" aria-label="了解視覺檢測服務">
               <span data-i18n="cta_learn">了解更多</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
             </a>
@@ -616,7 +839,7 @@
             </div>
             <h3 class="srv-card__title" data-i18n="srv_5_title">夾治具設計製造</h3>
             <p class="srv-card__desc" data-i18n="srv_5_desc">高精度夾具治具，提升一致性</p>
-            <a href="services.html#fixture-design" class="srv-card__link" aria-label="了解夾治具設計製造服務">
+            <a href="service-fixture-design.html" class="srv-card__link" aria-label="了解夾治具設計製造服務">
               <span data-i18n="cta_learn">了解更多</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
             </a>
@@ -635,7 +858,7 @@
             </div>
             <h3 class="srv-card__title" data-i18n="srv_6_title">設備智能化</h3>
             <p class="srv-card__desc" data-i18n="srv_6_desc">既有設備升級 PLC / HMI / IoT</p>
-            <a href="services.html#smart-upgrade" class="srv-card__link" aria-label="了解設備智能化服務">
+            <a href="service-smart-upgrade.html" class="srv-card__link" aria-label="了解設備智能化服務">
               <span data-i18n="cta_learn">了解更多</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
             </a>
@@ -653,7 +876,7 @@
             </div>
             <h3 class="srv-card__title" data-i18n="srv_7_title">高濃度奈米氣泡<br>流體產業應用</h3>
             <p class="srv-card__desc" data-i18n="srv_7_desc">半導體、生醫、液冷免化學導入</p>
-            <a href="services.html#nano-bubble-application" class="srv-card__link" aria-label="了解高濃度奈米氣泡流體產業應用服務">
+            <a href="service-nano-bubble.html" class="srv-card__link" aria-label="了解高濃度奈米氣泡流體產業應用服務">
               <span data-i18n="cta_learn">了解更多</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
             </a>
