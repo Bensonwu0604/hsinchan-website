@@ -1930,6 +1930,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer__link:hover { color: var(--c-text); padding-left: 0.5rem; }
+
+/* 「查看全部」是欄位的收尾動作，不是第五個項目：
+   字級壓小、改用強調色，並拉開一段距離與上面四項區隔。 */
+.footer__nav-more { margin-top: 0.3rem; }
+.footer__link--more {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--c-accent);
+  letter-spacing: 0.02em;
+}
+.footer__link--more:hover { color: var(--c-accent-dim); }
 .footer__link:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 2px; }
 
 /* Contact column */
