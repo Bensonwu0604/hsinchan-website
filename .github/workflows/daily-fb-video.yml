@@ -12,6 +12,12 @@ on:
         default: 'false'
         type: choice
         options: ['false', 'true']
+      use_fixture:
+        description: '用現成腳本測試（跳過 Claude，不耗 Anthropic 額度）'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
 
 jobs:
   generate-and-post:
@@ -63,6 +69,7 @@ jobs:
           YT_CLIENT_SECRET:   ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN:   ${{ secrets.YT_REFRESH_TOKEN }}
           DRY_RUN:            ${{ inputs.dry_run || 'false' }}
+          FIXTURE_SCRIPT:     ${{ inputs.use_fixture == 'true' && 'fixture_script.json' || '' }}
 
       - name: Upload video artifact (dry run only)
         if: ${{ inputs.dry_run == 'true' }}

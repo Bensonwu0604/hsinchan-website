@@ -945,7 +945,7 @@ def normalize_assets(script):
     for beat in script["reflection_beats"]:
         fix(beat)
 
-def validate_script(script):
+def validate_script(script, check_length=True):
     """上線前先驗證腳本結構
 
     配音與算圖要跑數十分鐘，結構錯誤必須在這裡就擋下來，
@@ -986,8 +986,9 @@ def validate_script(script):
 
     normalize_assets(script)
 
+    # 片長檢查的目的是約束 Claude 的產出；用現成腳本測試流程時不適用
     est = estimate_script_seconds(script)
-    if not (SCRIPT_EST_MIN <= est <= SCRIPT_EST_MAX):
+    if check_length and not (SCRIPT_EST_MIN <= est <= SCRIPT_EST_MAX):
         raise ValueError(
             f"腳本粗估片長 {est/60:.1f} 分鐘，超出可接受範圍 "
             f"{SCRIPT_EST_MIN/60:.1f}-{SCRIPT_EST_MAX/60:.1f} 分鐘"
@@ -1454,7 +1455,17 @@ def main():
     topic_title, topic_tag, topic_angle, date_str = get_today_topic()
 
     # 1. 生成腳本
-    script = generate_video_script(topic_title, topic_angle)
+    #    FIXTURE_SCRIPT 指向一份現成的腳本 JSON，用來跳過這一步。
+    #    腳本生成是唯一需要 Anthropic 的環節，跳過它就能在額度受限時
+    #    仍然真實驗證其餘全部流程：生圖、圖解、字型、配音、算圖、
+    #    字幕、以及真正的 FB / YouTube 上傳。
+    fixture = os.environ.get("FIXTURE_SCRIPT")
+    if fixture:
+        script = json.loads(Path(fixture).read_text(encoding="utf-8"))
+        validate_script(script, check_length=False)
+        print(f"📄 使用現成腳本：{fixture}（跳過 Claude，不耗用 Anthropic 額度）")
+    else:
+        script = generate_video_script(topic_title, topic_angle)
     print(f"\n📝 影片主標：{script['video_title']}")
     for dim in script["dimensions"]:
         print(f"   維度：{dim['name']}")
