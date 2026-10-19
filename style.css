@@ -1823,22 +1823,23 @@ h1, h2, h3, h4, h5, h6 {
 .footer__grid {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: clamp(1.5rem, 3vw, 3rem);
+  gap: clamp(2rem, 4vw, 4rem);
 }
 
-/* flex-basis 0 讓兩側均分剩餘空間，中間欄位群因此真正置中；
-   min-width: max-content 則保證文字框不會被壓得比文字還窄——
-   標語是 nowrap，框一旦不夠寬就會溢出去蓋到隔壁欄 */
-.footer__brand { flex: 1 1 0; min-width: max-content; }
+/* 兩側標語貼著文字本身，不再用 flex: 1 去瓜分剩餘空間——
+   那會把空白全部堆到左右兩端，中間三欄反而擠在一起。 */
+.footer__brand { flex: 0 0 auto; }
 .footer__brand--end { text-align: right; }
 
-/* 產品資訊 / 服務項目 / 聯絡資訊 三欄靠攏成一組 */
+/* 中間三欄吸收所有剩餘寬度並等分。
+   用 1fr 而非 auto：auto 讓每欄貼著自己的內容，三欄寬度不一，
+   欄距看起來就會忽寬忽窄。 */
 .footer__cols {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
+  min-width: 0;
   display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: clamp(1.75rem, 3.5vw, 3.5rem);
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
   align-items: start;
 }
 
