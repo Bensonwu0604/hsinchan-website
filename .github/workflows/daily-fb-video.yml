@@ -1,6 +1,9 @@
-name: 每3天智慧製造 FB + YouTube 影片自動發文
+name: 每週智慧製造 FB + YouTube 影片自動發文
 
 on:
+  # 每週一次：台灣時間星期二 10:30（UTC 02:30），沿用先前排程時段
+  schedule:
+    - cron: '30 2 * * 2'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -9,12 +12,18 @@ on:
         default: 'false'
         type: choice
         options: ['false', 'true']
+      use_fixture:
+        description: '用現成腳本測試（跳過 Claude，不耗 Anthropic 額度）'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
 
 jobs:
   generate-and-post:
-    name: 生成智慧製造影片並發布至 FB + YouTube
+    name: 生成智慧製造長片並發布至 FB + YouTube
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
@@ -39,22 +48,35 @@ jobs:
         run: pip install -r requirements.txt
         working-directory: scripts
 
+      # 標題用的第二套字型。失敗不中斷：程式會自動退回黑體，
+      # 只是視覺層次較弱，不值得為此讓整支影片生不出來。
+      - name: Download display font
+        continue-on-error: true
+        run: |
+          mkdir -p scripts/fonts
+          curl -sfL --retry 3 --max-time 180             -o scripts/fonts/NotoSerifTC-Bold.otf             https://github.com/notofonts/noto-cjk/raw/main/Serif/SubsetOTF/TC/NotoSerifTC-Bold.otf
+          ls -lh scripts/fonts/
+
       - name: Generate video and post to FB + YouTube
         run: python generate_video.py
         working-directory: scripts
         env:
           ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY:     ${{ secrets.OPENAI_API_KEY }}
           FB_PAGE_ID:         ${{ secrets.FB_PAGE_ID }}
           FB_ACCESS_TOKEN:    ${{ secrets.FB_ACCESS_TOKEN }}
           YT_CLIENT_ID:       ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET:   ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN:   ${{ secrets.YT_REFRESH_TOKEN }}
           DRY_RUN:            ${{ inputs.dry_run || 'false' }}
+          FIXTURE_SCRIPT:     ${{ inputs.use_fixture == 'true' && 'fixture_script.json' || '' }}
 
       - name: Upload video artifact (dry run only)
         if: ${{ inputs.dry_run == 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: preview-video
-          path: scripts/hsinchan_video_*.mp4
+          path: |
+            scripts/hsinchan_video_*.mp4
+            scripts/hsinchan_video_*.srt
           retention-days: 3

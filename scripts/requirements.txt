@@ -1,8 +1,9 @@
-anthropic>=0.39.0
+anthropic>=1.0.0
 openai>=1.30.0
 playwright>=1.44.0
+# edge-tts 已改用 OpenAI TTS（其他 podcast 腳本仍可能用到，故保留）
 edge-tts>=6.1.9
-google-genai>=1.0.0
+google-genai>=2.0.0   # image_config/aspect_ratio 需要 2.x
 Pillow>=10.3.0
 requests>=2.31.0
 google-api-python-client>=2.120.0

@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+"""產生測試用的現成腳本
+
+腳本生成是唯一需要 Anthropic 的環節。用這份現成腳本跳過它，
+就能在額度受限時仍然真實驗證其餘全部流程：
+生圖、圖解、字型、配音、算圖、字幕，以及真正的 FB / YouTube 上傳。
+
+內容刻意涵蓋全部五種圖解類型與各種素材，讓一次執行就能看完所有樣式。
+"""
+
+import json
+from pathlib import Path
+
+
+def d(*lines):
+    """A/B 交替的對話"""
+    return [{"speaker": "A" if i % 2 == 0 else "B", "line": l} for i, l in enumerate(lines)]
+
+
+SCRIPT = {
+    "video_title": "IIoT 導入順序搞錯三年白花錢：先接一個溫度點就夠",
+    "hook_dialogue": d(
+        "很多工廠花了三年、燒掉上千萬在做智慧製造，結果問他們到底哪裡變聰明了，答不出來。",
+        "聽起來很浪費，但問題出在哪？是錢花得不夠多嗎？",
+        "剛好相反。問題在順序。大部分工廠的第一步就做錯了——他們先裝網路。",
+        "先裝網路有什麼不對？不是要先連起來才能收資料嗎？",
+        "這就是今天要拆解的迷思。連起來不等於變聰明，而且順序顛倒會讓後面每一步都更貴。",
+    ),
+    "concept_beats": [
+        {
+            "title": "業界定義其實是採購清單", "icon": "idea", "photo": "kaizen",
+            "image_prompt": "an empty legacy factory floor at dusk with idle CNC machines and stacked pallets",
+            "diagram": {"type": "compare", "labels": ["業界：感測器＋聯網＋AI", "第一性：資訊與決策的距離"]},
+            "bullets": ["業界定義回答的是『要買什麼』，不是『為什麼』", "買齊清單上的東西，不會自動變聰明"],
+            "dialogue": d(
+                "你去查智慧製造的定義，九成會告訴你：裝感測器、全廠聯網、再加上 AI，這就是工業四點零。",
+                "這聽起來很具體啊，照著做不就好了？",
+                "問題是它回答的是『要買什麼』，不是『為什麼要買』。那是一份採購清單，不是定義。",
+                "所以工廠才會買齊了東西，卻說不出自己哪裡變聰明。",
+                "對。真正的定義要從製造的本質推導：製造就是把物質重新排列成更高價值的形態。",
+            ),
+        },
+        {
+            "title": "浪費都來自資訊太晚", "icon": "data", "photo": "semi_fab",
+            "image_prompt": "close-up of a thermocouple probe glowing inside an industrial furnace, deep blue shadows",
+            "diagram": {"type": "loop", "labels": ["現場發生變化", "資訊被記錄", "有人看到", "做出決策"],
+                        "icons": ["gear", "sensor", "data", "check"]},
+            "bullets": ["所有浪費最終都來自決策當下資訊不足或太晚", "智慧製造＝讓資訊在決策的時刻就位"],
+            "dialogue": d(
+                "所有的浪費，追到最後都是同一件事：決策發生的當下，資訊不足，或者來得太晚。",
+                "可以舉個例子嗎？",
+                "溫度偏移了兩小時才被發現，那兩小時的產出全部報廢。資訊不是沒有，是太晚。",
+                "所以重點不是有沒有資料，是資料有沒有在還來得及的時候到達。",
+                "完全正確。所以智慧製造應該定義成：讓決策所需的資訊，在決策發生的地點與時刻就位。",
+            ),
+        },
+    ],
+    "dimensions": [
+        {"name": "產線設計", "icon": "factory", "beats": [
+            {
+                "label": "傳統做法", "photo": "ev_line",
+                "image_prompt": "a traditional stamping line with dozens of separate metal parts laid out on racks",
+                "diagram": {"type": "bars", "labels": ["傳統沖壓焊接|70 個零件", "一體化壓鑄|2 個鑄件"]},
+                "bullets": ["零件數決定產線長度、人力與不良點", "每個接合面都是一處潛在不良源"],
+                "dialogue": d(
+                    "傳統車身後底板，大概七十個沖壓件焊起來。大家都這樣做，因為一直都這樣做。",
+                    "七十個零件，就代表七十次定位、七十次焊接？",
+                    "還有七十個可能出錯的接合面。零件數直接決定了產線長度、人力和不良率。",
+                ),
+            },
+            {
+                "label": "第一性原理拆解", "photo": "ev_line",
+                "image_prompt": "a giant casting machine producing a single large aluminium structural part",
+                "diagram": {"type": "flow", "labels": ["質疑要求", "刪除", "簡化", "加快速度", "自動化"],
+                            "icons": ["warning", "check", "idea", "cycle", "robot"]},
+                "bullets": ["先問這七十個零件為什麼必須分開", "刪不掉的才輪到簡化與自動化"],
+                "dialogue": d(
+                    "第一性原理的問法是：這七十個零件，為什麼非得是七十個？",
+                    "因為沖壓機只能做那麼大？",
+                    "那個限制來自設備，不是來自物理。換成壓鑄，就能一次成形。這是五步裡的第二步：刪除。",
+                ),
+            },
+            {
+                "label": "智慧製造應用", "photo": "station",
+                "image_prompt": "engineers reviewing a digital twin simulation of a production line on large screens",
+                "diagram": {"type": "layers", "labels": ["量測與感測", "製程補償", "設計回饋"],
+                            "icons": ["sensor", "gear", "idea"]},
+                "bullets": ["刪不掉的環節才值得投資自動化", "先刪再自動化，順序顛倒就是浪費"],
+                "dialogue": d(
+                    "刪完之後剩下來的環節，才值得投資自動化。",
+                    "所以不是不要自動化，是不要太早自動化。",
+                    "對。把根本不該存在的流程自動化，是最昂貴的一種浪費。",
+                ),
+            },
+        ]},
+        {"name": "數據與軟體", "icon": "chip", "beats": [
+            {
+                "label": "傳統做法", "photo": "semi_fab",
+                "image_prompt": "a control room wall covered with dashboards nobody is looking at",
+                "diagram": {"type": "compare", "labels": ["做了一面儀表板", "沒有人依它行動"]},
+                "bullets": ["多數工廠導入數據的第一個產出是儀表板", "沒有人會依據它採取任何行動"],
+                "dialogue": d(
+                    "工廠導入數據，第一個產出通常是一面很漂亮的儀表板。",
+                    "然後呢？",
+                    "然後沒有人看。因為它沒有連到任何一個真正的決策。",
+                ),
+            },
+            {
+                "label": "第一性原理拆解", "photo": "semi_fab",
+                "image_prompt": "an edge computing device mounted beside a machine, status lights glowing blue",
+                "diagram": {"type": "flow", "labels": ["哪個決策", "需要哪份資訊", "多久內要到"],
+                            "icons": ["check", "data", "cycle"]},
+                "bullets": ["從決策倒推需要哪一份資訊", "再倒推它必須在多久內到達"],
+                "dialogue": d(
+                    "正確的順序是反過來：先問你要改善哪一個決策。",
+                    "再看那個決策需要哪一份資訊？",
+                    "還要問這份資訊必須在多久內到達才來得及。這才決定要不要邊緣運算。",
+                ),
+            },
+            {
+                "label": "智慧製造應用", "photo": "station",
+                "image_prompt": "a closed-loop control system adjusting process parameters automatically",
+                "diagram": {"type": "loop", "labels": ["感測取樣", "邊緣判斷", "參數回寫"],
+                            "icons": ["sensor", "chip", "gear"]},
+                "bullets": ["資料的價值在閉環，不在儀表板", "沒有回寫動作，監控只是看著它壞"],
+                "dialogue": d(
+                    "資料真正的價值在閉環，不在儀表板。",
+                    "閉環的意思是？",
+                    "量到偏移，系統自己把參數調回來，不必等人。沒有回寫，監控就只是看著它壞掉。",
+                ),
+            },
+        ]},
+        {"name": "供應鏈與物流", "icon": "network", "beats": [
+            {
+                "label": "傳統做法", "photo": "kaizen",
+                "image_prompt": "a warehouse aisle packed floor to ceiling with excess inventory",
+                "diagram": {"type": "bars", "labels": ["憑經驗抓安全庫存|90 天", "依不確定性計算|21 天"]},
+                "bullets": ["安全庫存多半是憑經驗訂出來的", "庫存是用現金換來的安心感"],
+                "dialogue": d(
+                    "大部分工廠的安全庫存，是老師傅憑經驗抓的。",
+                    "抓多了會怎樣？",
+                    "現金就變成堆在倉庫裡的料。那是用現金買來的安心感。",
+                ),
+            },
+            {
+                "label": "第一性原理拆解", "photo": "gripper",
+                "image_prompt": "a precision gripper fixture being changed over on a production cell",
+                "diagram": {"type": "flow", "labels": ["不確定性大小", "乘上補貨週期", "決定庫存水位"],
+                            "icons": ["warning", "cycle", "check"]},
+                "bullets": ["庫存水位該由不確定性與補貨週期算出", "縮短補貨週期比堆庫存便宜得多"],
+                "dialogue": d(
+                    "庫存水位其實是算得出來的：不確定性有多大，乘上補貨要多久。",
+                    "所以補貨越快，需要的庫存越少？",
+                    "對。縮短補貨週期，比堆庫存便宜得多。這是刪除，不是優化。",
+                ),
+            },
+            {
+                "label": "智慧製造應用", "photo": "gripper",
+                "image_prompt": "quick changeover tooling allowing a line to switch products in minutes",
+                "diagram": {"type": "layers", "labels": ["快速換模", "小批量生產", "低庫存"],
+                            "icons": ["cycle", "factory", "check"]},
+                "bullets": ["換線時間壓下來，小批量才划算", "能小批量，庫存自然就降下來"],
+                "dialogue": d(
+                    "要縮短補貨週期，關鍵在換線時間。",
+                    "換線快，就能小批量多批次？",
+                    "對。換線從四小時壓到二十分鐘，庫存自然降下來，不必再用現金買安心。",
+                ),
+            },
+        ]},
+    ],
+    "reflection_beats": [
+        {
+            "title": "不是每間工廠都該全自動", "icon": "warning", "photo": "kaizen",
+            "image_prompt": "a skilled worker hand-finishing a custom part in a small job shop",
+            "diagram": {"type": "compare", "labels": ["大量標準化：自動化划算", "高客製小批量：回不了本"]},
+            "bullets": ["高客製小批量，資本支出可能永遠回不來", "馬斯克自己在 Model 3 產線上也栽過"],
+            "dialogue": d(
+                "要講一個反面：不是每一間工廠都該追求極致自動化。",
+                "為什麼？",
+                "高客製、小批量的工廠，自動化的資本支出根本回不來。",
+                "連馬斯克都在這裡跌過吧？",
+                "Model 3 產線過度自動化，差點拖垮公司。他後來公開說：人類被低估了。",
+            ),
+        },
+        {
+            "title": "終極考量是資本效率", "icon": "check", "photo": "ev_line",
+            "image_prompt": "a factory manager reviewing payback calculations beside a production line",
+            "diagram": {"type": "flow", "labels": ["投入多少", "多久回收", "值不值得做"],
+                        "icons": ["data", "cycle", "check"]},
+            "bullets": ["第一性原理的終點是資本效率，不是技術先進度", "拆解不是為了拆解，是為了把錢投對地方"],
+            "dialogue": d(
+                "第一性原理的終極考量，是資本效率，不是技術先進度。",
+                "所以拆解完還要算帳？",
+                "一定要。拆解不是為了拆解，是為了把錢投在真正縮短資訊與決策距離的地方。",
+            ),
+        },
+    ],
+    "outro_image_prompt": "a quiet factory at night with a single workstation lit, suggesting focused improvement",
+    "outro_quote": "智慧製造不是把工廠連起來，是讓決策不再等待資訊",
+    "outro_cta_question": "你的工廠裡，哪一個決策最常因為資訊太晚而做錯？",
+    "outro_dialogue": d(
+        "今天拆到最後，其實只有一句話：智慧製造不是把工廠連起來，是讓決策不再等待資訊。",
+        "所以不用急著買設備，先找出那個一直在等資訊的決策。",
+        "對。而且順序不能顛倒：先質疑、再刪除，然後簡化、加快，自動化永遠放最後。",
+        "欣晨工業做了三十年精密製造，熱電偶這類感測元件正是這條鏈的第一哩路——量不準，後面全都白做。",
+        "留言告訴我們，你的工廠裡哪一個決策最常因為資訊太晚而做錯。",
+    ),
+    "key_points": [
+        "業界對智慧製造的定義是一份採購清單，回答『要買什麼』而不是『為什麼』",
+        "所有製造浪費最終都來自同一件事：決策當下資訊不足，或來得太晚",
+        "智慧製造的本質是縮短『資訊』與『決策』之間的距離，與買了多少設備無關",
+        "沒有人會依據它採取行動的儀表板，價值為零，無論它做得多好看",
+        "資料的價值在閉環：量到偏移要能自動回寫參數，而不是只顯示在螢幕上",
+        "改善有嚴格順序：質疑要求、刪除、簡化、加快速度，自動化永遠放最後",
+        "台灣製造業最普遍的浪費，是跳過前四步直接把不該存在的流程自動化",
+        "安全庫存是算得出來的：不確定性乘上補貨週期，而不是憑經驗抓",
+        "縮短換線時間比堆高庫存便宜得多，前者是刪除、後者只是忍耐",
+        "高客製小批量的工廠，極致自動化的資本支出可能永遠回不來",
+    ],
+    "sop_steps": [
+        "質疑：列出產線上三條『一直都這樣做』的規則，各寫下是誰訂的、哪一年訂的",
+        "質疑：挑其中最花錢的一條，確認它的限制來自物理，還是只是來自現有設備",
+        "刪除：把該流程中不影響產品功能的步驟先停掉兩週，記錄實際發生了什麼",
+        "刪除：若兩週內沒有被迫加回任何東西，代表刪得還不夠，再刪一輪",
+        "簡化：針對刪不掉的環節，找出它等待資訊最久的那一個決策點",
+        "加快：只在那一個決策點接一個感測點，連續記錄兩週並對上不良紀錄",
+        "自動化：確認相關性成立之後，才把判斷邏輯寫進控制器做自動補償",
+    ],
+    "benefits": [
+        "單一機台試點兩個月內即可驗證是否值得擴大，投入通常不到十萬元",
+        "先完成一條閉環再擴線，後續的架構爭議與重工會大幅減少",
+        "換線時間縮短後安全庫存可同步下降，直接釋放壓在倉庫裡的現金",
+        "先刪除再自動化，可避免為不該存在的流程採購設備的沉沒成本",
+    ],
+    "fb_caption": (
+        "很多工廠花三年做智慧製造，卻說不出自己哪裡變聰明了。問題不在錢，在順序。\n\n"
+        "這集用第一性原理重新定義智慧製造：它不是把工廠連起來，而是讓決策不再等待資訊。"
+        "並拆解馬斯克的五步演算法為什麼不能跳步——台灣製造業最普遍的浪費，"
+        "就是直接從第五步「自動化」開始。\n\n"
+        "欣晨工業三十年精密製造的實作視角。你的工廠裡，哪一個決策最常因為資訊太晚而做錯？\n\n"
+        "#智慧製造 #第一性原理 #工業物聯網 #精實生產 #欣晨工業"
+    ),
+}
+
+if __name__ == "__main__":
+    out = Path(__file__).resolve().parent / "fixture_script.json"
+    out.write_text(json.dumps(SCRIPT, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"已產生 {out}")

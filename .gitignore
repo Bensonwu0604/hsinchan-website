@@ -35,4 +35,9 @@ BRIEF.md
 *.lnk
 *.vbs
 deploy.bat
+# ── 本地預覽與快取（不進版控）──────────────────
+preview/
+__pycache__/
+*.pyc
 scripts/fonts/
+scripts/client_secrets.json

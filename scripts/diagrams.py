@@ -1,0 +1,231 @@
+#!/usr/bin/env python3
+"""
+欣晨工業 —《第一性原理拆解智慧製造》示意圖繪製
+
+為什麼用程式畫而不是 AI 生圖：
+  1. 教學型內容靠圖解傳達結構，照片只能營造氣氛
+  2. AI 生圖畫不好帶文字的示意圖，中文標籤幾乎必定變亂碼
+  3. 程式畫的線條乾淨、標籤精準、風格與整片一致
+
+由編劇（Claude）決定圖解類型與標籤文字，這裡負責把它畫準。
+"""
+
+from PIL import ImageDraw, ImageFont
+
+# 由 generate_video 注入 draw_icon，避免循環匯入
+_ICON_FN = None
+
+# 由 generate_video 注入，避免兩邊的品牌色不同步
+BG = (10, 13, 21)
+ACCENT = (26, 63, 152)
+ACCENT_LT = (59, 130, 246)
+WHITE = (240, 244, 248)
+GRAY = (138, 155, 174)
+DARK_GRAY = (55, 70, 90)
+
+# 圖解類型與它適合表達的關係（這份說明會餵給編劇，讓它挑對類型）
+DIAGRAM_TYPES = {
+    "flow":    "線性流程：A 造成 B、B 造成 C。用在講一連串因果、製程順序，或馬斯克五步演算法。需要 3-5 個標籤。",
+    "loop":    "閉環循環：最後一步回饋到第一步。用在講閉環控制、持續改善、數據回饋。需要 3-4 個標籤。",
+    "layers":  "堆疊層級：下層支撐上層。用在講架構分層（感測層／邊緣層／控制層）。需要 3-4 個標籤，由下往上排。",
+    "compare": "左右對比：傳統做法 vs 拆解後的做法。用在講迷思與反轉。需要正好 2 個標籤。",
+    "bars":    "數量對比：用長度呈現差距。用在講成本、工時、零件數的倍率差異。需要 2-3 個「標籤|數值」字串。",
+}
+
+
+def _fit_font(draw, text, font_path, max_w, start, min_size=20):
+    """把字級縮到塞得進指定寬度為止"""
+    size = start
+    while size > min_size:
+        f = ImageFont.truetype(font_path, size)
+        if draw.textbbox((0, 0), text, font=f)[2] <= max_w:
+            return f
+        size -= 2
+    return ImageFont.truetype(font_path, min_size)
+
+
+def _box(draw, x, y, w, h, label, font_path, fill_bg=True, badge=None, icon=None):
+    """圓角方塊：左側強調條 ＋ 圖示／序號徽章 ＋ 左對齊標籤
+
+    置中的純文字方塊資訊密度低、也缺少視覺層次。改成左側有強調條與徽章，
+    文字左對齊並與徽章對齊基準線，閱讀動線從左到右一致。
+    """
+    r = 16
+    body = (18, 28, 54) if fill_bg else None
+    draw.rounded_rectangle([x, y, x + w, y + h], radius=r, fill=body,
+                           outline=ACCENT_LT if fill_bg else DARK_GRAY, width=2)
+
+    # 左側強調條：給方塊一個視覺起點，也讓一整排方塊形成對齊的邊
+    if fill_bg:
+        draw.rounded_rectangle([x + 3, y + 12, x + 9, y + h - 12], radius=3, fill=ACCENT_LT)
+
+    text_x = x + 36
+    cy = y + h / 2
+    if badge is not None or icon is not None:
+        br = min(int(h * 0.30), 34)
+        bx = x + 36 + br
+        draw.ellipse([bx - br, cy - br, bx + br, cy + br],
+                     fill=(26, 44, 86), outline=ACCENT_LT, width=2)
+        if icon is not None and _ICON_FN is not None:
+            _ICON_FN(draw, icon, bx, cy, br * 0.62, ACCENT_LT)
+        else:
+            fb = ImageFont.truetype(font_path, int(br * 0.95))
+            bb = draw.textbbox((0, 0), str(badge), font=fb)
+            draw.text((bx - (bb[2] - bb[0]) / 2, cy - (bb[3] - bb[1]) / 2 - bb[1]),
+                      str(badge), font=fb, fill=WHITE)
+        text_x = bx + br + 28
+
+    f = _fit_font(draw, label, font_path, x + w - text_x - 26, 34)
+    bb = draw.textbbox((0, 0), label, font=f)
+    draw.text((text_x, cy - (bb[3] - bb[1]) / 2 - bb[1]), label, font=f, fill=WHITE)
+
+
+def _arrow_down(draw, cx, y0, y1, color=ACCENT_LT, width=4):
+    draw.line([cx, y0, cx, y1], fill=color, width=width)
+    head = 13
+    draw.polygon([(cx, y1), (cx - head, y1 - head), (cx + head, y1 - head)], fill=color)
+
+
+def _draw_flow(draw, box, labels, font_path, icons=None):
+    x, y, w, h = box
+    n = len(labels)
+    gap = 54
+    bh = min((h - gap * (n - 1)) // n, 150)
+    total = bh * n + gap * (n - 1)
+    cy = y + (h - total) // 2
+    for i, label in enumerate(labels):
+        top = cy + i * (bh + gap)
+        ic = icons[i] if icons and i < len(icons) else None
+        _box(draw, x, top, w, bh, label, font_path, badge=i + 1, icon=ic)
+        if i < n - 1:
+            _arrow_down(draw, x + w // 2, top + bh + 8, top + bh + gap - 8)
+
+
+def _draw_loop(draw, box, labels, font_path, icons=None):
+    """環形排列，箭頭首尾相接，最後一步回到第一步"""
+    import math
+    x, y, w, h = box
+    cx, cy = x + w / 2, y + h / 2
+    radius = min(w, h) / 2 - 95
+    n = len(labels)
+    pts = []
+    for i in range(n):
+        ang = -math.pi / 2 + i * 2 * math.pi / n
+        pts.append((cx + math.cos(ang) * radius, cy + math.sin(ang) * radius))
+
+    for i in range(n):
+        x0, y0 = pts[i]
+        x1, y1 = pts[(i + 1) % n]
+        dx, dy = x1 - x0, y1 - y0
+        L = math.hypot(dx, dy) or 1
+        pad = 78
+        sx, sy = x0 + dx / L * pad, y0 + dy / L * pad
+        ex, ey = x1 - dx / L * pad, y1 - dy / L * pad
+        draw.line([sx, sy, ex, ey], fill=ACCENT_LT, width=4)
+        ang = math.atan2(ey - sy, ex - sx)
+        head = 14
+        draw.polygon([
+            (ex, ey),
+            (ex - head * math.cos(ang - 0.5), ey - head * math.sin(ang - 0.5)),
+            (ex - head * math.cos(ang + 0.5), ey - head * math.sin(ang + 0.5)),
+        ], fill=ACCENT_LT)
+
+    for (px, py), label in zip(pts, labels):
+        r = 72
+        draw.ellipse([px - r, py - r, px + r, py + r], fill=(18, 28, 54), outline=ACCENT_LT, width=3)
+        f = _fit_font(draw, label, font_path, r * 1.8, 30, 18)
+        bb = draw.textbbox((0, 0), label, font=f)
+        draw.text((px - (bb[2] - bb[0]) / 2, py - (bb[3] - bb[1]) / 2 - bb[1]), label, font=f, fill=WHITE)
+
+
+def _draw_layers(draw, box, labels, font_path, icons=None):
+    """由下往上堆疊，下層較寬，表達「下層支撐上層」"""
+    x, y, w, h = box
+    n = len(labels)
+    gap = 26
+    bh = min((h - gap * (n - 1)) // n, 130)
+    total = bh * n + gap * (n - 1)
+    top0 = y + (h - total) // 2
+    for i, label in enumerate(labels):           # labels[0] 是最底層
+        top = top0 + (n - 1 - i) * (bh + gap)
+        ic = icons[i] if icons and i < len(icons) else None
+        _box(draw, x, top, w, bh, label, font_path, badge=i + 1, icon=ic)
+
+
+def _draw_compare(draw, box, labels, font_path, icons=None):
+    """上下兩塊對比，中間以「VS」分隔"""
+    x, y, w, h = box
+    bh = min((h - 120) // 2, 230)
+    top_y = y + (h - (bh * 2 + 120)) // 2
+
+    _box(draw, x, top_y, w, bh, labels[0], font_path, fill_bg=False)
+    f = ImageFont.truetype(font_path, 40)
+    bb = draw.textbbox((0, 0), "VS", font=f)
+    draw.text((x + (w - (bb[2] - bb[0])) / 2, top_y + bh + 34), "VS", font=f, fill=ACCENT_LT)
+    _box(draw, x, top_y + bh + 120, w, bh, labels[1], font_path)
+
+
+def _draw_bars(draw, box, items, font_path, icons=None):
+    """水平長條對比，長度正比於數值，用來呈現倍率差距"""
+    x, y, w, h = box
+    parsed = []
+    for it in items:
+        label, _, value = str(it).partition("|")
+        parsed.append((label.strip(), value.strip() or ""))
+
+    nums = []
+    for _, v in parsed:
+        digits = "".join(c for c in v if c.isdigit() or c == ".")
+        nums.append(float(digits) if digits else 1.0)
+    peak = max(nums) or 1
+
+    n = len(parsed)
+    gap = 70
+    bh = 64
+    total = n * (bh + 52) + gap * (n - 1)
+    cy = y + (h - total) // 2
+    f_lab = ImageFont.truetype(font_path, 32)
+    f_val = ImageFont.truetype(font_path, 30)
+    for i, ((label, value), num) in enumerate(zip(parsed, nums)):
+        top = cy + i * (bh + 52 + gap)
+        draw.text((x, top), label, font=f_lab, fill=WHITE)
+        bar_y = top + 50
+        draw.rounded_rectangle([x, bar_y, x + w, bar_y + bh], radius=8, fill=(18, 24, 40))
+        bw = max(int(w * num / peak), 12)
+        draw.rounded_rectangle([x, bar_y, x + bw, bar_y + bh], radius=8, fill=ACCENT_LT)
+        if value:
+            draw.text((x + 18, bar_y + (bh - 38) / 2), value, font=f_val, fill=BG if bw > 140 else WHITE)
+
+
+_RENDERERS = {
+    "flow": _draw_flow,
+    "loop": _draw_loop,
+    "layers": _draw_layers,
+    "compare": _draw_compare,
+    "bars": _draw_bars,
+}
+
+
+def draw_diagram(img, spec, x0, W, H, font_path):
+    """把圖解畫進畫面右側欄；spec 不合法回傳 False，讓呼叫端退回照片"""
+    if not isinstance(spec, dict):
+        return False
+    kind = spec.get("type")
+    labels = spec.get("labels")
+    if kind not in _RENDERERS or not isinstance(labels, list) or len(labels) < 2:
+        return False
+    labels = [str(l).strip() for l in labels if str(l).strip()]
+    if len(labels) < 2:
+        return False
+    if kind == "compare":
+        labels = labels[:2]
+    elif kind == "flow":
+        labels = labels[:5]        # 馬斯克五步演算法需要容納 5 步
+    else:
+        labels = labels[:4]
+
+    draw = ImageDraw.Draw(img)
+    pad_x, pad_y = 90, 150
+    box = (x0 + pad_x, pad_y, W - x0 - pad_x * 2, H - pad_y * 2)
+    _RENDERERS[kind](draw, box, labels, font_path, spec.get("icons"))
+    return True
