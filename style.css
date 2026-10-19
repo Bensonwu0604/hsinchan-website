@@ -3285,7 +3285,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--c-navy);
   text-decoration: none;
   margin-bottom: 0.6rem;
-  transition: color var(--transition-fast);
+  transition: color var(--t-fast);
 }
 .career-apply-email:hover { color: var(--c-accent-dim); }
 
@@ -3922,7 +3922,7 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   text-align: left;
   color: var(--c-text);
-  font-family: var(--ff-body);
+  font-family: var(--font-body);
   font-size: clamp(0.95rem, 1.1vw, 1.05rem);
   font-weight: 600;
   line-height: 1.5;
@@ -3941,7 +3941,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .faq-item__tag {
   font-size: 0.7rem;
-  font-family: var(--ff-display);
+  font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
