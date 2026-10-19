@@ -1820,9 +1820,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 4vw, 3.5rem);
+  grid-template-columns: 1.4fr 1fr 1fr 1.3fr;
+  gap: clamp(1.75rem, 3vw, 3rem);
   align-items: start;
+}
+
+/* 社群圖示移進品牌欄，與標語構成一個完整的區塊 */
+.footer__social {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
 }
 
 /* Brand column */
