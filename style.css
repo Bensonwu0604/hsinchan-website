@@ -1801,11 +1801,14 @@ h1, h2, h3, h4, h5, h6 {
 /* ─── 18. FOOTER ────────────────────────────────────────────────────────── */
 /* 深色頁尾：為整頁收尾提供視覺重量，也與影片頻道的深色視覺語言一致 */
 .site-footer {
-  --fdim:   rgba(207, 224, 243, 0.62);
-  --fbright: #eaf2fb;
+  /* 全部從網站既有色票衍生：底色是 --c-navy-dim 加深，
+     強調色沿用網站原本的金色，不另外引入新的藍 */
+  --fdim:    rgba(222, 232, 242, 0.60);
+  --fbright: #eef3f9;
+  --fgold:   #b99a5e;
   background:
-    radial-gradient(120% 90% at 12% 0%, rgba(74,122,181,0.20) 0%, transparent 55%),
-    linear-gradient(180deg, #16283a 0%, #0d1823 100%);
+    radial-gradient(120% 90% at 12% 0%, rgba(43,75,107,0.55) 0%, transparent 58%),
+    linear-gradient(180deg, #24405c 0%, #1d3349 100%);
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -1818,7 +1821,7 @@ h1, h2, h3, h4, h5, h6 {
   top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(90deg,
-    transparent 0%, var(--c-navy-vivid) 30%, #7fb0e8 50%, var(--c-navy-vivid) 70%, transparent 100%
+    transparent 0%, var(--c-navy-vivid) 30%, var(--fgold) 50%, var(--c-navy-vivid) 70%, transparent 100%
   );
 }
 
@@ -1830,8 +1833,8 @@ h1, h2, h3, h4, h5, h6 {
   z-index: -1;
   pointer-events: none;
   background-image:
-    repeating-linear-gradient(90deg, rgba(126,170,222,0.05) 0 1px, transparent 1px 64px),
-    repeating-linear-gradient(0deg,  rgba(126,170,222,0.05) 0 1px, transparent 1px 64px);
+    repeating-linear-gradient(90deg, rgba(174,196,222,0.045) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(0deg,  rgba(174,196,222,0.045) 0 1px, transparent 1px 64px);
   mask-image: radial-gradient(130% 100% at 50% 0%, #000 0%, transparent 72%);
 }
 
@@ -1867,7 +1870,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: opacity var(--t-base), box-shadow var(--t-base);
 }
 
-.footer__logo:hover .footer__logo-img { box-shadow: 0 0 0 3px rgba(127,176,232,0.28); }
+.footer__logo:hover .footer__logo-img { box-shadow: 0 0 0 3px rgba(185,154,94,0.30); }
 
 .footer__logo:hover .footer__logo-img { opacity: 0.80; }
 
@@ -1886,7 +1889,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: color var(--t-base);
 }
 
-.footer__logo:hover .footer__logo-zh { color: #7fb0e8; }
+.footer__logo:hover .footer__logo-zh { color: var(--fgold); }
 
 .footer__logo-en {
   font-family: var(--font-display);
@@ -1905,7 +1908,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
-.footer__tagline--accent { color: #7fb0e8; margin-bottom: 1rem; }
+.footer__tagline--accent { color: var(--fgold); margin-bottom: 1rem; }
 
 .footer__est {
   font-size: 0.85rem;
@@ -1920,7 +1923,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #7fb0e8;
+  color: var(--fgold);
   margin-bottom: 1.25rem;
 }
 
@@ -1961,7 +1964,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 17px; height: 17px;
   flex-shrink: 0;
   margin-top: 0.25rem;
-  color: #5f8fc7;
+  color: rgba(185,154,94,0.85);
 }
 
 .footer__email-link {
@@ -1973,9 +1976,9 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Bottom bar */
 .footer__bottom {
-  border-top: 1px solid rgba(127,176,232,0.14);
+  border-top: 1px solid rgba(222,232,242,0.12);
   padding-block: 1.25rem;
-  background: rgba(0,0,0,0.22);
+  background: rgba(13,24,36,0.35);
 }
 
 .footer__bottom-inner {
@@ -1988,7 +1991,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__copyright {
   font-size: 0.85rem;
-  color: rgba(207,224,243,0.52);
+  color: rgba(222,232,242,0.52);
   letter-spacing: 0.03em;
 }
 
@@ -2020,28 +2023,28 @@ h1, h2, h3, h4, h5, h6 {
 
 /* 深色頁尾中的互動元件：邊框與文字要改用亮色，否則在深底上幾乎看不見 */
 .site-footer .footer__fb-link {
-  color: rgba(207,224,243,0.72);
-  border-color: rgba(127,176,232,0.26);
+  color: rgba(222,232,242,0.70);
+  border-color: rgba(222,232,242,0.22);
 }
 .site-footer .footer__fb-link:hover {
-  color: #eaf2fb;
-  border-color: rgba(127,176,232,0.55);
-  background: rgba(127,176,232,0.12);
+  color: var(--fbright);
+  border-color: rgba(185,154,94,0.55);
+  background: rgba(185,154,94,0.12);
 }
 
 .site-footer .lang-btn {
-  color: rgba(207,224,243,0.62);
-  border-color: rgba(127,176,232,0.22);
+  color: rgba(222,232,242,0.62);
+  border-color: rgba(222,232,242,0.20);
 }
-.site-footer .lang-btn:hover { color: #eaf2fb; border-color: rgba(127,176,232,0.5); }
+.site-footer .lang-btn:hover { color: var(--fbright); border-color: rgba(185,154,94,0.5); }
 .site-footer .lang-btn--active {
-  color: #0d1823;
-  background: #7fb0e8;
-  border-color: #7fb0e8;
+  color: #1d3349;
+  background: var(--fgold);
+  border-color: var(--fgold);
 }
 
-.site-footer .footer__legal-link { color: rgba(207,224,243,0.62); }
-.site-footer .footer__legal-link:hover { color: #eaf2fb; }
+.site-footer .footer__legal-link { color: rgba(222,232,242,0.60); }
+.site-footer .footer__legal-link:hover { color: var(--fbright); }
 
 /* ─── 19. RESPONSIVE — TABLET / iPAD (≤ 1366px) ───────────────────────── */
 @media (max-width: 1366px) {
