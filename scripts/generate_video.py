@@ -1152,7 +1152,7 @@ def upload_video_to_facebook(video_path, caption):
     print("📤 上傳影片到 Facebook...")
     with open(video_path, "rb") as vf:
         resp = requests.post(
-            f"https://graph-video.facebook.com/v21.0/{page_id}/videos",
+            f"https://graph-video.facebook.com/v25.0/{page_id}/videos",
             data={"description": caption, "access_token": token},
             files={"source": ("video.mp4", vf, "video/mp4")},
             timeout=180,

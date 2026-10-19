@@ -6,9 +6,14 @@
 """
 
 import json
+import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 from google_auth_oauthlib.flow import InstalledAppFlow
+
+REPO = "Bensonwu0604/hsinchan-website"
 
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload",
           # 上傳字幕軌需要 force-ssl，比單純上傳影片的權限更大
@@ -73,16 +78,67 @@ if not creds.refresh_token:
 
 print()
 print("=" * 55)
-print("✅ 授權成功！請將以下資訊存入 GitHub Secrets：")
+print("✅ 授權成功")
 print("=" * 55)
+
+VALUES = {
+    "YT_CLIENT_ID":     client_id,
+    "YT_CLIENT_SECRET": client_secret,
+    "YT_REFRESH_TOKEN": creds.refresh_token,
+}
+
+
+def find_gh():
+    """gh 不一定在 PATH 上（Windows 安裝器預設不加）。"""
+    found = shutil.which("gh")
+    if found:
+        return found
+    for candidate in (r"C:\Program Files\GitHub CLI\gh.exe",
+                      Path.home() / "AppData/Local/Programs/GitHub CLI/gh.exe"):
+        if Path(candidate).exists():
+            return str(candidate)
+    return None
+
+
+gh = find_gh()
+if gh:
+    print()
+    print("可以直接寫入 GitHub Secrets，不必複製貼上，")
+    print("憑證也不會留在終端機捲軸或剪貼簿裡。")
+    if input(f"寫入 {REPO}？[Y/n] ").strip().lower() in ("", "y", "yes"):
+        ok = True
+        for name, value in VALUES.items():
+            # 用 stdin 傳值，不要用 --body：命令列參數會進 shell 歷史紀錄
+            r = subprocess.run([gh, "secret", "set", name, "--repo", REPO],
+                               input=value, text=True,
+                               capture_output=True)
+            if r.returncode == 0:
+                print(f"  ✅ {name}")
+            else:
+                ok = False
+                print(f"  ❌ {name}：{r.stderr.strip()}")
+        if ok:
+            print()
+            print("三個 secret 都已寫入。接著驗證：")
+            print("   python scripts/check_youtube_auth.py")
+            raise SystemExit(0)
+        print()
+        print("有項目失敗，請改用下面的手動方式。")
+
 print()
-print(f"Secret 名稱: YT_CLIENT_ID")
-print(f"Secret 值  : {client_id}")
+print("手動設定（在你自己的終端機執行，貼上時不會顯示）：")
+for name in VALUES:
+    print(f"   gh secret set {name} --repo {REPO}")
 print()
-print(f"Secret 名稱: YT_CLIENT_SECRET")
-print(f"Secret 值  : {client_secret}")
+print("三個值分別是：")
+print(f"   YT_CLIENT_ID     {client_id}")
+print(f"   YT_CLIENT_SECRET {client_secret[:7]}…（長度 {len(client_secret)}）")
+print(f"   YT_REFRESH_TOKEN {creds.refresh_token[:6]}…（長度 {len(creds.refresh_token)}）")
 print()
-print(f"Secret 名稱: YT_REFRESH_TOKEN")
-print(f"Secret 值  : {creds.refresh_token}")
-print()
-print("GitHub → Settings → Secrets and variables → Actions → New repository secret")
+print("完整值未顯示，避免留在終端機紀錄中。")
+print("需要完整值請加 --show 參數重跑，或改用上面的自動寫入。")
+
+if "--show" in sys.argv:
+    print()
+    for name, value in VALUES.items():
+        print(f"{name} = {value}")
