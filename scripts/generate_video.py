@@ -43,6 +43,9 @@ SCRIPT_MODEL = os.environ.get("SCRIPT_MODEL", "claude-opus-5-5")
 # 翻譯是機械性工作，不需要最強模型；用 Haiku 每支約 $0.05
 TRANSLATE_MODEL = os.environ.get("TRANSLATE_MODEL", "claude-haiku-4-5")
 SUBTITLE_LANGS = [x for x in os.environ.get("SUBTITLE_LANGS", "en,ja").split(",") if x]
+# 上傳測試模式：YouTube 以不公開狀態上傳、跳過 Facebook。
+# 用來驗證上傳與字幕 API 這條鏈路，而不讓任何東西公開。
+UPLOAD_TEST = os.environ.get("UPLOAD_TEST", "false").lower() == "true"
 # captions.insert 需要 force-ssl，比單純上傳影片的權限更大
 YT_SCOPES = ["https://www.googleapis.com/auth/youtube.upload",
              "https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -1140,6 +1143,9 @@ def concat_clips(clip_paths, out_path):
 
 # ── Facebook 影片上傳 ─────────────────────────────────────────────────────────
 def upload_video_to_facebook(video_path, caption):
+    if UPLOAD_TEST:
+        print("📤 上傳測試模式：跳過 Facebook（FB 沒有不公開上傳可用）")
+        return None
     page_id = os.environ["FB_PAGE_ID"]
     token   = os.environ["FB_ACCESS_TOKEN"]
 
@@ -1218,7 +1224,7 @@ def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_st
                 "defaultLanguage": "zh-TW",
             },
             "status": {
-                "privacyStatus":           "public",
+                "privacyStatus":           "private" if UPLOAD_TEST else "public",
                 "selfDeclaredMadeForKids": False,
             },
         },
@@ -1637,6 +1643,8 @@ def main():
 
         # 6. 同時上傳 Facebook + YouTube
         print("\n── 上傳至各平台 ────────────────────────────")
+        if UPLOAD_TEST:
+            print("⚠️  上傳測試模式：YouTube 設為不公開、跳過 Facebook")
         description = build_description(script, chapters)
         fb_id = upload_video_to_facebook(str(video_path), description)
         yt_id = upload_video_to_youtube(

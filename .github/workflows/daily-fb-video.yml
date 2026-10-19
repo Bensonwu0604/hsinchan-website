@@ -23,6 +23,12 @@ on:
         default: 'false'
         type: choice
         options: ['false', 'true']
+      upload_test:
+        description: '上傳測試（YouTube 設為不公開、跳過 Facebook）'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
 
 jobs:
   generate-and-post:
@@ -75,6 +81,7 @@ jobs:
           YT_REFRESH_TOKEN:   ${{ secrets.YT_REFRESH_TOKEN }}
           DRY_RUN:            ${{ inputs.dry_run || 'false' }}
           FIXTURE_SCRIPT:     ${{ inputs.use_fixture == 'true' && 'fixture_script.json' || '' }}
+          UPLOAD_TEST:        ${{ inputs.upload_test || 'false' }}
 
       - name: Upload video artifact (dry run only)
         if: ${{ inputs.dry_run == 'true' }}
