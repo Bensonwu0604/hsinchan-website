@@ -1827,17 +1827,18 @@ h1, h2, h3, h4, h5, h6 {
   gap: clamp(1.5rem, 3vw, 3rem);
 }
 
-/* 兩側的標語各佔一份彈性空間，中間欄位群因此停在正中央，
-   不受左右標語實際字寬影響 */
-.footer__brand { flex: 1 1 0; min-width: 0; }
+/* flex-basis 0 讓兩側均分剩餘空間，中間欄位群因此真正置中；
+   min-width: max-content 則保證文字框不會被壓得比文字還窄——
+   標語是 nowrap，框一旦不夠寬就會溢出去蓋到隔壁欄 */
+.footer__brand { flex: 1 1 0; min-width: max-content; }
 .footer__brand--end { text-align: right; }
 
 /* 產品資訊 / 服務項目 / 聯絡資訊 三欄靠攏成一組 */
 .footer__cols {
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   display: grid;
   grid-template-columns: repeat(3, auto);
-  gap: clamp(2rem, 4.5vw, 4.5rem);
+  gap: clamp(1.75rem, 3.5vw, 3.5rem);
   align-items: start;
 }
 
@@ -4278,13 +4279,16 @@ h1, h2, h3, h4, h5, h6 {
 .footer__legal-link:hover { color: var(--c-text); }
 
 
-/* 頁尾的收斂斷點。1100px 以下換行：兩個標語留在同一列的左右兩端，
-   三個欄位群落到下一列，仍維持「標語夾住內容」的結構。 */
-@media (max-width: 1100px) {
+/* 頁尾的收斂斷點。1200px 以下換行：兩個標語留在同一列的左右兩端，
+   三個欄位群落到下一列，仍維持「標語夾住內容」的結構。
+   取 1200 而非 1100 是為了留餘裕——三欄不可壓縮，一旦放不下
+   會造成整頁水平捲動，寧可早一點換行。 */
+@media (max-width: 1200px) {
   .footer__grid { flex-wrap: wrap; gap: 2rem clamp(1.5rem, 4vw, 3rem); }
   .footer__cols {
     order: 3;
     flex: 1 1 100%;
+    min-width: 0;
     grid-template-columns: 1fr 1fr;
     gap: 2rem clamp(2rem, 5vw, 4rem);
   }
