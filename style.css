@@ -1825,13 +1825,6 @@ h1, h2, h3, h4, h5, h6 {
   align-items: start;
 }
 
-/* 社群圖示移進品牌欄，與標語構成一個完整的區塊 */
-.footer__social {
-  display: flex;
-  gap: 0.6rem;
-  margin-top: 1.25rem;
-}
-
 /* Brand column */
 .footer__logo {
   display: flex;
@@ -1887,6 +1880,8 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--c-text);
   line-height: 1.35;
   white-space: nowrap;
+  /* 置於公司名下方正中間 */
+  text-align: center;
 }
 
 /* 標語的強調字：一道光定期掃過，為靜態的頁尾加一點生氣。
