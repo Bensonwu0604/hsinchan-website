@@ -4433,45 +4433,11 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--c-text-muted);
 }
 
-/* ── 導入前提與限制（誠實區塊）──────────────────────────────── */
-.svc-limit {
-  margin-top: 2rem;
-  background: var(--c-surface);
-  border: 1px solid var(--c-border);
-  border-left: 3px solid var(--c-gold);
-  border-radius: var(--radius-md);
-  padding: clamp(1.5rem, 3vw, 2.25rem);
-}
-.svc-limit__lead {
-  margin: 0 0 1.25rem;
-  color: var(--c-text);
-  font-size: 0.95rem;
-  line-height: 1.75;
-}
-.svc-limit__list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 0.9rem;
-}
-.svc-limit__list li {
-  position: relative;
-  padding-left: 1.5rem;
-  color: var(--c-text-muted);
-  font-size: 0.89rem;
-  line-height: 1.7;
-}
-.svc-limit__list li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.62em;
-  width: 8px;
-  height: 2px;
-  background: var(--c-gold);
-}
-.svc-limit__list b { color: var(--c-text); font-weight: 600; }
+/* ── 導入前提與限制 ─────────────────────────────────────────────
+   與技術能力同為兩欄表格，但用金色左框與主色區隔：
+   這一節講的是「不建議做」，視覺上不該跟規格表混為一談。 */
+.prod-detail__table-wrap--limit { border-left: 3px solid var(--c-gold); }
+.prod-detail__table-wrap--limit th { border-right-color: var(--c-gold-bright); }
 
 /* ── 流程步驟上的期程標記 ───────────────────────────────────── */
 .prod-detail__type-item .step-dur {
@@ -4552,3 +4518,16 @@ h1, h2, h3, h4, h5, h6 {
   .prod-detail__table th,
   .prod-detail__table td { padding: 0.8rem 0.9rem; }
 }
+
+
+/* ── 詳情頁的垂直節奏 ───────────────────────────────────────────
+   這些區塊是密集資訊而非情境式版面，沿用全站的區塊間距會讓
+   內容之間出現過大的空白。 */
+.prod-detail { padding-block: clamp(3.5rem, 6vw, 5.5rem); }
+.prod-detail .section-header { margin-bottom: clamp(1.75rem, 3vw, 2.5rem); }
+/* 標題是區塊標頭的最後一個元素時，不需要再留下方間距 */
+.prod-detail .section-header .section-title:last-child { margin-bottom: 0; }
+/* 標題後面緊接引導句，兩者應該是同一組 */
+.prod-detail .section-header:has(+ .svc-section-lead) { margin-bottom: 0.9rem; }
+.prod-detail .svc-section-lead + .prod-detail__table-wrap,
+.prod-detail .svc-section-lead + .svc-deliver { margin-top: 1.75rem; }
