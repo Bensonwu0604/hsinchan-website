@@ -41,3 +41,4 @@ preview/
 __pycache__/
 *.pyc
 scripts/fonts/
+scripts/client_secrets.json
