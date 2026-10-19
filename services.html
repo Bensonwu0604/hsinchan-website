@@ -167,12 +167,172 @@
     </section>
 
     <!-- ── 七大服務 ── -->
-    <section class="section" id="services-detail" aria-label="服務詳情">
+    <!-- 服務總覽 -->
+    <section class="section" id="services-overview" aria-labelledby="srv-overview-title">
       <div class="container">
         <header class="section-header" data-reveal>
           <p class="section-eyebrow" data-i18n="srv_eyebrow_lineup">SERVICE LINEUP</p>
-          <h2 class="section-title" data-i18n="srv_overview_title">七大服務</h2>
+          <h2 class="section-title" id="srv-overview-title" data-i18n="srv_overview_title">七大服務</h2>
           <p class="section-lead" data-i18n="srv_overview_lead">所有的服務均以需求出發，為客戶量身訂製。</p>
+        </header>
+
+        <div class="prod-grid">
+          <!-- 01 數位雙生自動化設計規劃 -->
+          <article class="prod-card" data-reveal data-reveal-delay="0">
+            <div class="prod-card__visual srv-vis--digital" role="img" aria-label="數位雙生自動化設計規劃">
+              <span class="prod-card__tag" data-i18n="srv_d1_tag">Digital Twin</span>
+            </div>
+            <h3 class="prod-card__title" data-i18n="srv_d1_title">數位雙生自動化設計規劃</h3>
+            <p class="prod-card__desc" data-i18n="srv_d1_desc">在實體建造前，先以數位雙生技術於虛擬環境中完整模擬產線運作。透過3D模型與動態模擬，提前發現設計缺陷，大幅降低建造風險與修改成本。</p>
+            <ul class="prod-card__specs" aria-label="服務重點">
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d1_p1">虛擬產線佈局規劃與動作模擬</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d1_p2">設備干涉檢查與安全評估</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d1_p3">節拍時間（Takt Time）分析最佳化</span>
+              </li>
+            </ul>
+            <a href="contact.html" class="btn btn--primary" data-i18n="srv_card_btn">諮詢此服務</a>
+            <a href="#digital-twin" class="prod-card__detail-link" data-i18n="cta_view_specs">查看完整規格 →</a>
+          </article>
+          <!-- 02 機械手臂應用 -->
+          <article class="prod-card" data-reveal data-reveal-delay="60">
+            <div class="prod-card__visual srv-vis--robot" role="img" aria-label="機械手臂應用">
+              <span class="prod-card__tag" data-i18n="srv_d2_tag">Robot Integration</span>
+            </div>
+            <h3 class="prod-card__title" data-i18n="srv_d2_title">機械手臂應用</h3>
+            <p class="prod-card__desc" data-i18n="srv_d2_desc">欣晨工業是台灣機械手臂整合廠商，整合各大品牌工業機器人（FANUC、ABB、KUKA、Yaskawa等），提供搬運、焊接、組裝、塗膠等多元應用，搭配末端夾爪設計與路徑規劃，打造高效柔性生產線。</p>
+            <ul class="prod-card__specs" aria-label="服務重點">
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d2_p1">多品牌機械手臂選型與導入</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d2_p2">末端效應器（夾爪/工具）客製設計</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d2_p3">離線程式規劃與路徑最佳化</span>
+              </li>
+            </ul>
+            <a href="contact.html" class="btn btn--primary" data-i18n="srv_card_btn">諮詢此服務</a>
+            <a href="#robot-integration" class="prod-card__detail-link" data-i18n="cta_view_specs">查看完整規格 →</a>
+          </article>
+          <!-- 03 單機自動化設計製造 -->
+          <article class="prod-card" data-reveal data-reveal-delay="120">
+            <div class="prod-card__visual srv-vis--single" role="img" aria-label="單機自動化設計製造">
+              <span class="prod-card__tag" data-i18n="srv_d3_tag">Custom Automation</span>
+            </div>
+            <h3 class="prod-card__title" data-i18n="srv_d3_title">單機自動化設計製造</h3>
+            <p class="prod-card__desc" data-i18n="srv_d3_desc">從客戶需求分析、機構概念設計、工程圖面繪製、零件加工製造，到整機組裝、程式撰寫與現場調機，提供完整的一條龍自動化設備設計製造服務。</p>
+            <ul class="prod-card__specs" aria-label="服務重點">
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d3_p1">需求分析與方案可行性評估</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d3_p2">機構設計與3D建模（SolidWorks / Solid Edge）</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d3_p3">PLC / HMI 程式開發（三菱 / 西門子）</span>
+              </li>
+            </ul>
+            <a href="contact.html" class="btn btn--primary" data-i18n="srv_card_btn">諮詢此服務</a>
+            <a href="#custom-automation" class="prod-card__detail-link" data-i18n="cta_view_specs">查看完整規格 →</a>
+          </article>
+          <!-- 04 視覺檢測 -->
+          <article class="prod-card" data-reveal data-reveal-delay="180">
+            <div class="prod-card__visual srv-vis--vision" role="img" aria-label="視覺檢測">
+              <span class="prod-card__tag" data-i18n="srv_d4_tag">Machine Vision</span>
+            </div>
+            <h3 class="prod-card__title" data-i18n="srv_d4_title">視覺檢測</h3>
+            <p class="prod-card__desc" data-i18n="srv_d4_desc">欣晨工業是台灣視覺檢測廠商，結合工業相機、高精度鏡頭與AI影像分析技術，實現產品外觀瑕疵偵測、尺寸量測、條碼辨識及位置引導等功能，取代人工目視，大幅提升檢測效率與一致性。</p>
+            <ul class="prod-card__specs" aria-label="服務重點">
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d4_p1">外觀缺陷偵測（刮傷、污點、缺料）</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d4_p2">高精度尺寸量測（±0.01mm）</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d4_p3">QR Code / Barcode / OCR 辨識</span>
+              </li>
+            </ul>
+            <a href="contact.html" class="btn btn--primary" data-i18n="srv_card_btn">諮詢此服務</a>
+            <a href="#machine-vision" class="prod-card__detail-link" data-i18n="cta_view_specs">查看完整規格 →</a>
+          </article>
+          <!-- 05 夾治具設計製造 -->
+          <article class="prod-card" data-reveal data-reveal-delay="240">
+            <div class="prod-card__visual srv-vis--fixture" role="img" aria-label="夾治具設計製造">
+              <span class="prod-card__tag" data-i18n="srv_d5_tag">Fixture Design</span>
+            </div>
+            <h3 class="prod-card__title" data-i18n="srv_d5_title">夾治具設計製造</h3>
+            <p class="prod-card__desc" data-i18n="srv_d5_desc">欣晨工業是台灣夾治具廠商，設計並製造高精度工裝夾具與治具，用於自動化組裝、加工、檢測等製程。精確的定位與夾持設計，確保每一件產品的加工位置一致性，提升產品良率。</p>
+            <ul class="prod-card__specs" aria-label="服務重點">
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d5_p1">機加工夾具、焊接治具、組裝工裝</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d5_p2">材質選用：鋁合金、工具鋼、不鏽鋼</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d5_p3">重複定位精度：±0.02mm</span>
+              </li>
+            </ul>
+            <a href="contact.html" class="btn btn--primary" data-i18n="srv_card_btn">諮詢此服務</a>
+            <a href="#fixture-design" class="prod-card__detail-link" data-i18n="cta_view_specs">查看完整規格 →</a>
+          </article>
+          <!-- 06 設備智能化 -->
+          <article class="prod-card" data-reveal data-reveal-delay="300">
+            <div class="prod-card__visual srv-vis--smart" role="img" aria-label="設備智能化">
+              <span class="prod-card__tag" data-i18n="srv_d6_tag">Smart Upgrade</span>
+            </div>
+            <h3 class="prod-card__title" data-i18n="srv_d6_title">設備智能化</h3>
+            <p class="prod-card__desc" data-i18n="srv_d6_desc">為既有傳統設備加裝PLC、HMI、IoT模組，實現遠端監控、資料蒐集與預知保養功能。無需全面換新設備，以最低投資提升舊有產線的數位化水準。</p>
+            <ul class="prod-card__specs" aria-label="服務重點">
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d6_p1">PLC控制器升級（三菱 iQ-F / iQ-R）</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d6_p2">HMI人機介面加裝（Pro-face / Weintek）</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d6_p3">IoT資料蒐集與雲端監控儀表板</span>
+              </li>
+            </ul>
+            <a href="contact.html" class="btn btn--primary" data-i18n="srv_card_btn">諮詢此服務</a>
+            <a href="#smart-upgrade" class="prod-card__detail-link" data-i18n="cta_view_specs">查看完整規格 →</a>
+          </article>
+          <!-- 07 高濃度奈米氣泡流體產業應用 -->
+          <article class="prod-card" data-reveal data-reveal-delay="360">
+            <div class="prod-card__visual srv-vis--nanobubble" role="img" aria-label="高濃度奈米氣泡流體產業應用">
+              <span class="prod-card__tag" data-i18n="srv_d7_tag">Nano-Bubble Application</span>
+            </div>
+            <h3 class="prod-card__title" data-i18n="srv_d7_title">高濃度奈米氣泡流體產業應用</h3>
+            <p class="prod-card__desc" data-i18n="srv_d7_desc">針對半導體製程用水、生醫設備清洗、資料中心液冷等場域，導入高濃度奈米氣泡流體模組，提供選型評估、管路整合安裝與效能驗證，以物理性奈米氣泡取代化學藥劑，達成節能、免化學添加的製程升級。</p>
+            <ul class="prod-card__specs" aria-label="服務重點">
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d7_p1">半導體製程用水品質提升與晶圓清洗輔助</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d7_p2">生醫設備清洗滅菌輔助，降低化學藥劑依賴</span>
+              </li>
+              <li class="prod-card__spec">
+                <span class="prod-card__spec-val" data-i18n="srv_d7_p3">資料中心液冷系統散熱效率提升、抑制管路結垢</span>
+              </li>
+            </ul>
+            <a href="contact.html" class="btn btn--primary" data-i18n="srv_card_btn">諮詢此服務</a>
+            <a href="#nano-bubble-application" class="prod-card__detail-link" data-i18n="cta_view_specs">查看完整規格 →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services-detail" aria-label="服務詳情">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="srv_eyebrow_detail">SERVICE DETAIL</p>
+          <h2 class="section-title" data-i18n="srv_detail_title">各項服務完整規格</h2>
         </header>
 
         <!-- 01 數位雙生 -->
