@@ -1820,8 +1820,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__grid {
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: clamp(2rem, 5vw, 4.5rem);
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
 }
 
 /* Brand column */
@@ -1853,7 +1854,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__logo-zh {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.45rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   color: var(--c-text);
@@ -1864,22 +1865,23 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__logo-en {
   font-family: var(--font-display);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
   color: var(--c-text-muted);
   text-transform: uppercase;
 }
 
 .footer__tagline {
   font-family: var(--font-display);
-  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-size: clamp(1.9rem, 3.4vw, 2.75rem);
   font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--c-text-muted);
-  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: var(--c-text);
+  line-height: 1.15;
 }
 
-.footer__tagline--accent { color: var(--c-navy-vivid); margin-bottom: 1rem; }
+.footer__tagline--accent { color: var(--c-navy-vivid); }
+.footer__tagline { margin-bottom: 1rem; }
 
 .footer__est {
   font-size: 0.85rem;
@@ -1887,15 +1889,23 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.06em;
 }
 
-/* Navigation column */
+/* 聯絡資訊卡片：原本只是浮在白底上的一串文字，
+   給它一個底座才有結構，也把右半邊的空白收攏 */
+.footer__contact {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.5rem, 2.5vw, 2.25rem);
+}
+
 .footer__section-title {
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--c-gold);
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .footer__nav-list {
@@ -1919,27 +1929,31 @@ h1, h2, h3, h4, h5, h6 {
 .footer__contact-list {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 1.15rem;
 }
 
 .footer__contact-item {
   display: flex;
   align-items: flex-start;
-  gap: 0.8rem;
-  font-size: 1.1rem;
-  color: var(--c-text-muted);
+  gap: 0.95rem;
+  font-size: 1.15rem;
+  color: var(--c-text);
   line-height: 1.5;
 }
 
 .footer__contact-item svg {
-  width: 17px; height: 17px;
+  width: 18px; height: 18px;
   flex-shrink: 0;
-  margin-top: 0.2rem;
-  color: var(--c-navy-light);
+  box-sizing: content-box;
+  padding: 7px;
+  background: #ffffff;
+  border: 1px solid var(--c-border);
+  border-radius: 50%;
+  color: var(--c-navy);
 }
 
 .footer__email-link {
-  color: var(--c-text-muted);
+  color: var(--c-text);
   transition: color var(--t-base);
 }
 
