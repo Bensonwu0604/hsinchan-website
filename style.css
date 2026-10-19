@@ -2081,7 +2081,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .services__grid { grid-template-columns: repeat(2, 1fr); }
 
-  .footer__grid { grid-template-columns: 1fr 1fr; }
+  /* 頁尾四欄在 1366px 仍放得下，收欄的斷點移到檔案末端統一管理 */
 
   .tech-news__grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -2107,7 +2107,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .tech-news__grid { grid-template-columns: 1fr; }
 
-  .footer__grid { grid-template-columns: 1fr; }
+  /* 頁尾收欄斷點統一在檔案末端管理 */
 
   .footer__bottom-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
 
@@ -4314,3 +4314,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__legal-link { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .footer__legal-link:hover { color: var(--c-text); }
+
+
+/* 頁尾四欄的收斂斷點（四欄純文字在 1100px 以上都放得下）*/
+@media (max-width: 1100px) {
+  .footer__grid { grid-template-columns: 1fr 1fr; gap: 2rem clamp(1.5rem, 4vw, 3rem); }
+}
+@media (max-width: 600px) {
+  .footer__grid { grid-template-columns: 1fr; gap: 1.75rem; }
+}
