@@ -1651,6 +1651,8 @@ def main():
             str(video_path), script["video_title"],
             description, topic_tag, date_str
         )
+        # 字幕軌必須在影片上傳完成、拿到 video_id 之後才能掛上去
+        upload_captions(yt_id, srt_files)
 
         print(f"\n🎉 完成！{date_str} 影片已發布")
         if fb_id: print(f"   Facebook Video ID : {fb_id}")
