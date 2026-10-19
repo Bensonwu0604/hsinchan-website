@@ -40,36 +40,80 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "奈米氣泡和一般打氣有什麼不同？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "一般氣泡體積大、浮力強，很快就浮出水面破掉。奈米氣泡因為粒徑極小，浮力不足以讓它迅速上浮，會在水中停留很久，接觸面積也大得多。差別不在「有沒有氣泡」，而在它能在水裡待多久、接觸多少面積。"
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": "https://www.hsinchan.com/service-nano-bubble.html#service",
+        "name": "高濃度奈米氣泡流體產業應用",
+        "description": "針對半導體製程用水、生醫設備清洗、資料中心液冷等場域，導入高濃度奈米氣泡流體模組，提供選型評估、管路整合安裝與效能驗證，以物理性奈米氣泡取代化學藥劑，達成節能、免化學添加的製程升級。",
+        "serviceType": "奈米氣泡流體應用 Nano-Bubble Fluid Application",
+        "provider": {
+          "@type": "Organization",
+          "name": "欣晨工業有限公司",
+          "url": "https://www.hsinchan.com/",
+          "telephone": "+886-3-381-4497"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Taiwan"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首頁",
+            "item": "https://www.hsinchan.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "服務項目",
+            "item": "https://www.hsinchan.com/services.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "高濃度奈米氣泡流體產業應用",
+            "item": "https://www.hsinchan.com/service-nano-bubble.html"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "奈米氣泡和一般打氣有什麼不同？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "一般氣泡體積大、浮力強，很快就浮出水面破掉。奈米氣泡因為粒徑極小，浮力不足以讓它迅速上浮，會在水中停留很久，接觸面積也大得多。差別不在「有沒有氣泡」，而在它能在水裡待多久、接觸多少面積。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "可以完全取代化學清洗劑嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "視污染物性質而定。油脂與顆粒類污染的改善較明顯；某些化學性污染仍需搭配藥劑。務實的目標通常是減量而非全免——減量本身對廢液處理成本就是實質節省。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "需要大幅改動既有管路嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "通常不用。模組設計為可整合進既有管路，評估時會先確認您的流量與壓力條件是否相容。"
+            }
+          }
+        ]
       }
-    },
-    {
-      "@type": "Question",
-      "name": "可以完全取代化學清洗劑嗎？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "視污染物性質而定。油脂與顆粒類污染的改善較明顯；某些化學性污染仍需搭配藥劑。務實的目標通常是減量而非全免——減量本身對廢液處理成本就是實質節省。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "需要大幅改動既有管路嗎？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "通常不用。模組設計為可整合進既有管路，評估時會先確認您的流量與壓力條件是否相容。"
-      }
-    }
-  ]
-}
+    ]
+  }
   </script>
 </head>
 <body>
@@ -90,8 +134,8 @@
         <ul class="nav__menu" id="navMenu" role="list">
           <li class="nav__item"><a href="index.html" class="nav__link" data-i18n="nav_home">首頁</a></li>
           <li class="nav__item"><a href="about.html" class="nav__link" data-i18n="nav_about">公司簡介</a></li>
-          <li class="nav__item"><a href="products.html" class="nav__link nav__link--active" data-i18n="nav_products">產品資訊</a></li>
-          <li class="nav__item"><a href="services.html" class="nav__link" data-i18n="nav_services">服務項目</a></li>
+          <li class="nav__item"><a href="products.html" class="nav__link" data-i18n="nav_products">產品資訊</a></li>
+          <li class="nav__item"><a href="services.html" class="nav__link nav__link--active" data-i18n="nav_services">服務項目</a></li>
           <li class="nav__item"><a href="technology.html" class="nav__link" data-i18n="nav_tech">新技術討論</a></li>
           <li class="nav__item"><a href="esg.html" class="nav__link nav__link--esg" data-i18n="nav_esg">ESG</a></li>
           <li class="nav__item"><a href="careers.html" class="nav__link" data-i18n="nav_careers">人力資源</a></li>
@@ -268,6 +312,7 @@
       <li><a href="product-sic-tube.html" class="footer__link" data-i18n="pp_p2_title">碳化矽保護管</a></li>
       <li><a href="product-integrated-barrel.html" class="footer__link" data-i18n="pp_p1_title">一體式料管</a></li>
       <li><a href="product-refractory.html" class="footer__link" data-i18n="pp_p3_title">耐火材料</a></li>
+      <li><a href="product-graphite-tube.html" class="footer__link" data-i18n="pp_p4_title">高濃度奈米氣泡流體模組</a></li>
     </ul>
   </nav>
 
@@ -275,11 +320,13 @@
   <nav class="footer__nav" aria-label="服務項目">
     <h3 class="footer__section-title" data-i18n="nav_services">服務項目</h3>
     <ul class="footer__nav-list" role="list">
+      <li><a href="service-digital-twin.html" class="footer__link" data-i18n="srv_d1_title">數位雙生自動化設計規劃</a></li>
       <li><a href="service-robot-integration.html" class="footer__link" data-i18n="srv_d2_title">機械手臂應用</a></li>
       <li><a href="service-custom-automation.html" class="footer__link" data-i18n="srv_d3_title">單機自動化設計製造</a></li>
       <li><a href="service-machine-vision.html" class="footer__link" data-i18n="srv_d4_title">視覺檢測</a></li>
       <li><a href="service-fixture-design.html" class="footer__link" data-i18n="srv_d5_title">夾治具設計製造</a></li>
       <li><a href="service-smart-upgrade.html" class="footer__link" data-i18n="srv_d6_title">設備智能化</a></li>
+      <li><a href="service-nano-bubble.html" class="footer__link" data-i18n="srv_d7_title">高濃度奈米氣泡流體產業應用</a></li>
     </ul>
   </nav>
 

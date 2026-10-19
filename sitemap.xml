@@ -145,4 +145,78 @@
     <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/product-thermocouple.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/product-thermocouple.html"/>
   </url>
+
+  <!-- 服務詳情 -->
+  <url>
+    <loc>https://www.hsinchan.com/service-digital-twin.html</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/service-digital-twin.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/service-digital-twin.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/service-robot-integration.html</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/service-robot-integration.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/service-robot-integration.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/service-custom-automation.html</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/service-custom-automation.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/service-custom-automation.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/service-machine-vision.html</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/service-machine-vision.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/service-machine-vision.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/service-fixture-design.html</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/service-fixture-design.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/service-fixture-design.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/service-smart-upgrade.html</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/service-smart-upgrade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/service-smart-upgrade.html"/>
+  </url>
+
+  <url>
+    <loc>https://www.hsinchan.com/service-nano-bubble.html</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/service-nano-bubble.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/service-nano-bubble.html"/>
+  </url>
+
+  <!-- 政策 -->
+  <url>
+    <loc>https://www.hsinchan.com/privacy.html</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://www.hsinchan.com/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hsinchan.com/privacy.html"/>
+  </url>
 </urlset>

@@ -40,36 +40,80 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "從下單到交機大概要多久？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "依複雜度差異很大。單純的取放或輸送設備約 2 至 3 個月；涉及多軸連動、視覺整合的設備，4 至 6 個月較為常見。我們會在報價時提供分階段的時程表，讓您掌握每個節點。"
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": "https://www.hsinchan.com/service-custom-automation.html#service",
+        "name": "單機自動化設計製造",
+        "description": "從客戶需求分析、機構概念設計、工程圖面繪製、零件加工製造，到整機組裝、程式撰寫與現場調機，提供完整的一條龍自動化設備設計製造服務。",
+        "serviceType": "自動化設備設計製造 Custom Automation Machine Building",
+        "provider": {
+          "@type": "Organization",
+          "name": "欣晨工業有限公司",
+          "url": "https://www.hsinchan.com/",
+          "telephone": "+886-3-381-4497"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Taiwan"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首頁",
+            "item": "https://www.hsinchan.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "服務項目",
+            "item": "https://www.hsinchan.com/services.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "單機自動化設計製造",
+            "item": "https://www.hsinchan.com/service-custom-automation.html"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "從下單到交機大概要多久？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "依複雜度差異很大。單純的取放或輸送設備約 2 至 3 個月；涉及多軸連動、視覺整合的設備，4 至 6 個月較為常見。我們會在報價時提供分階段的時程表，讓您掌握每個節點。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "設備交機後還有支援嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "有。交機時會提供操作手冊、電氣圖與零件清單，並完成人員培訓。後續的調機、耗材更換與故障排除都在服務範圍內。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "可以先做一台試用，確認可行再追加嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "建議這樣做。先做一台驗證節拍、良率與實際操作狀況，確認後再複製，是風險最低的導入方式——也能避免一次投入多台卻發現設計要調整。"
+            }
+          }
+        ]
       }
-    },
-    {
-      "@type": "Question",
-      "name": "設備交機後還有支援嗎？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "有。交機時會提供操作手冊、電氣圖與零件清單，並完成人員培訓。後續的調機、耗材更換與故障排除都在服務範圍內。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "可以先做一台試用，確認可行再追加嗎？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "建議這樣做。先做一台驗證節拍、良率與實際操作狀況，確認後再複製，是風險最低的導入方式——也能避免一次投入多台卻發現設計要調整。"
-      }
-    }
-  ]
-}
+    ]
+  }
   </script>
 </head>
 <body>
@@ -90,8 +134,8 @@
         <ul class="nav__menu" id="navMenu" role="list">
           <li class="nav__item"><a href="index.html" class="nav__link" data-i18n="nav_home">首頁</a></li>
           <li class="nav__item"><a href="about.html" class="nav__link" data-i18n="nav_about">公司簡介</a></li>
-          <li class="nav__item"><a href="products.html" class="nav__link nav__link--active" data-i18n="nav_products">產品資訊</a></li>
-          <li class="nav__item"><a href="services.html" class="nav__link" data-i18n="nav_services">服務項目</a></li>
+          <li class="nav__item"><a href="products.html" class="nav__link" data-i18n="nav_products">產品資訊</a></li>
+          <li class="nav__item"><a href="services.html" class="nav__link nav__link--active" data-i18n="nav_services">服務項目</a></li>
           <li class="nav__item"><a href="technology.html" class="nav__link" data-i18n="nav_tech">新技術討論</a></li>
           <li class="nav__item"><a href="esg.html" class="nav__link nav__link--esg" data-i18n="nav_esg">ESG</a></li>
           <li class="nav__item"><a href="careers.html" class="nav__link" data-i18n="nav_careers">人力資源</a></li>
@@ -268,6 +312,7 @@
       <li><a href="product-sic-tube.html" class="footer__link" data-i18n="pp_p2_title">碳化矽保護管</a></li>
       <li><a href="product-integrated-barrel.html" class="footer__link" data-i18n="pp_p1_title">一體式料管</a></li>
       <li><a href="product-refractory.html" class="footer__link" data-i18n="pp_p3_title">耐火材料</a></li>
+      <li><a href="product-graphite-tube.html" class="footer__link" data-i18n="pp_p4_title">高濃度奈米氣泡流體模組</a></li>
     </ul>
   </nav>
 
@@ -275,11 +320,13 @@
   <nav class="footer__nav" aria-label="服務項目">
     <h3 class="footer__section-title" data-i18n="nav_services">服務項目</h3>
     <ul class="footer__nav-list" role="list">
+      <li><a href="service-digital-twin.html" class="footer__link" data-i18n="srv_d1_title">數位雙生自動化設計規劃</a></li>
       <li><a href="service-robot-integration.html" class="footer__link" data-i18n="srv_d2_title">機械手臂應用</a></li>
       <li><a href="service-custom-automation.html" class="footer__link" data-i18n="srv_d3_title">單機自動化設計製造</a></li>
       <li><a href="service-machine-vision.html" class="footer__link" data-i18n="srv_d4_title">視覺檢測</a></li>
       <li><a href="service-fixture-design.html" class="footer__link" data-i18n="srv_d5_title">夾治具設計製造</a></li>
       <li><a href="service-smart-upgrade.html" class="footer__link" data-i18n="srv_d6_title">設備智能化</a></li>
+      <li><a href="service-nano-bubble.html" class="footer__link" data-i18n="srv_d7_title">高濃度奈米氣泡流體產業應用</a></li>
     </ul>
   </nav>
 

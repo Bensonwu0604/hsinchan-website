@@ -40,36 +40,80 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "機械手臂的投資多久可以回收？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "取決於它取代多少人力、以及產線稼動時間。兩班制、取代一名作業員的搬運工序，常見回收期落在一年半到三年之間。但如果只是單班、低產量，回收期可能長到不值得做——這一點我們會在評估階段就先算給您看。"
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": "https://www.hsinchan.com/service-robot-integration.html#service",
+        "name": "機械手臂應用",
+        "description": "欣晨工業是台灣機械手臂整合廠商，整合各大品牌工業機器人（FANUC、ABB、KUKA、Yaskawa等），提供搬運、焊接、組裝、塗膠等多元應用，搭配末端夾爪設計與路徑規劃，打造高效柔性生產線。",
+        "serviceType": "機器人系統整合 Robot System Integration",
+        "provider": {
+          "@type": "Organization",
+          "name": "欣晨工業有限公司",
+          "url": "https://www.hsinchan.com/",
+          "telephone": "+886-3-381-4497"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Taiwan"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首頁",
+            "item": "https://www.hsinchan.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "服務項目",
+            "item": "https://www.hsinchan.com/services.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "機械手臂應用",
+            "item": "https://www.hsinchan.com/service-robot-integration.html"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "機械手臂的投資多久可以回收？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "取決於它取代多少人力、以及產線稼動時間。兩班制、取代一名作業員的搬運工序，常見回收期落在一年半到三年之間。但如果只是單班、低產量，回收期可能長到不值得做——這一點我們會在評估階段就先算給您看。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "可以在現有產線上加裝，不用整線重建嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "多數情況可以。常見做法是先在單一工站導入，確認節拍與良率後再擴大。這也是我們建議的順序：先讓一站跑順，再談整線。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "協作機器人和傳統工業機器人怎麼選？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "協作機器人免安全柵欄、佔地小、換線彈性高，但速度與負載較低；傳統工業機器人快且力大，但需要安全圍籬。工件重、節拍緊就選傳統型，多樣少量、需與人共站就選協作型。"
+            }
+          }
+        ]
       }
-    },
-    {
-      "@type": "Question",
-      "name": "可以在現有產線上加裝，不用整線重建嗎？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "多數情況可以。常見做法是先在單一工站導入，確認節拍與良率後再擴大。這也是我們建議的順序：先讓一站跑順，再談整線。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "協作機器人和傳統工業機器人怎麼選？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "協作機器人免安全柵欄、佔地小、換線彈性高，但速度與負載較低；傳統工業機器人快且力大，但需要安全圍籬。工件重、節拍緊就選傳統型，多樣少量、需與人共站就選協作型。"
-      }
-    }
-  ]
-}
+    ]
+  }
   </script>
 </head>
 <body>
@@ -90,8 +134,8 @@
         <ul class="nav__menu" id="navMenu" role="list">
           <li class="nav__item"><a href="index.html" class="nav__link" data-i18n="nav_home">首頁</a></li>
           <li class="nav__item"><a href="about.html" class="nav__link" data-i18n="nav_about">公司簡介</a></li>
-          <li class="nav__item"><a href="products.html" class="nav__link nav__link--active" data-i18n="nav_products">產品資訊</a></li>
-          <li class="nav__item"><a href="services.html" class="nav__link" data-i18n="nav_services">服務項目</a></li>
+          <li class="nav__item"><a href="products.html" class="nav__link" data-i18n="nav_products">產品資訊</a></li>
+          <li class="nav__item"><a href="services.html" class="nav__link nav__link--active" data-i18n="nav_services">服務項目</a></li>
           <li class="nav__item"><a href="technology.html" class="nav__link" data-i18n="nav_tech">新技術討論</a></li>
           <li class="nav__item"><a href="esg.html" class="nav__link nav__link--esg" data-i18n="nav_esg">ESG</a></li>
           <li class="nav__item"><a href="careers.html" class="nav__link" data-i18n="nav_careers">人力資源</a></li>
@@ -268,6 +312,7 @@
       <li><a href="product-sic-tube.html" class="footer__link" data-i18n="pp_p2_title">碳化矽保護管</a></li>
       <li><a href="product-integrated-barrel.html" class="footer__link" data-i18n="pp_p1_title">一體式料管</a></li>
       <li><a href="product-refractory.html" class="footer__link" data-i18n="pp_p3_title">耐火材料</a></li>
+      <li><a href="product-graphite-tube.html" class="footer__link" data-i18n="pp_p4_title">高濃度奈米氣泡流體模組</a></li>
     </ul>
   </nav>
 
@@ -275,11 +320,13 @@
   <nav class="footer__nav" aria-label="服務項目">
     <h3 class="footer__section-title" data-i18n="nav_services">服務項目</h3>
     <ul class="footer__nav-list" role="list">
+      <li><a href="service-digital-twin.html" class="footer__link" data-i18n="srv_d1_title">數位雙生自動化設計規劃</a></li>
       <li><a href="service-robot-integration.html" class="footer__link" data-i18n="srv_d2_title">機械手臂應用</a></li>
       <li><a href="service-custom-automation.html" class="footer__link" data-i18n="srv_d3_title">單機自動化設計製造</a></li>
       <li><a href="service-machine-vision.html" class="footer__link" data-i18n="srv_d4_title">視覺檢測</a></li>
       <li><a href="service-fixture-design.html" class="footer__link" data-i18n="srv_d5_title">夾治具設計製造</a></li>
       <li><a href="service-smart-upgrade.html" class="footer__link" data-i18n="srv_d6_title">設備智能化</a></li>
+      <li><a href="service-nano-bubble.html" class="footer__link" data-i18n="srv_d7_title">高濃度奈米氣泡流體產業應用</a></li>
     </ul>
   </nav>
 

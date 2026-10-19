@@ -40,36 +40,80 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "夾治具為什麼會影響良率？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "加工精度的基準來自定位。定位每次都差 0.05mm，再精密的機台也做不出一致的產品。夾治具決定的是這個基準的穩定性，它是良率的上限，不是加分項。"
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": "https://www.hsinchan.com/service-fixture-design.html#service",
+        "name": "夾治具設計製造",
+        "description": "欣晨工業是台灣夾治具廠商，設計並製造高精度工裝夾具與治具，用於自動化組裝、加工、檢測等製程。精確的定位與夾持設計，確保每一件產品的加工位置一致性，提升產品良率。",
+        "serviceType": "夾治具設計製造 Jig & Fixture Design",
+        "provider": {
+          "@type": "Organization",
+          "name": "欣晨工業有限公司",
+          "url": "https://www.hsinchan.com/",
+          "telephone": "+886-3-381-4497"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Taiwan"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首頁",
+            "item": "https://www.hsinchan.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "服務項目",
+            "item": "https://www.hsinchan.com/services.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "夾治具設計製造",
+            "item": "https://www.hsinchan.com/service-fixture-design.html"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "夾治具為什麼會影響良率？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "加工精度的基準來自定位。定位每次都差 0.05mm，再精密的機台也做不出一致的產品。夾治具決定的是這個基準的穩定性，它是良率的上限，不是加分項。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "快拆設計能省多少換線時間？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "視原本的換線方式而定。原本要逐顆鬆開螺絲、重新打表校正的，改為定位銷加快拆夾鉗後，常見從數十分鐘縮短到數分鐘。換線越頻繁、少量多樣的工廠，效益越明顯。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "一款夾具可以對應多種工件嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "可以，常見做法是共用底座加可更換的定位模組。前提是工件之間有共通的基準面；差異太大時，分開設計反而更划算。"
+            }
+          }
+        ]
       }
-    },
-    {
-      "@type": "Question",
-      "name": "快拆設計能省多少換線時間？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "視原本的換線方式而定。原本要逐顆鬆開螺絲、重新打表校正的，改為定位銷加快拆夾鉗後，常見從數十分鐘縮短到數分鐘。換線越頻繁、少量多樣的工廠，效益越明顯。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "一款夾具可以對應多種工件嗎？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "可以，常見做法是共用底座加可更換的定位模組。前提是工件之間有共通的基準面；差異太大時，分開設計反而更划算。"
-      }
-    }
-  ]
-}
+    ]
+  }
   </script>
 </head>
 <body>
@@ -90,8 +134,8 @@
         <ul class="nav__menu" id="navMenu" role="list">
           <li class="nav__item"><a href="index.html" class="nav__link" data-i18n="nav_home">首頁</a></li>
           <li class="nav__item"><a href="about.html" class="nav__link" data-i18n="nav_about">公司簡介</a></li>
-          <li class="nav__item"><a href="products.html" class="nav__link nav__link--active" data-i18n="nav_products">產品資訊</a></li>
-          <li class="nav__item"><a href="services.html" class="nav__link" data-i18n="nav_services">服務項目</a></li>
+          <li class="nav__item"><a href="products.html" class="nav__link" data-i18n="nav_products">產品資訊</a></li>
+          <li class="nav__item"><a href="services.html" class="nav__link nav__link--active" data-i18n="nav_services">服務項目</a></li>
           <li class="nav__item"><a href="technology.html" class="nav__link" data-i18n="nav_tech">新技術討論</a></li>
           <li class="nav__item"><a href="esg.html" class="nav__link nav__link--esg" data-i18n="nav_esg">ESG</a></li>
           <li class="nav__item"><a href="careers.html" class="nav__link" data-i18n="nav_careers">人力資源</a></li>
@@ -268,6 +312,7 @@
       <li><a href="product-sic-tube.html" class="footer__link" data-i18n="pp_p2_title">碳化矽保護管</a></li>
       <li><a href="product-integrated-barrel.html" class="footer__link" data-i18n="pp_p1_title">一體式料管</a></li>
       <li><a href="product-refractory.html" class="footer__link" data-i18n="pp_p3_title">耐火材料</a></li>
+      <li><a href="product-graphite-tube.html" class="footer__link" data-i18n="pp_p4_title">高濃度奈米氣泡流體模組</a></li>
     </ul>
   </nav>
 
@@ -275,11 +320,13 @@
   <nav class="footer__nav" aria-label="服務項目">
     <h3 class="footer__section-title" data-i18n="nav_services">服務項目</h3>
     <ul class="footer__nav-list" role="list">
+      <li><a href="service-digital-twin.html" class="footer__link" data-i18n="srv_d1_title">數位雙生自動化設計規劃</a></li>
       <li><a href="service-robot-integration.html" class="footer__link" data-i18n="srv_d2_title">機械手臂應用</a></li>
       <li><a href="service-custom-automation.html" class="footer__link" data-i18n="srv_d3_title">單機自動化設計製造</a></li>
       <li><a href="service-machine-vision.html" class="footer__link" data-i18n="srv_d4_title">視覺檢測</a></li>
       <li><a href="service-fixture-design.html" class="footer__link" data-i18n="srv_d5_title">夾治具設計製造</a></li>
       <li><a href="service-smart-upgrade.html" class="footer__link" data-i18n="srv_d6_title">設備智能化</a></li>
+      <li><a href="service-nano-bubble.html" class="footer__link" data-i18n="srv_d7_title">高濃度奈米氣泡流體產業應用</a></li>
     </ul>
   </nav>
 

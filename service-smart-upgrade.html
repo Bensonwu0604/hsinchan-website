@@ -40,36 +40,80 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "舊設備真的有必要智能化嗎？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "要看它是否在關鍵路徑上。如果這台設備的停機會卡住整條線，那麼知道它何時要壞、稼動率多少，價值就很高。反之，備援充足、停機影響小的設備，蒐集資料的投資未必划算——這一點值得先算清楚再動手。"
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": "https://www.hsinchan.com/service-smart-upgrade.html#service",
+        "name": "設備智能化",
+        "description": "為既有傳統設備加裝PLC、HMI、IoT模組，實現遠端監控、資料蒐集與預知保養功能。無需全面換新設備，以最低投資提升舊有產線的數位化水準。",
+        "serviceType": "設備智能化改造 Equipment Retrofit & IIoT",
+        "provider": {
+          "@type": "Organization",
+          "name": "欣晨工業有限公司",
+          "url": "https://www.hsinchan.com/",
+          "telephone": "+886-3-381-4497"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Taiwan"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首頁",
+            "item": "https://www.hsinchan.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "服務項目",
+            "item": "https://www.hsinchan.com/services.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "設備智能化",
+            "item": "https://www.hsinchan.com/service-smart-upgrade.html"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "舊設備真的有必要智能化嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "要看它是否在關鍵路徑上。如果這台設備的停機會卡住整條線，那麼知道它何時要壞、稼動率多少，價值就很高。反之，備援充足、停機影響小的設備，蒐集資料的投資未必划算——這一點值得先算清楚再動手。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "需要更換整套設備嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "不需要。多數情況是在既有機構上加裝 PLC、HMI 與感測器，機械本體保留。這正是智能化相對於換新設備的主要優勢——以較低投資取得資料能力。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "蒐集了資料之後呢？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "資料本身沒有價值，產生決策才有。我們會協助把資料連到具體的決策上，例如哪一台該優先保養、哪個時段停機最多。只做儀表板而沒有人依它行動，等於白做。"
+            }
+          }
+        ]
       }
-    },
-    {
-      "@type": "Question",
-      "name": "需要更換整套設備嗎？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "不需要。多數情況是在既有機構上加裝 PLC、HMI 與感測器，機械本體保留。這正是智能化相對於換新設備的主要優勢——以較低投資取得資料能力。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "蒐集了資料之後呢？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "資料本身沒有價值，產生決策才有。我們會協助把資料連到具體的決策上，例如哪一台該優先保養、哪個時段停機最多。只做儀表板而沒有人依它行動，等於白做。"
-      }
-    }
-  ]
-}
+    ]
+  }
   </script>
 </head>
 <body>
@@ -90,8 +134,8 @@
         <ul class="nav__menu" id="navMenu" role="list">
           <li class="nav__item"><a href="index.html" class="nav__link" data-i18n="nav_home">首頁</a></li>
           <li class="nav__item"><a href="about.html" class="nav__link" data-i18n="nav_about">公司簡介</a></li>
-          <li class="nav__item"><a href="products.html" class="nav__link nav__link--active" data-i18n="nav_products">產品資訊</a></li>
-          <li class="nav__item"><a href="services.html" class="nav__link" data-i18n="nav_services">服務項目</a></li>
+          <li class="nav__item"><a href="products.html" class="nav__link" data-i18n="nav_products">產品資訊</a></li>
+          <li class="nav__item"><a href="services.html" class="nav__link nav__link--active" data-i18n="nav_services">服務項目</a></li>
           <li class="nav__item"><a href="technology.html" class="nav__link" data-i18n="nav_tech">新技術討論</a></li>
           <li class="nav__item"><a href="esg.html" class="nav__link nav__link--esg" data-i18n="nav_esg">ESG</a></li>
           <li class="nav__item"><a href="careers.html" class="nav__link" data-i18n="nav_careers">人力資源</a></li>
@@ -268,6 +312,7 @@
       <li><a href="product-sic-tube.html" class="footer__link" data-i18n="pp_p2_title">碳化矽保護管</a></li>
       <li><a href="product-integrated-barrel.html" class="footer__link" data-i18n="pp_p1_title">一體式料管</a></li>
       <li><a href="product-refractory.html" class="footer__link" data-i18n="pp_p3_title">耐火材料</a></li>
+      <li><a href="product-graphite-tube.html" class="footer__link" data-i18n="pp_p4_title">高濃度奈米氣泡流體模組</a></li>
     </ul>
   </nav>
 
@@ -275,11 +320,13 @@
   <nav class="footer__nav" aria-label="服務項目">
     <h3 class="footer__section-title" data-i18n="nav_services">服務項目</h3>
     <ul class="footer__nav-list" role="list">
+      <li><a href="service-digital-twin.html" class="footer__link" data-i18n="srv_d1_title">數位雙生自動化設計規劃</a></li>
       <li><a href="service-robot-integration.html" class="footer__link" data-i18n="srv_d2_title">機械手臂應用</a></li>
       <li><a href="service-custom-automation.html" class="footer__link" data-i18n="srv_d3_title">單機自動化設計製造</a></li>
       <li><a href="service-machine-vision.html" class="footer__link" data-i18n="srv_d4_title">視覺檢測</a></li>
       <li><a href="service-fixture-design.html" class="footer__link" data-i18n="srv_d5_title">夾治具設計製造</a></li>
       <li><a href="service-smart-upgrade.html" class="footer__link" data-i18n="srv_d6_title">設備智能化</a></li>
+      <li><a href="service-nano-bubble.html" class="footer__link" data-i18n="srv_d7_title">高濃度奈米氣泡流體產業應用</a></li>
     </ul>
   </nav>
 
