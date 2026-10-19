@@ -109,6 +109,22 @@
               "@type": "Answer",
               "text": "建議這樣做。先做一台驗證節拍、良率與實際操作狀況，確認後再複製，是風險最低的導入方式——也能避免一次投入多台卻發現設計要調整。"
             }
+          },
+          {
+            "@type": "Question",
+            "name": "報價會包含哪些？有沒有常見的額外費用？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "報價涵蓋設計、零件加工、外購件、組裝、程式、現場安裝、試車與培訓。常見的額外費用來自兩處：一是規格在設計定案後變更，二是現場的電力、氣壓或場地整備不在設備商範圍內。這兩點我們會在報價時先標明，避免事後爭議。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "設備用多久之後會需要大修？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "取決於稼動時間與工作環境。一般兩班制、環境乾淨的設備，易損件（線性導引、氣壓元件、感測器）約 1-2 年需更換一輪，機構本體可用十年以上。交機時會提供易損件清單與建議更換週期，讓您能預先備料。"
+            }
           }
         ]
       }
@@ -175,6 +191,38 @@
       </div>
     </section>
 
+    <section class="section prod-detail prod-detail--alt" id="outcomes" aria-labelledby="outcomes-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_outcomes">OUTCOMES</p>
+          <h2 class="section-title" id="outcomes-title" data-i18n="svc_metrics_title">典型導入成效</h2>
+        </header>
+        <ul class="svc-metrics" role="list" data-reveal>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd3_m1_v">2-6</span><span class="svc-metric__unit" data-i18n="svd3_m1_u">個月</span></span>
+            <strong class="svc-metric__label" data-i18n="svd3_m1_l">設計到交機期程</strong>
+            <span class="svc-metric__note" data-i18n="svd3_m1_n">單純取放或輸送設備約 2-3 個月；多軸連動、整合視覺者 4-6 個月。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd3_m2_v">±0.05</span><span class="svc-metric__unit" data-i18n="svd3_m2_u">mm</span></span>
+            <strong class="svc-metric__label" data-i18n="svd3_m2_l">機構重複定位精度</strong>
+            <span class="svc-metric__note" data-i18n="svd3_m2_n">典型配置下的水準，可依製程需求以更高等級的導引與驅動元件提高。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd3_m3_v">100</span><span class="svc-metric__unit" data-i18n="svd3_m3_u">%</span></span>
+            <strong class="svc-metric__label" data-i18n="svd3_m3_l">程式原始碼交付</strong>
+            <span class="svc-metric__note" data-i18n="svd3_m3_n">PLC／HMI 原始檔含中文註解全數交付，日後維護不綁定原廠。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd3_m4_v">7</span><span class="svc-metric__unit" data-i18n="svd3_m4_u">項</span></span>
+            <strong class="svc-metric__label" data-i18n="svd3_m4_l">一條龍交付範圍</strong>
+            <span class="svc-metric__note" data-i18n="svd3_m4_n">設計、製造、組裝、程式、安裝、試車、培訓，單一窗口負責到底。</span>
+          </li>
+        </ul>
+        <p class="svc-metrics__caveat" data-i18n="svc_metrics_caveat">以上為同類型專案的常見區間，實際幅度依工件、製程與現場條件而異。評估階段我們會依您的實際數據重新試算，不以區間值作為承諾。</p>
+      </div>
+    </section>
+
     <section class="section prod-detail" id="scope" aria-labelledby="scope-title">
       <div class="container">
         <header class="section-header" data-reveal>
@@ -182,10 +230,10 @@
           <h2 class="section-title" id="scope-title" data-i18n="svd3_scope_title">服務內容</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d3_p1">需求分析與方案可行性評估</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d3_p2">機構設計與3D建模（Solid Edge）</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d3_p3">PLC / HMI 程式開發（三菱 / 西門子）</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d3_p4">整機測試、現場安裝與人員培訓</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d3_p1">需求分析與方案可行性評估</strong><p data-i18n="svd3_p1_d">先確認這件事值不值得做、做得到什麼程度，再談設計。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d3_p2">機構設計與3D建模（Solid Edge）</strong><p data-i18n="svd3_p2_d">完整 3D 建模與運動驗證，設計審查通過才進加工。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d3_p3">PLC / HMI 程式開發（三菱 / 西門子）</strong><p data-i18n="svd3_p3_d">程式由我們自己寫，交付原始碼與註解，不是黑盒子。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d3_p4">整機測試、現場安裝與人員培訓</strong><p data-i18n="svd3_p4_d">廠內 FAT 測試合格才出貨，現場 SAT 驗收後完成交機。</p></li>
         </ul>
       </div>
     </section>
@@ -197,10 +245,10 @@
           <h2 class="section-title" id="flow-title" data-i18n="svd3_flow_title">服務流程</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd3_f1_t">STEP 1　需求分析與可行性評估</strong><p data-i18n="svd3_f1_d">釐清要解決的問題、目標節拍、預算與交期，評估技術可行性。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd3_f2_t">STEP 2　機構設計與 3D 建模</strong><p data-i18n="svd3_f2_d">完成機構設計、選用零件、產出工程圖面並做設計審查。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd3_f3_t">STEP 3　零件加工與整機組裝</strong><p data-i18n="svd3_f3_d">加工製造、採購標準件，完成整機組裝與初步調整。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd3_f4_t">STEP 4　程式開發與現場調機</strong><p data-i18n="svd3_f4_d">撰寫 PLC／HMI 程式，現場安裝、試車、交機與人員培訓。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd3_f1_dur">約 2-3 週</span><strong data-i18n="svd3_f1_t">STEP 1　需求分析與可行性評估</strong><p data-i18n="svd3_f1_d">釐清要解決的問題、目標節拍、預算與交期，評估技術可行性。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd3_f2_dur">約 3-6 週</span><strong data-i18n="svd3_f2_t">STEP 2　機構設計與 3D 建模</strong><p data-i18n="svd3_f2_d">完成機構設計、選用零件、產出工程圖面並做設計審查。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd3_f3_dur">約 4-10 週</span><strong data-i18n="svd3_f3_t">STEP 3　零件加工與整機組裝</strong><p data-i18n="svd3_f3_d">加工製造、採購標準件，完成整機組裝與初步調整。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd3_f4_dur">約 2-4 週</span><strong data-i18n="svd3_f4_t">STEP 4　程式開發與現場調機</strong><p data-i18n="svd3_f4_d">撰寫 PLC／HMI 程式，現場安裝、試車、交機與人員培訓。</p></li>
         </ul>
       </div>
     </section>
@@ -212,15 +260,51 @@
           <h2 class="section-title" id="cases-title" data-i18n="svd3_cases_title">適用情境</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd3_c1">市售標準設備規格不符，需要為特定工件量身設計</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd3_c2">人工作業精度不穩定，想改為機械定位</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd3_c3">既有設備產能不足，需要增設專機分流</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd3_c4">多道人工工序想整合成一台設備連續完成</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd3_c1">市售標準設備規格不符，需要為特定工件量身設計</strong><p data-i18n="svd3_c1_d">規格買不到、改機又改不乾淨時，專機通常比遷就標準品划算。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd3_c2">人工作業精度不穩定，想改為機械定位</strong><p data-i18n="svd3_c2_d">把基準交給機構而非人手，良率的變異才收得住。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd3_c3">既有設備產能不足，需要增設專機分流</strong><p data-i18n="svd3_c3_d">瓶頸站單獨補一台，比整線重建快也便宜。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd3_c4">多道人工工序想整合成一台設備連續完成</strong><p data-i18n="svd3_c4_d">減少工件搬移與暫存，同時降低碰傷與混料風險。</p></li>
         </ul>
       </div>
     </section>
 
-    <section class="section prod-detail prod-detail--alt" id="specs" aria-labelledby="specs-title">
+    <section class="section prod-detail prod-detail--alt" id="deliverables" aria-labelledby="deliver-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_deliver">DELIVERABLES</p>
+          <h2 class="section-title" id="deliver-title" data-i18n="svc_deliver_title">交付清單</h2>
+        </header>
+        <p class="svc-section-lead" data-reveal data-i18n="svc_deliver_lead">專案結案時您會拿到以下文件與項目。圖面、資料與原始檔完整交付，日後要自行維護或轉由其他廠商接手都不受限制。</p>
+        <ul class="svc-deliver" role="list" data-reveal>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd3_dl1_t">機構 3D 圖面</b>　<span data-i18n="svd3_dl1_d">Solid Edge 原生檔（.par／.asm）與 STEP 中性格式。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd3_dl2_t">零件加工圖</b>　<span data-i18n="svd3_dl2_d">.dxf／.dwg 加工圖與含材質、熱處理要求的零件清單。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd3_dl3_t">電控配線圖</b>　<span data-i18n="svd3_dl3_d">控制盤配置、I/O 對照表與端子編號，供日後維修查線。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd3_dl4_t">PLC／HMI 原始碼</b>　<span data-i18n="svd3_dl4_d">可編輯原始檔，含中文註解與變數對照表。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd3_dl5_t">外購件清單</b>　<span data-i18n="svd3_dl5_d">品牌、型號與供應商，備品可自行採購不受限。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd3_dl6_t">FAT／SAT 測試報告</b>　<span data-i18n="svd3_dl6_d">廠內與現場的驗收項目、實測數據與簽核紀錄。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd3_dl7_t">操作與保養手冊</b>　<span data-i18n="svd3_dl7_d">中文手冊，含異常排除對照表與保養週期。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd3_dl8_t">教育訓練</b>　<span data-i18n="svd3_dl8_d">操作與維修分班訓練，保留訓練紀錄與教材。</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section prod-detail" id="specs" aria-labelledby="specs-title">
       <div class="container">
         <header class="section-header" data-reveal>
           <p class="section-eyebrow" data-i18n="pd_eyebrow_specs">SPECIFICATIONS</p>
@@ -233,8 +317,30 @@
               <tr><th scope="row" data-i18n="svd3_s2_k">控制系統</th><td data-i18n="svd3_s2_v">三菱電機、西門子 PLC／HMI；伺服與氣壓控制整合</td></tr>
               <tr><th scope="row" data-i18n="svd3_s3_k">加工能力</th><td data-i18n="svd3_s3_v">精密機加工、鈑金、表面處理（協力廠整合）</td></tr>
               <tr><th scope="row" data-i18n="svd3_s4_k">交付範圍</th><td data-i18n="svd3_s4_v">設計、製造、組裝、程式、安裝、試車、培訓一條龍</td></tr>
+              <tr><th scope="row" data-i18n="svd3_s5_k">機構精度</th><td data-i18n="svd3_s5_v">重複定位 ±0.05 mm；依製程需求可配置更高等級的導引與驅動元件</td></tr>
+              <tr><th scope="row" data-i18n="svd3_s6_k">驅動方式</th><td data-i18n="svd3_s6_v">伺服（三菱 MR-J5 系列）、步進、氣壓、凸輪，依節拍與成本選用</td></tr>
+              <tr><th scope="row" data-i18n="svd3_s7_k">安全規範</th><td data-i18n="svd3_s7_v">急停迴路、安全門開關、安全光柵與雙手啟動，依風險評估配置</td></tr>
+              <tr><th scope="row" data-i18n="svd3_s8_k">驗收方式</th><td data-i18n="svd3_s8_v">廠內 FAT 測試合格後出貨；現場完成 SAT 驗收與人員培訓才結案</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section prod-detail prod-detail--alt" id="limits" aria-labelledby="limits-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_limit">HONEST LIMITS</p>
+          <h2 class="section-title" id="limits-title" data-i18n="svc_limit_title">導入前提與限制</h2>
+        </header>
+        <div class="svc-limit" data-reveal>
+          <p class="svc-limit__lead" data-i18n="svd3_limlead">不是每個工序都該做成專機。以下情況我們會先把話說在前面——設備做出來沒人用，對雙方都是損失。</p>
+          <ul class="svc-limit__list" role="list">
+            <li><b data-i18n="svd3_lim1_t">規格還沒定下來</b>　<span data-i18n="svd3_lim1_d">工件或製程仍在變動時，專機會在設計期反覆改，費用與交期都難以控制。建議先把製程凍結，或改用彈性較高的方案。</span></li>
+            <li><b data-i18n="svd3_lim2_t">市售標準機已能滿足</b>　<span data-i18n="svd3_lim2_d">有現成設備可用時，專機在交期、備品與維修資源上都不佔優勢。我們會先確認市面上有沒有合用的機種。</span></li>
+            <li><b data-i18n="svd3_lim3_t">產量撐不起折舊</b>　<span data-i18n="svd3_lim3_d">年產量不足時，改善治具、動線或半自動方案的投報率通常更高。評估階段我們會把這筆帳算給您看。</span></li>
+            <li><b data-i18n="svd3_lim4_t">現場沒有維護能量</b>　<span data-i18n="svd3_lim4_d">設備交付後需要基本的點檢與保養。如果現場完全沒有人力承接，建議先規劃維護安排，或納入定期保養服務。</span></li>
+          </ul>
         </div>
       </div>
     </section>
@@ -257,6 +363,14 @@
           <details class="faq-item" data-reveal>
             <summary class="faq-item__q" data-i18n="svd3_q3">可以先做一台試用，確認可行再追加嗎？</summary>
             <div class="faq-item__a"><p data-i18n="svd3_a3">建議這樣做。先做一台驗證節拍、良率與實際操作狀況，確認後再複製，是風險最低的導入方式——也能避免一次投入多台卻發現設計要調整。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd3_q4">報價會包含哪些？有沒有常見的額外費用？</summary>
+            <div class="faq-item__a"><p data-i18n="svd3_a4">報價涵蓋設計、零件加工、外購件、組裝、程式、現場安裝、試車與培訓。常見的額外費用來自兩處：一是規格在設計定案後變更，二是現場的電力、氣壓或場地整備不在設備商範圍內。這兩點我們會在報價時先標明，避免事後爭議。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd3_q5">設備用多久之後會需要大修？</summary>
+            <div class="faq-item__a"><p data-i18n="svd3_a5">取決於稼動時間與工作環境。一般兩班制、環境乾淨的設備，易損件（線性導引、氣壓元件、感測器）約 1-2 年需更換一輪，機構本體可用十年以上。交機時會提供易損件清單與建議更換週期，讓您能預先備料。</p></div>
           </details>
         </div>
       </div>

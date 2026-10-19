@@ -109,6 +109,22 @@
               "@type": "Answer",
               "text": "資料本身沒有價值，產生決策才有。我們會協助把資料連到具體的決策上，例如哪一台該優先保養、哪個時段停機最多。只做儀表板而沒有人依它行動，等於白做。"
             }
+          },
+          {
+            "@type": "Question",
+            "name": "改造期間設備要停多久？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "多數改造可在停機日或假日施工，實際需要斷電接線的時間一般在一個工作日內。前期的盤點、控制盤製作與程式撰寫都在線外完成，不佔用生產時間。若是完全無法停機的設備，我們會改用非侵入式的取樣方式（例如電流感測、訊號燈取樣），完全不動原有控制迴路。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "資料會不會外流？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "取決於部署方式。可以完全部署在廠內伺服器、不對外連線，也可以上雲端以便遠端查看。我們會依貴公司的資安政策配置，並把資料點位、傳輸路徑與存取權限寫進交付文件，讓資訊單位可以稽核。"
+            }
           }
         ]
       }
@@ -175,6 +191,38 @@
       </div>
     </section>
 
+    <section class="section prod-detail prod-detail--alt" id="outcomes" aria-labelledby="outcomes-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_outcomes">OUTCOMES</p>
+          <h2 class="section-title" id="outcomes-title" data-i18n="svc_metrics_title">典型導入成效</h2>
+        </header>
+        <ul class="svc-metrics" role="list" data-reveal>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd6_m1_v">4-8</span><span class="svc-metric__unit" data-i18n="svd6_m1_u">週</span></span>
+            <strong class="svc-metric__label" data-i18n="svd6_m1_l">單台典型改造期程</strong>
+            <span class="svc-metric__note" data-i18n="svd6_m1_n">從設備盤點、控制改造到資料上線的常見區間。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd6_m2_v">100</span><span class="svc-metric__unit" data-i18n="svd6_m2_u">%</span></span>
+            <strong class="svc-metric__label" data-i18n="svd6_m2_l">保留既有機構</strong>
+            <span class="svc-metric__note" data-i18n="svd6_m2_n">機械本體不動，只加裝控制、感測與通訊，產線停機時間最短。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd6_m3_v">6</span><span class="svc-metric__unit" data-i18n="svd6_m3_u">項</span></span>
+            <strong class="svc-metric__label" data-i18n="svd6_m3_l">標準蒐集指標</strong>
+            <span class="svc-metric__note" data-i18n="svd6_m3_n">稼動率、產量、週期時間、異常代碼、停機時間與停機原因。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd6_m4_v">1</span><span class="svc-metric__unit" data-i18n="svd6_m4_u">日</span></span>
+            <strong class="svc-metric__label" data-i18n="svd6_m4_l">典型接線停機</strong>
+            <span class="svc-metric__note" data-i18n="svd6_m4_n">控制盤與程式都在線外完成，實際斷電切換一般在一個工作日內。</span>
+          </li>
+        </ul>
+        <p class="svc-metrics__caveat" data-i18n="svc_metrics_caveat">以上為同類型專案的常見區間，實際幅度依工件、製程與現場條件而異。評估階段我們會依您的實際數據重新試算，不以區間值作為承諾。</p>
+      </div>
+    </section>
+
     <section class="section prod-detail" id="scope" aria-labelledby="scope-title">
       <div class="container">
         <header class="section-header" data-reveal>
@@ -182,10 +230,10 @@
           <h2 class="section-title" id="scope-title" data-i18n="svd6_scope_title">服務內容</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d6_p1">PLC控制器升級（三菱 iQ-F / iQ-R）</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d6_p2">HMI人機介面加裝（Pro-face / Weintek）</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d6_p3">IoT資料蒐集與雲端監控儀表板</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d6_p4">OEE設備效率分析與異常通報系統</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d6_p1">PLC控制器升級（三菱 iQ-F / iQ-R）</strong><p data-i18n="svd6_p1_d">老舊或已停產的控制器換新，同時把訊號整理成可蒐集的格式。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d6_p2">HMI人機介面加裝（Pro-face / Weintek）</strong><p data-i18n="svd6_p2_d">操作與異常顯示集中到同一個畫面，減少靠老師傅記憶的操作。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d6_p3">IoT資料蒐集與雲端監控儀表板</strong><p data-i18n="svd6_p3_d">資料自動上傳，不再靠人工抄表，數字才可信。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d6_p4">OEE設備效率分析與異常通報系統</strong><p data-i18n="svd6_p4_d">把稼動率拆成時間、效能與良率三個因子，才知道該改哪一塊。</p></li>
         </ul>
       </div>
     </section>
@@ -197,10 +245,10 @@
           <h2 class="section-title" id="flow-title" data-i18n="svd6_flow_title">服務流程</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd6_f1_t">STEP 1　設備盤點與訊號評估</strong><p data-i18n="svd6_f1_d">確認既有設備可取得哪些訊號、需要加裝哪些感測器。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd6_f2_t">STEP 2　控制與通訊改造</strong><p data-i18n="svd6_f2_d">加裝或更新 PLC、HMI、IoT 模組，建立資料通道。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd6_f3_t">STEP 3　資料蒐集與可視化</strong><p data-i18n="svd6_f3_d">建立稼動率、產量、異常紀錄的蒐集與顯示。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd6_f4_t">STEP 4　分析應用與持續優化</strong><p data-i18n="svd6_f4_d">依累積資料找出停機主因，逐步導入預知保養。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd6_f1_dur">約 1-2 週</span><strong data-i18n="svd6_f1_t">STEP 1　設備盤點與訊號評估</strong><p data-i18n="svd6_f1_d">確認既有設備可取得哪些訊號、需要加裝哪些感測器。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd6_f2_dur">約 2-4 週</span><strong data-i18n="svd6_f2_t">STEP 2　控制與通訊改造</strong><p data-i18n="svd6_f2_d">加裝或更新 PLC、HMI、IoT 模組，建立資料通道。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd6_f3_dur">約 1-2 週</span><strong data-i18n="svd6_f3_t">STEP 3　資料蒐集與可視化</strong><p data-i18n="svd6_f3_d">建立稼動率、產量、異常紀錄的蒐集與顯示。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd6_f4_dur">持續進行</span><strong data-i18n="svd6_f4_t">STEP 4　分析應用與持續優化</strong><p data-i18n="svd6_f4_d">依累積資料找出停機主因，逐步導入預知保養。</p></li>
         </ul>
       </div>
     </section>
@@ -212,15 +260,51 @@
           <h2 class="section-title" id="cases-title" data-i18n="svd6_cases_title">適用情境</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd6_c1">既有設備堪用，但沒有任何資料可以分析</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd6_c2">想知道設備真實稼動率，而不是靠人工記錄</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd6_c3">停機原因說不清楚，改善無從下手</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd6_c4">預算有限，不想全面換新設備</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd6_c1">既有設備堪用，但沒有任何資料可以分析</strong><p data-i18n="svd6_c1_d">機械本體還很好，缺的只是讓它說話的能力。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd6_c2">想知道設備真實稼動率，而不是靠人工記錄</strong><p data-i18n="svd6_c2_d">人工記錄會漏、會補、會美化，自動蒐集的數字才拿得出去。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd6_c3">停機原因說不清楚，改善無從下手</strong><p data-i18n="svd6_c3_d">把停機分類累積三個月，主因通常會自己浮出來。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd6_c4">預算有限，不想全面換新設備</strong><p data-i18n="svd6_c4_d">以最低投資先取得資料能力，再決定哪一台真的該換。</p></li>
         </ul>
       </div>
     </section>
 
-    <section class="section prod-detail prod-detail--alt" id="specs" aria-labelledby="specs-title">
+    <section class="section prod-detail prod-detail--alt" id="deliverables" aria-labelledby="deliver-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_deliver">DELIVERABLES</p>
+          <h2 class="section-title" id="deliver-title" data-i18n="svc_deliver_title">交付清單</h2>
+        </header>
+        <p class="svc-section-lead" data-reveal data-i18n="svc_deliver_lead">專案結案時您會拿到以下文件與項目。圖面、資料與原始檔完整交付，日後要自行維護或轉由其他廠商接手都不受限制。</p>
+        <ul class="svc-deliver" role="list" data-reveal>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd6_dl1_t">設備訊號盤點表</b>　<span data-i18n="svd6_dl1_d">列出每台設備可取得的訊號、需加裝的感測器與改造難度。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd6_dl2_t">控制改造圖面</b>　<span data-i18n="svd6_dl2_d">新增控制盤配置、配線圖與 I/O 對照表。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd6_dl3_t">PLC／HMI 原始碼</b>　<span data-i18n="svd6_dl3_d">含中文註解的可編輯原始檔與變數對照表。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd6_dl4_t">監控儀表板</b>　<span data-i18n="svd6_dl4_d">稼動率、產量與異常的即時畫面，電腦與行動裝置皆可檢視。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd6_dl5_t">資料介接文件</b>　<span data-i18n="svd6_dl5_d">通訊協定、資料點位與欄位定義，供日後接 MES 或 ERP。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd6_dl6_t">OEE 計算定義書</b>　<span data-i18n="svd6_dl6_d">時間稼動率、效能稼動率與良率的計算口徑；口徑一致，數字才可比。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd6_dl7_t">異常通報設定</b>　<span data-i18n="svd6_dl7_d">通報條件、對象與升級規則的設定與操作說明。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd6_dl8_t">操作手冊與教育訓練</b>　<span data-i18n="svd6_dl8_d">含資料判讀方式，以及日常該盯哪幾個數字。</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section prod-detail" id="specs" aria-labelledby="specs-title">
       <div class="container">
         <header class="section-header" data-reveal>
           <p class="section-eyebrow" data-i18n="pd_eyebrow_specs">SPECIFICATIONS</p>
@@ -233,8 +317,30 @@
               <tr><th scope="row" data-i18n="svd6_s2_k">資料蒐集</th><td data-i18n="svd6_s2_v">稼動率、產量、週期時間、異常代碼與停機時間</td></tr>
               <tr><th scope="row" data-i18n="svd6_s3_k">通訊介面</th><td data-i18n="svd6_s3_v">Modbus TCP、OPC UA 等工業通訊協定</td></tr>
               <tr><th scope="row" data-i18n="svd6_s4_k">延伸應用</th><td data-i18n="svd6_s4_v">遠端監控、異常通知、預知保養資料基礎</td></tr>
+              <tr><th scope="row" data-i18n="svd6_s5_k">可用訊號來源</th><td data-i18n="svd6_s5_v">既有 PLC 通訊、電流感測、近接與光電感測器、計數器、訊號燈取樣</td></tr>
+              <tr><th scope="row" data-i18n="svd6_s6_k">改造期程</th><td data-i18n="svd6_s6_v">單台設備 4-8 週；多台同型設備可批次進行，單台時間縮短</td></tr>
+              <tr><th scope="row" data-i18n="svd6_s7_k">資料保存</th><td data-i18n="svd6_s7_v">可部署於廠內伺服器或雲端；保存期限與存取權限依貴公司資安政策設定</td></tr>
+              <tr><th scope="row" data-i18n="svd6_s8_k">停機影響</th><td data-i18n="svd6_s8_v">多數改造可利用停機日或假日施工，實際接線切換一般在一個工作日內</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section prod-detail prod-detail--alt" id="limits" aria-labelledby="limits-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_limit">HONEST LIMITS</p>
+          <h2 class="section-title" id="limits-title" data-i18n="svc_limit_title">導入前提與限制</h2>
+        </header>
+        <div class="svc-limit" data-reveal>
+          <p class="svc-limit__lead" data-i18n="svd6_limlead">智能化最常見的失敗不是技術做不到，是資料蒐集了沒人用。以下幾點我們會先確認。</p>
+          <ul class="svc-limit__list" role="list">
+            <li><b data-i18n="svd6_lim1_t">沒有人負責看資料</b>　<span data-i18n="svd6_lim1_d">儀表板做得再漂亮，沒有人依它行動就等於白做。導入前建議先指定負責人與固定的檢討節奏。</span></li>
+            <li><b data-i18n="svd6_lim2_t">設備不在關鍵路徑上</b>　<span data-i18n="svd6_lim2_d">停機影響小、備援充足的設備，蒐集資料的投報率未必划算。先從會卡住整條線的那幾台開始。</span></li>
+            <li><b data-i18n="svd6_lim3_t">機構本身已經老化</b>　<span data-i18n="svd6_lim3_d">如果機械本體的精度或可靠度已經不行，加裝感測器只會讓您更清楚地看到它壞。這種情況該評估的是汰換，不是智能化。</span></li>
+            <li><b data-i18n="svd6_lim4_t">網路與資安條件未備</b>　<span data-i18n="svd6_lim4_d">資料要上傳就需要網路與權限規劃。廠內網路分隔與對外連線政策，建議先與貴公司資訊單位確認。</span></li>
+          </ul>
         </div>
       </div>
     </section>
@@ -257,6 +363,14 @@
           <details class="faq-item" data-reveal>
             <summary class="faq-item__q" data-i18n="svd6_q3">蒐集了資料之後呢？</summary>
             <div class="faq-item__a"><p data-i18n="svd6_a3">資料本身沒有價值，產生決策才有。我們會協助把資料連到具體的決策上，例如哪一台該優先保養、哪個時段停機最多。只做儀表板而沒有人依它行動，等於白做。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd6_q4">改造期間設備要停多久？</summary>
+            <div class="faq-item__a"><p data-i18n="svd6_a4">多數改造可在停機日或假日施工，實際需要斷電接線的時間一般在一個工作日內。前期的盤點、控制盤製作與程式撰寫都在線外完成，不佔用生產時間。若是完全無法停機的設備，我們會改用非侵入式的取樣方式（例如電流感測、訊號燈取樣），完全不動原有控制迴路。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd6_q5">資料會不會外流？</summary>
+            <div class="faq-item__a"><p data-i18n="svd6_a5">取決於部署方式。可以完全部署在廠內伺服器、不對外連線，也可以上雲端以便遠端查看。我們會依貴公司的資安政策配置，並把資料點位、傳輸路徑與存取權限寫進交付文件，讓資訊單位可以稽核。</p></div>
           </details>
         </div>
       </div>

@@ -4323,3 +4323,232 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 600px) {
   .footer__grid { grid-template-columns: 1fr; gap: 1.75rem; }
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   服務詳情頁 — 決策用元件
+   買方看服務頁時要回答三個問題：值不值得、拿得到什麼、
+   什麼情況不該做。下面三組元件分別對應這三題。
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 典型成效指標 ───────────────────────────────────────────── */
+.svc-metrics {
+  list-style: none;
+  padding: 0;
+  margin: 2.5rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--c-border);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.svc-metric {
+  background: var(--c-bg);
+  padding: 1.75rem 1.5rem 1.6rem;
+  position: relative;
+  transition: background var(--t-base);
+}
+.svc-metric::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--c-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-slow);
+}
+.svc-metric.is-visible::before,
+.is-visible .svc-metric::before { transform: scaleX(1); }
+.svc-metric:hover { background: var(--c-surface); }
+
+.svc-metric__fig {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--c-navy);
+  letter-spacing: -0.01em;
+}
+.svc-metric__num  { font-size: clamp(2.1rem, 3.4vw, 2.9rem); }
+.svc-metric__unit { font-size: clamp(1rem, 1.5vw, 1.25rem); color: var(--c-accent); font-weight: 600; }
+
+.svc-metric__label {
+  display: block;
+  margin-top: 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--c-text);
+  line-height: 1.5;
+}
+.svc-metric__note {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--c-text-muted);
+  line-height: 1.6;
+}
+.svc-metrics__caveat {
+  margin: 1.1rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.7;
+  color: var(--c-text-dim);
+}
+
+/* ── 交付清單 ───────────────────────────────────────────────── */
+.svc-deliver {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 0.6rem 2.5rem;
+}
+.svc-deliver__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--c-border);
+  color: var(--c-text);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.svc-deliver__item svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.15rem;
+  color: var(--c-accent);
+}
+.svc-deliver__item b {
+  font-weight: 600;
+  color: var(--c-text);
+}
+.svc-deliver__item span {
+  color: var(--c-text-muted);
+}
+
+/* ── 導入前提與限制（誠實區塊）──────────────────────────────── */
+.svc-limit {
+  margin-top: 2rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-gold);
+  border-radius: var(--radius-md);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+.svc-limit__lead {
+  margin: 0 0 1.25rem;
+  color: var(--c-text);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+.svc-limit__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.9rem;
+}
+.svc-limit__list li {
+  position: relative;
+  padding-left: 1.5rem;
+  color: var(--c-text-muted);
+  font-size: 0.89rem;
+  line-height: 1.7;
+}
+.svc-limit__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 2px;
+  background: var(--c-gold);
+}
+.svc-limit__list b { color: var(--c-text); font-weight: 600; }
+
+/* ── 流程步驟上的期程標記 ───────────────────────────────────── */
+.prod-detail__type-item .step-dur {
+  display: inline-block;
+  margin-bottom: 0.55rem;
+  padding: 0.18rem 0.55rem;
+  border: 1px solid var(--c-border-bright);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--c-text-muted);
+  text-transform: uppercase;
+}
+
+/* 區塊開頭的引導句 */
+.svc-section-lead {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--c-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* 數字用窄體標題字，單位含中文時改用內文字型才不會掉字型 */
+.svc-metric__unit { font-family: var(--font-body); }
+
+/* 頂部色條依序掃入 */
+.svc-metric:nth-child(2)::before { transition-delay: 90ms; }
+.svc-metric:nth-child(3)::before { transition-delay: 180ms; }
+.svc-metric:nth-child(4)::before { transition-delay: 270ms; }
+
+@media (max-width: 640px) {
+  .svc-metric { padding: 1.4rem 1.25rem 1.3rem; }
+  .svc-deliver { grid-template-columns: 1fr; gap: 0; }
+}
+
+/* ── 技術能力表 ─────────────────────────────────────────────────
+   服務詳情頁用 .prod-detail__table，先前只定義了產品頁的
+   .specs-table，導致這七張表落在瀏覽器預設樣式。
+   外層 wrap 負責窄螢幕的水平捲動，表身維持與產品頁一致的視覺。 */
+.prod-detail__table-wrap {
+  margin-top: 2rem;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-bg);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.prod-detail__table {
+  width: 100%;
+  min-width: 540px;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.prod-detail__table tr { border-bottom: 1px solid var(--c-border); }
+.prod-detail__table tr:last-child { border-bottom: none; }
+.prod-detail__table tr:hover { background: var(--c-surface); }
+.prod-detail__table th,
+.prod-detail__table td {
+  padding: 0.95rem 1.25rem;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.7;
+}
+.prod-detail__table th {
+  color: var(--c-text-muted);
+  font-weight: 600;
+  width: 30%;
+  border-right: 1px solid var(--c-border);
+  background: var(--c-surface);
+}
+.prod-detail__table td { color: var(--c-text); }
+
+@media (max-width: 560px) {
+  .prod-detail__table { min-width: 440px; font-size: 0.86rem; }
+  .prod-detail__table th,
+  .prod-detail__table td { padding: 0.8rem 0.9rem; }
+}

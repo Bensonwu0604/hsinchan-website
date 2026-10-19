@@ -109,6 +109,22 @@
               "@type": "Answer",
               "text": "通常不用。模組設計為可整合進既有管路，評估時會先確認您的流量與壓力條件是否相容。"
             }
+          },
+          {
+            "@type": "Question",
+            "name": "效果怎麼驗收？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "導入前先議定可量測的指標——例如溶氧值、濁度、清洗後的表面殘留量或藥劑用量——並確認量測方法與取樣點，安裝後以相同方法做前後對照。我們不以「感覺變乾淨」作為驗收依據，雙方都需要一個拿得出來的數字。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "運轉成本高嗎？要用什麼耗材？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "主要成本是驅動用的電力，以及前端過濾的濾材更換。相較於持續採購化學藥劑與處理廢液的費用，多數案子的運轉成本是下降的。確切金額需依您的流量與運轉時數試算，評估階段會一併提供。"
+            }
           }
         ]
       }
@@ -175,6 +191,38 @@
       </div>
     </section>
 
+    <section class="section prod-detail prod-detail--alt" id="outcomes" aria-labelledby="outcomes-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_outcomes">OUTCOMES</p>
+          <h2 class="section-title" id="outcomes-title" data-i18n="svc_metrics_title">典型導入成效</h2>
+        </header>
+        <ul class="svc-metrics" role="list" data-reveal>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd7_m1_v">&lt;100</span><span class="svc-metric__unit" data-i18n="svd7_m1_u">nm</span></span>
+            <strong class="svc-metric__label" data-i18n="svd7_m1_l">氣泡粒徑</strong>
+            <span class="svc-metric__note" data-i18n="svd7_m1_n">粒徑小到浮力不足以迅速上浮，可在水中長時間停留。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd7_m2_v">0</span><span class="svc-metric__unit" data-i18n="svd7_m2_u">藥劑</span></span>
+            <strong class="svc-metric__label" data-i18n="svd7_m2_l">以物理方式產氣</strong>
+            <span class="svc-metric__note" data-i18n="svd7_m2_n">不引入新的化學物質，廢液處理的負擔不會因此增加。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd7_m3_v">2-4</span><span class="svc-metric__unit" data-i18n="svd7_m3_u">週</span></span>
+            <strong class="svc-metric__label" data-i18n="svd7_m3_l">評估到試運轉</strong>
+            <span class="svc-metric__note" data-i18n="svd7_m3_n">水質確認、模組選型到現場試運轉的常見期程。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd7_m4_v">3</span><span class="svc-metric__unit" data-i18n="svd7_m4_u">大場域</span></span>
+            <strong class="svc-metric__label" data-i18n="svd7_m4_l">主要應用方向</strong>
+            <span class="svc-metric__note" data-i18n="svd7_m4_n">半導體製程用水、生醫設備清洗、資料中心液冷，各有對應的配置方式。</span>
+          </li>
+        </ul>
+        <p class="svc-metrics__caveat" data-i18n="svc_metrics_caveat">以上為同類型專案的常見區間，實際幅度依工件、製程與現場條件而異。評估階段我們會依您的實際數據重新試算，不以區間值作為承諾。</p>
+      </div>
+    </section>
+
     <section class="section prod-detail" id="scope" aria-labelledby="scope-title">
       <div class="container">
         <header class="section-header" data-reveal>
@@ -182,10 +230,10 @@
           <h2 class="section-title" id="scope-title" data-i18n="svd7_scope_title">服務內容</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d7_p1">半導體製程用水品質提升與晶圓清洗輔助</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d7_p2">生醫設備清洗滅菌輔助，降低化學藥劑依賴</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d7_p3">資料中心液冷系統散熱效率提升、抑制管路結垢</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d7_p4">免化學添加，降低廢液處理成本與環境負擔</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d7_p1">半導體製程用水品質提升與晶圓清洗輔助</strong><p data-i18n="svd7_p1_d">以物理性氣泡輔助去除微粒，減少對清洗藥劑的依賴。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d7_p2">生醫設備清洗滅菌輔助，降低化學藥劑依賴</strong><p data-i18n="svd7_p2_d">降低藥劑殘留風險，同時減輕後段廢液處理負擔。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d7_p3">資料中心液冷系統散熱效率提升、抑制管路結垢</strong><p data-i18n="svd7_p3_d">改善熱傳效率並延緩垢層累積，降低清洗停機的頻率。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d7_p4">免化學添加，降低廢液處理成本與環境負擔</strong><p data-i18n="svd7_p4_d">不引入新的化學物質，ESG 與法規面的負擔較輕。</p></li>
         </ul>
       </div>
     </section>
@@ -197,10 +245,10 @@
           <h2 class="section-title" id="flow-title" data-i18n="svd7_flow_title">服務流程</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd7_f1_t">STEP 1　應用場景評估</strong><p data-i18n="svd7_f1_d">確認水質條件、處理量與期望效果，評估適用性。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd7_f2_t">STEP 2　模組選型與配置</strong><p data-i18n="svd7_f2_d">依流量與氣泡濃度需求選定模組規格與安裝方式。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd7_f3_t">STEP 3　現場安裝與試運轉</strong><p data-i18n="svd7_f3_d">完成管路整合、安裝與試運轉，確認產氣穩定。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd7_f4_t">STEP 4　效果驗證與參數調整</strong><p data-i18n="svd7_f4_d">依實際水質與使用狀況調整運轉參數。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd7_f1_dur">約 1-2 週</span><strong data-i18n="svd7_f1_t">STEP 1　應用場景評估</strong><p data-i18n="svd7_f1_d">確認水質條件、處理量與期望效果，評估適用性。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd7_f2_dur">約 1-2 週</span><strong data-i18n="svd7_f2_t">STEP 2　模組選型與配置</strong><p data-i18n="svd7_f2_d">依流量與氣泡濃度需求選定模組規格與安裝方式。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd7_f3_dur">約 1-2 週</span><strong data-i18n="svd7_f3_t">STEP 3　現場安裝與試運轉</strong><p data-i18n="svd7_f3_d">完成管路整合、安裝與試運轉，確認產氣穩定。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd7_f4_dur">約 2-4 週</span><strong data-i18n="svd7_f4_t">STEP 4　效果驗證與參數調整</strong><p data-i18n="svd7_f4_d">依實際水質與使用狀況調整運轉參數。</p></li>
         </ul>
       </div>
     </section>
@@ -212,15 +260,51 @@
           <h2 class="section-title" id="cases-title" data-i18n="svd7_cases_title">適用情境</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd7_c1">清洗製程想減少化學藥劑用量</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd7_c2">水質處理需要提升溶氧效率</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd7_c3">表面清潔要求高，但不希望增加廢液處理負擔</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd7_c4">既有水處理流程想在不大改的前提下提升效果</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd7_c1">清洗製程想減少化學藥劑用量</strong><p data-i18n="svd7_c1_d">藥劑減量可同時降低採購與廢液處理兩頭的成本。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd7_c2">水質處理需要提升溶氧效率</strong><p data-i18n="svd7_c2_d">氣泡停留時間長，溶氧的接觸面積與效率明顯不同。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd7_c3">表面清潔要求高，但不希望增加廢液處理負擔</strong><p data-i18n="svd7_c3_d">以物理方式處理，不產生額外的化學廢液。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd7_c4">既有水處理流程想在不大改的前提下提升效果</strong><p data-i18n="svd7_c4_d">模組可串接進既有管路，不需重建整套系統。</p></li>
         </ul>
       </div>
     </section>
 
-    <section class="section prod-detail prod-detail--alt" id="specs" aria-labelledby="specs-title">
+    <section class="section prod-detail prod-detail--alt" id="deliverables" aria-labelledby="deliver-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_deliver">DELIVERABLES</p>
+          <h2 class="section-title" id="deliver-title" data-i18n="svc_deliver_title">交付清單</h2>
+        </header>
+        <p class="svc-section-lead" data-reveal data-i18n="svc_deliver_lead">專案結案時您會拿到以下文件與項目。圖面、資料與原始檔完整交付，日後要自行維護或轉由其他廠商接手都不受限制。</p>
+        <ul class="svc-deliver" role="list" data-reveal>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd7_dl1_t">水質與條件評估報告</b>　<span data-i18n="svd7_dl1_d">現況水質、流量、壓力與溫度的確認結果與適用性判斷。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd7_dl2_t">模組選型建議</b>　<span data-i18n="svd7_dl2_d">依處理量與目標氣泡濃度建議的機型與數量。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd7_dl3_t">管路整合圖</b>　<span data-i18n="svd7_dl3_d">串接位置、配管路徑與必要的閥件與壓力配置。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd7_dl4_t">模組實品與安裝</b>　<span data-i18n="svd7_dl4_d">模組供應、現場配管整合與安裝施工。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd7_dl5_t">試運轉紀錄</b>　<span data-i18n="svd7_dl5_d">產氣穩定度、運轉壓力與流量的實測紀錄。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd7_dl6_t">效果驗證數據</b>　<span data-i18n="svd7_dl6_d">導入前後的對照量測，以雙方議定的指標為準。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd7_dl7_t">運轉參數設定書</b>　<span data-i18n="svd7_dl7_d">依實際水質調校後的參數與可調整範圍說明。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd7_dl8_t">保養手冊與耗材清單</b>　<span data-i18n="svd7_dl8_d">濾材與易損件的規格、更換週期與供應方式。</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section prod-detail" id="specs" aria-labelledby="specs-title">
       <div class="container">
         <header class="section-header" data-reveal>
           <p class="section-eyebrow" data-i18n="pd_eyebrow_specs">SPECIFICATIONS</p>
@@ -233,8 +317,30 @@
               <tr><th scope="row" data-i18n="svd7_s2_k">應用領域</th><td data-i18n="svd7_s2_v">清洗製程、水質處理、表面處理、農業與養殖</td></tr>
               <tr><th scope="row" data-i18n="svd7_s3_k">安裝方式</th><td data-i18n="svd7_s3_v">模組化設計，可整合進既有管路</td></tr>
               <tr><th scope="row" data-i18n="svd7_s4_k">藥劑使用</th><td data-i18n="svd7_s4_v">可降低或免除化學清洗劑</td></tr>
+              <tr><th scope="row" data-i18n="svd7_s5_k">處理條件</th><td data-i18n="svd7_s5_v">依流量、壓力與水溫選型；評估階段需提供現況水質分析報告</td></tr>
+              <tr><th scope="row" data-i18n="svd7_s6_k">安裝介面</th><td data-i18n="svd7_s6_v">串接於既有管路；所需配管改動範圍於評估階段確認後告知</td></tr>
+              <tr><th scope="row" data-i18n="svd7_s7_k">驗證方式</th><td data-i18n="svd7_s7_v">導入前後以雙方議定之指標對照量測，例如溶氧、濁度或清洗後殘留</td></tr>
+              <tr><th scope="row" data-i18n="svd7_s8_k">典型期程</th><td data-i18n="svd7_s8_v">評估到試運轉約 2-4 週；效果驗證期另計，需累積一段實際運轉資料</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section prod-detail prod-detail--alt" id="limits" aria-labelledby="limits-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_limit">HONEST LIMITS</p>
+          <h2 class="section-title" id="limits-title" data-i18n="svc_limit_title">導入前提與限制</h2>
+        </header>
+        <div class="svc-limit" data-reveal>
+          <p class="svc-limit__lead" data-i18n="svd7_limlead">奈米氣泡不是萬用解方。以下情況我們會先說明預期落差，避免導入後期望不符。</p>
+          <ul class="svc-limit__list" role="list">
+            <li><b data-i18n="svd7_lim1_t">污染物性質決定效果</b>　<span data-i18n="svd7_lim1_d">油脂與顆粒類污染的改善較明顯；化學性污染或已固著的垢層，仍需搭配藥劑或機械清洗。</span></li>
+            <li><b data-i18n="svd7_lim2_t">務實目標是減量而非全免</b>　<span data-i18n="svd7_lim2_d">多數製程合理的目標是降低藥劑用量，而非完全取代。減量本身對採購與廢液處理就是實質節省，但若期待完全免藥，多數情況會失望。</span></li>
+            <li><b data-i18n="svd7_lim3_t">需要可量測的驗收指標</b>　<span data-i18n="svd7_lim3_d">「感覺比較乾淨」無法驗收。導入前要先議定可量測的指標與量測方法，雙方才有共同的判準。</span></li>
+            <li><b data-i18n="svd7_lim4_t">水質條件須先確認</b>　<span data-i18n="svd7_lim4_d">進水硬度、懸浮物與水溫會影響產氣效率與模組壽命。評估階段需要貴公司提供現況水質分析報告。</span></li>
+          </ul>
         </div>
       </div>
     </section>
@@ -257,6 +363,14 @@
           <details class="faq-item" data-reveal>
             <summary class="faq-item__q" data-i18n="svd7_q3">需要大幅改動既有管路嗎？</summary>
             <div class="faq-item__a"><p data-i18n="svd7_a3">通常不用。模組設計為可整合進既有管路，評估時會先確認您的流量與壓力條件是否相容。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd7_q4">效果怎麼驗收？</summary>
+            <div class="faq-item__a"><p data-i18n="svd7_a4">導入前先議定可量測的指標——例如溶氧值、濁度、清洗後的表面殘留量或藥劑用量——並確認量測方法與取樣點，安裝後以相同方法做前後對照。我們不以「感覺變乾淨」作為驗收依據，雙方都需要一個拿得出來的數字。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd7_q5">運轉成本高嗎？要用什麼耗材？</summary>
+            <div class="faq-item__a"><p data-i18n="svd7_a5">主要成本是驅動用的電力，以及前端過濾的濾材更換。相較於持續採購化學藥劑與處理廢液的費用，多數案子的運轉成本是下降的。確切金額需依您的流量與運轉時數試算，評估階段會一併提供。</p></div>
           </details>
         </div>
       </div>

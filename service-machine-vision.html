@@ -109,6 +109,22 @@
               "@type": "Answer",
               "text": "取決於缺陷對比度與樣本品質。對比明顯的缺陷可以做到很低；但我們不會在看過實際樣品前承諾數字——評估階段會先以您的樣品試拍並提供實測結果。"
             }
+          },
+          {
+            "@type": "Question",
+            "name": "導入之後，參數可以由我們自己調嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "可以。程式與參數都開放給貴公司調整，並在訓練時說明每個閾值的意義與影響；換線的參數切換會做成操作員可自行執行的流程。但演算法結構的變更仍建議由我們處理，避免調出難以追查的問題。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "產品改版了，系統還能用嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "多數情況可以沿用硬體，只需重新建立或補訓練模型。但如果外觀、尺寸或材質變化大到光學配置不再適用，光源與鏡頭可能要重配。改版前先告訴我們，通常可以在設計階段就把相容性考慮進去。"
+            }
           }
         ]
       }
@@ -175,6 +191,38 @@
       </div>
     </section>
 
+    <section class="section prod-detail prod-detail--alt" id="outcomes" aria-labelledby="outcomes-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_outcomes">OUTCOMES</p>
+          <h2 class="section-title" id="outcomes-title" data-i18n="svc_metrics_title">典型導入成效</h2>
+        </header>
+        <ul class="svc-metrics" role="list" data-reveal>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd4_m1_v">±0.01</span><span class="svc-metric__unit" data-i18n="svd4_m1_u">mm</span></span>
+            <strong class="svc-metric__label" data-i18n="svd4_m1_l">可達量測精度</strong>
+            <span class="svc-metric__note" data-i18n="svd4_m1_n">依鏡頭、視野與解析度配置而定；評估時以您的實際工件試拍確認。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd4_m2_v">100</span><span class="svc-metric__unit" data-i18n="svd4_m2_u">%</span></span>
+            <strong class="svc-metric__label" data-i18n="svd4_m2_l">全檢覆蓋率</strong>
+            <span class="svc-metric__note" data-i18n="svd4_m2_n">不受疲勞影響，每一件都檢，並留下可追溯的影像紀錄。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd4_m3_v">24</span><span class="svc-metric__unit" data-i18n="svd4_m3_u">h</span></span>
+            <strong class="svc-metric__label" data-i18n="svd4_m3_l">連續檢測能力</strong>
+            <span class="svc-metric__note" data-i18n="svd4_m3_n">檢測標準不隨班別與人員熟練度變動。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd4_m4_v">2-4</span><span class="svc-metric__unit" data-i18n="svd4_m4_u">週</span></span>
+            <strong class="svc-metric__label" data-i18n="svd4_m4_l">樣本收集期</strong>
+            <span class="svc-metric__note" data-i18n="svd4_m4_n">良品與各類不良品樣本越齊全，誤判率越低——這通常是專案初期最花時間的部分。</span>
+          </li>
+        </ul>
+        <p class="svc-metrics__caveat" data-i18n="svc_metrics_caveat">以上為同類型專案的常見區間，實際幅度依工件、製程與現場條件而異。評估階段我們會依您的實際數據重新試算，不以區間值作為承諾。</p>
+      </div>
+    </section>
+
     <section class="section prod-detail" id="scope" aria-labelledby="scope-title">
       <div class="container">
         <header class="section-header" data-reveal>
@@ -182,10 +230,10 @@
           <h2 class="section-title" id="scope-title" data-i18n="svd4_scope_title">服務內容</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d4_p1">外觀缺陷偵測（刮傷、污點、缺料）</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d4_p2">高精度尺寸量測（±0.01mm）</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d4_p3">QR Code / Barcode / OCR 辨識</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d4_p4">視覺引導機械手臂定位取料</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d4_p1">外觀缺陷偵測（刮傷、污點、缺料）</strong><p data-i18n="svd4_p1_d">以光學設計讓缺陷在影像上凸顯出來，演算法才抓得穩。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d4_p2">高精度尺寸量測（±0.01mm）</strong><p data-i18n="svd4_p2_d">非接觸量測，速度遠高於人工量具且不傷工件。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d4_p3">QR Code / Barcode / OCR 辨識</strong><p data-i18n="svd4_p3_d">讀取結果可寫入資料庫，建立單件可追溯的生產履歷。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d4_p4">視覺引導機械手臂定位取料</strong><p data-i18n="svd4_p4_d">來料位置不固定時，由視覺算出座標再交給手臂取料。</p></li>
         </ul>
       </div>
     </section>
@@ -197,10 +245,10 @@
           <h2 class="section-title" id="flow-title" data-i18n="svd4_flow_title">服務流程</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd4_f1_t">STEP 1　檢測需求與樣品分析</strong><p data-i18n="svd4_f1_d">確認要抓的缺陷類型、允收標準與產線節拍。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd4_f2_t">STEP 2　光學與相機選型</strong><p data-i18n="svd4_f2_d">依缺陷特性選擇光源角度、鏡頭與相機規格並試拍驗證。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd4_f3_t">STEP 3　演算法開發與訓練</strong><p data-i18n="svd4_f3_d">建立檢測演算法；外觀缺陷類專案另以樣本訓練 AI 模型。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd4_f4_t">STEP 4　上線驗證與參數調校</strong><p data-i18n="svd4_f4_d">實機驗證誤判率與漏判率，調整至符合允收標準。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd4_f1_dur">約 1-2 週</span><strong data-i18n="svd4_f1_t">STEP 1　檢測需求與樣品分析</strong><p data-i18n="svd4_f1_d">確認要抓的缺陷類型、允收標準與產線節拍。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd4_f2_dur">約 2-3 週</span><strong data-i18n="svd4_f2_t">STEP 2　光學與相機選型</strong><p data-i18n="svd4_f2_d">依缺陷特性選擇光源角度、鏡頭與相機規格並試拍驗證。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd4_f3_dur">約 3-6 週</span><strong data-i18n="svd4_f3_t">STEP 3　演算法開發與訓練</strong><p data-i18n="svd4_f3_d">建立檢測演算法；外觀缺陷類專案另以樣本訓練 AI 模型。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd4_f4_dur">約 2-4 週</span><strong data-i18n="svd4_f4_t">STEP 4　上線驗證與參數調校</strong><p data-i18n="svd4_f4_d">實機驗證誤判率與漏判率，調整至符合允收標準。</p></li>
         </ul>
       </div>
     </section>
@@ -212,15 +260,51 @@
           <h2 class="section-title" id="cases-title" data-i18n="svd4_cases_title">適用情境</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd4_c1">人工目視檢測疲勞導致漏檢，品質不穩定</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd4_c2">需要全檢但人力成本過高</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd4_c3">尺寸量測需求高於人工量具的精度與速度</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd4_c4">需要追溯每件產品的檢測紀錄與影像</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd4_c1">人工目視檢測疲勞導致漏檢，品質不穩定</strong><p data-i18n="svd4_c1_d">漏檢率隨工時與班別波動，客訴往往出在交班前後。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd4_c2">需要全檢但人力成本過高</strong><p data-i18n="svd4_c2_d">抽檢抓不到的偶發不良，只有全檢防得住。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd4_c3">尺寸量測需求高於人工量具的精度與速度</strong><p data-i18n="svd4_c3_d">卡尺與投影機量不快也量不穩時，改用影像量測。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd4_c4">需要追溯每件產品的檢測紀錄與影像</strong><p data-i18n="svd4_c4_d">客戶稽核或客訴回溯時，調得出當時的實拍影像。</p></li>
         </ul>
       </div>
     </section>
 
-    <section class="section prod-detail prod-detail--alt" id="specs" aria-labelledby="specs-title">
+    <section class="section prod-detail prod-detail--alt" id="deliverables" aria-labelledby="deliver-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_deliver">DELIVERABLES</p>
+          <h2 class="section-title" id="deliver-title" data-i18n="svc_deliver_title">交付清單</h2>
+        </header>
+        <p class="svc-section-lead" data-reveal data-i18n="svc_deliver_lead">專案結案時您會拿到以下文件與項目。圖面、資料與原始檔完整交付，日後要自行維護或轉由其他廠商接手都不受限制。</p>
+        <ul class="svc-deliver" role="list" data-reveal>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd4_dl1_t">光學配置規格</b>　<span data-i18n="svd4_dl1_d">光源型式與角度、鏡頭、相機與工作距離的完整配置清單。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd4_dl2_t">試拍驗證報告</b>　<span data-i18n="svd4_dl2_d">以您的實際樣品拍攝，附誤判與漏判的實測數據。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd4_dl3_t">檢測程式與參數</b>　<span data-i18n="svd4_dl3_d">演算法流程、閾值設定與參數說明，可由貴公司自行微調。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd4_dl4_t">AI 模型與樣本集</b>　<span data-i18n="svd4_dl4_d">外觀缺陷類專案交付模型檔與已標註的訓練樣本集。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd4_dl5_t">取像機構與治具</b>　<span data-i18n="svd4_dl5_d">取像治具、遮光罩與分流機構的圖面與實品。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd4_dl6_t">通訊介接文件</b>　<span data-i18n="svd4_dl6_d">與 PLC／MES 之間的訊號定義與資料格式。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd4_dl7_t">檢測紀錄儲存規則</b>　<span data-i18n="svd4_dl7_d">單件影像與判定結果的儲存方式、命名規則與保存期限設定。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd4_dl8_t">操作手冊與教育訓練</b>　<span data-i18n="svd4_dl8_d">含換線時的參數切換流程與日常校驗方式。</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section prod-detail" id="specs" aria-labelledby="specs-title">
       <div class="container">
         <header class="section-header" data-reveal>
           <p class="section-eyebrow" data-i18n="pd_eyebrow_specs">SPECIFICATIONS</p>
@@ -233,8 +317,30 @@
               <tr><th scope="row" data-i18n="svd4_s2_k">量測精度</th><td data-i18n="svd4_s2_v">依鏡頭與視野配置，可達 ±0.01mm</td></tr>
               <tr><th scope="row" data-i18n="svd4_s3_k">辨識能力</th><td data-i18n="svd4_s3_v">QR Code、Barcode、OCR 字元辨識</td></tr>
               <tr><th scope="row" data-i18n="svd4_s4_k">整合應用</th><td data-i18n="svd4_s4_v">視覺引導機械手臂定位取料；檢測結果連動分流機構</td></tr>
+              <tr><th scope="row" data-i18n="svd4_s5_k">光學配置</th><td data-i18n="svd4_s5_v">同軸／環形／背光／條形光源依缺陷特性選型；鏡頭與工作距離依視野計算</td></tr>
+              <tr><th scope="row" data-i18n="svd4_s6_k">檢測節拍</th><td data-i18n="svd4_s6_v">依影像解析度與演算法複雜度而定；評估階段以實際樣品實測後告知</td></tr>
+              <tr><th scope="row" data-i18n="svd4_s7_k">通訊介接</th><td data-i18n="svd4_s7_v">判定結果可經數位 I/O、Modbus TCP 或 OPC UA 輸出至 PLC 與 MES</td></tr>
+              <tr><th scope="row" data-i18n="svd4_s8_k">資料追溯</th><td data-i18n="svd4_s8_v">單件影像與判定結果可存檔，支援依批號、時間與判定結果查詢</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section prod-detail prod-detail--alt" id="limits" aria-labelledby="limits-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_limit">HONEST LIMITS</p>
+          <h2 class="section-title" id="limits-title" data-i18n="svc_limit_title">導入前提與限制</h2>
+        </header>
+        <div class="svc-limit" data-reveal>
+          <p class="svc-limit__lead" data-i18n="svd4_limlead">視覺檢測有它抓得到與抓不到的東西。以下是我們在評估階段一定會先講清楚的限制。</p>
+          <ul class="svc-limit__list" role="list">
+            <li><b data-i18n="svd4_lim1_t">缺陷在影像上沒有對比</b>　<span data-i18n="svd4_lim1_d">如果人眼在燈光下都要斜著看才看得到，相機通常也拍不出來。這類案子要先在光學上想辦法；光學不成立，演算法再強也沒用。</span></li>
+            <li><b data-i18n="svd4_lim2_t">需要經驗綜合判斷的瑕疵</b>　<span data-i18n="svd4_lim2_d">「看起來怪怪的」這類判斷目前仍需人工複判。務實做法是視覺負責全檢與明確缺陷，人工專注在少數複判件。</span></li>
+            <li><b data-i18n="svd4_lim3_t">不良樣本不足</b>　<span data-i18n="svd4_lim3_d">樣本太少或樣態不齊，模型學不到該學的東西。我們不會在看過實際樣品前承諾誤判率數字。</span></li>
+            <li><b data-i18n="svd4_lim4_t">允收標準尚未定義</b>　<span data-i18n="svd4_lim4_d">「可接受的刮傷」有多長、多深，必須先有明確定義。標準沒定，再精準的系統也會被認為判錯。</span></li>
+          </ul>
         </div>
       </div>
     </section>
@@ -257,6 +363,14 @@
           <details class="faq-item" data-reveal>
             <summary class="faq-item__q" data-i18n="svd4_q3">誤判率可以做到多低？</summary>
             <div class="faq-item__a"><p data-i18n="svd4_a3">取決於缺陷對比度與樣本品質。對比明顯的缺陷可以做到很低；但我們不會在看過實際樣品前承諾數字——評估階段會先以您的樣品試拍並提供實測結果。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd4_q4">導入之後，參數可以由我們自己調嗎？</summary>
+            <div class="faq-item__a"><p data-i18n="svd4_a4">可以。程式與參數都開放給貴公司調整，並在訓練時說明每個閾值的意義與影響；換線的參數切換會做成操作員可自行執行的流程。但演算法結構的變更仍建議由我們處理，避免調出難以追查的問題。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd4_q5">產品改版了，系統還能用嗎？</summary>
+            <div class="faq-item__a"><p data-i18n="svd4_a5">多數情況可以沿用硬體，只需重新建立或補訓練模型。但如果外觀、尺寸或材質變化大到光學配置不再適用，光源與鏡頭可能要重配。改版前先告訴我們，通常可以在設計階段就把相容性考慮進去。</p></div>
           </details>
         </div>
       </div>

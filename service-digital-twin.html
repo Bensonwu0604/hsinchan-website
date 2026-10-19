@@ -109,6 +109,22 @@
               "@type": "Answer",
               "text": "會有，主要來自人員操作時間與異常停機這類難以完全建模的因素。我們的做法是把這些以保守值代入，並在交付時標明哪些數字是模擬值、哪些是實測值。"
             }
+          },
+          {
+            "@type": "Question",
+            "name": "模擬要花多久？會不會拖慢整個專案？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "一般 5-8 週，而且可以和設備詢價、場地整備並行，通常不會變成要徑。真正會拖慢專案的，反而是動工後才發現要改機——那至少是以月計算的延誤。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "模擬做完之後，圖面可以交給別家廠商施工嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "可以。我們交付的是原生檔加 STEP 中性格式與完整規格書，不綁定後續由誰施工。如果您評估後選擇由欣晨承接製造，前期建立的模型可直接延用，不需重做。"
+            }
           }
         ]
       }
@@ -175,6 +191,38 @@
       </div>
     </section>
 
+    <section class="section prod-detail prod-detail--alt" id="outcomes" aria-labelledby="outcomes-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_outcomes">OUTCOMES</p>
+          <h2 class="section-title" id="outcomes-title" data-i18n="svc_metrics_title">典型導入成效</h2>
+        </header>
+        <ul class="svc-metrics" role="list" data-reveal>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd1_m1_v">80</span><span class="svc-metric__unit" data-i18n="svd1_m1_u">%</span></span>
+            <strong class="svc-metric__label" data-i18n="svd1_m1_l">設計缺陷在動工前發現</strong>
+            <span class="svc-metric__note" data-i18n="svd1_m1_n">干涉、動線衝突與節拍瓶頸多數在虛擬階段就暴露，不必等現場試車才發現。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd1_m2_v">1/10</span></span>
+            <strong class="svc-metric__label" data-i18n="svd1_m2_l">修改成本量級</strong>
+            <span class="svc-metric__note" data-i18n="svd1_m2_n">圖面階段改一條動線的成本，約為實體設備完工後改機的十分之一。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd1_m3_v">2-4</span><span class="svc-metric__unit" data-i18n="svd1_m3_u">週</span></span>
+            <strong class="svc-metric__label" data-i18n="svd1_m3_l">現場調試時間縮短</strong>
+            <span class="svc-metric__note" data-i18n="svd1_m3_n">佈局與節拍已先驗證過，進場後省下反覆試誤的時間。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd1_m4_v">5-8</span><span class="svc-metric__unit" data-i18n="svd1_m4_u">週</span></span>
+            <strong class="svc-metric__label" data-i18n="svd1_m4_l">典型專案期程</strong>
+            <span class="svc-metric__note" data-i18n="svd1_m4_n">可與設備詢價、場地整備並行，通常不會變成專案要徑。</span>
+          </li>
+        </ul>
+        <p class="svc-metrics__caveat" data-i18n="svc_metrics_caveat">以上為同類型專案的常見區間，實際幅度依工件、製程與現場條件而異。評估階段我們會依您的實際數據重新試算，不以區間值作為承諾。</p>
+      </div>
+    </section>
+
     <section class="section prod-detail" id="scope" aria-labelledby="scope-title">
       <div class="container">
         <header class="section-header" data-reveal>
@@ -182,10 +230,10 @@
           <h2 class="section-title" id="scope-title" data-i18n="svd1_scope_title">服務內容</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d1_p1">虛擬產線佈局規劃與動作模擬</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d1_p2">設備干涉檢查與安全評估</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d1_p3">節拍時間（Takt Time）分析最佳化</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d1_p4">3D設計圖面與技術規格書提供</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d1_p1">虛擬產線佈局規劃與動作模擬</strong><p data-i18n="svd1_p1_d">在 3D 空間中擺放設備、輸送帶與人員動線，讓整條線在建造前先跑一遍。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d1_p2">設備干涉檢查與安全評估</strong><p data-i18n="svd1_p2_d">以掃掠體積驗證機構極限位置，找出會相撞的區段與安全距離不足的地方。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d1_p3">節拍時間（Takt Time）分析最佳化</strong><p data-i18n="svd1_p3_d">逐站計算工時，標出瓶頸站別，並模擬調整後的產出變化。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d1_p4">3D設計圖面與技術規格書提供</strong><p data-i18n="svd1_p4_d">交付可直接施工的圖面與規格書，不是只給一段動畫。</p></li>
         </ul>
       </div>
     </section>
@@ -197,10 +245,10 @@
           <h2 class="section-title" id="flow-title" data-i18n="svd1_flow_title">服務流程</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd1_f1_t">STEP 1　需求訪談與現況盤點</strong><p data-i18n="svd1_f1_d">確認產能目標、產品規格、廠房空間與既有設備條件。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd1_f2_t">STEP 2　虛擬佈局與動作建模</strong><p data-i18n="svd1_f2_d">在 3D 環境中建立設備、物料與動線模型，模擬實際運作。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd1_f3_t">STEP 3　干涉檢查與節拍分析</strong><p data-i18n="svd1_f3_d">找出機構干涉、動線衝突與瓶頸工站，調整到達成目標節拍。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd1_f4_t">STEP 4　輸出設計圖面與規格書</strong><p data-i18n="svd1_f4_d">交付可直接施工的 3D 圖面、佈局圖與技術規格書。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd1_f1_dur">約 1 週</span><strong data-i18n="svd1_f1_t">STEP 1　需求訪談與現況盤點</strong><p data-i18n="svd1_f1_d">確認產能目標、產品規格、廠房空間與既有設備條件。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd1_f2_dur">約 2-3 週</span><strong data-i18n="svd1_f2_t">STEP 2　虛擬佈局與動作建模</strong><p data-i18n="svd1_f2_d">在 3D 環境中建立設備、物料與動線模型，模擬實際運作。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd1_f3_dur">約 1-2 週</span><strong data-i18n="svd1_f3_t">STEP 3　干涉檢查與節拍分析</strong><p data-i18n="svd1_f3_d">找出機構干涉、動線衝突與瓶頸工站，調整到達成目標節拍。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd1_f4_dur">約 1-2 週</span><strong data-i18n="svd1_f4_t">STEP 4　輸出設計圖面與規格書</strong><p data-i18n="svd1_f4_d">交付可直接施工的 3D 圖面、佈局圖與技術規格書。</p></li>
         </ul>
       </div>
     </section>
@@ -212,15 +260,51 @@
           <h2 class="section-title" id="cases-title" data-i18n="svd1_cases_title">適用情境</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd1_c1">擴產前要先確認產線配置是否達得到目標產能</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd1_c2">廠房空間受限，需要在動工前驗證設備排得下</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd1_c3">導入新製程，想先確認人、機、料的動線不會互相干擾</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd1_c4">需要向主管或客戶簡報產線規劃，需具說服力的動態模擬</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd1_c1">擴產前要先確認產線配置是否達得到目標產能</strong><p data-i18n="svd1_c1_d">投資決策前先用模擬數字回答「這條線一天到底做得出幾件」。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd1_c2">廠房空間受限，需要在動工前驗證設備排得下</strong><p data-i18n="svd1_c2_d">舊廠房改造的樑柱與既有管線限制多，實際量測後直接在模型中驗證。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd1_c3">導入新製程，想先確認人、機、料的動線不會互相干擾</strong><p data-i18n="svd1_c3_d">人員走道、堆高機路徑與機械手臂工作範圍一起模擬，避免完工後才發現卡住。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd1_c4">需要向主管或客戶簡報產線規劃，需具說服力的動態模擬</strong><p data-i18n="svd1_c4_d">輸出可播放的模擬影片，比靜態平面圖更容易取得預算核准。</p></li>
         </ul>
       </div>
     </section>
 
-    <section class="section prod-detail prod-detail--alt" id="specs" aria-labelledby="specs-title">
+    <section class="section prod-detail prod-detail--alt" id="deliverables" aria-labelledby="deliver-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_deliver">DELIVERABLES</p>
+          <h2 class="section-title" id="deliver-title" data-i18n="svc_deliver_title">交付清單</h2>
+        </header>
+        <p class="svc-section-lead" data-reveal data-i18n="svc_deliver_lead">專案結案時您會拿到以下文件與項目。圖面、資料與原始檔完整交付，日後要自行維護或轉由其他廠商接手都不受限制。</p>
+        <ul class="svc-deliver" role="list" data-reveal>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd1_dl1_t">3D 產線模型</b>　<span data-i18n="svd1_dl1_d">Solid Edge 原生檔與 STEP 中性格式，可交由任何廠商接手。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd1_dl2_t">動態模擬影片</b>　<span data-i18n="svd1_dl2_d">含節拍計時與動作時序，可直接用於投資審查簡報。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd1_dl3_t">干涉檢查報告</b>　<span data-i18n="svd1_dl3_d">列出所有碰撞點、安全距離不足處與建議修正量。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd1_dl4_t">節拍分析表</b>　<span data-i18n="svd1_dl4_d">逐站工時、瓶頸站別與理論產能試算。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd1_dl5_t">產線佈局圖</b>　<span data-i18n="svd1_dl5_d">含設備定位尺寸、動線標示與公共設施需求點位。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd1_dl6_t">設備技術規格書</b>　<span data-i18n="svd1_dl6_d">各站設備的規格要求，可直接作為對外詢價依據。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd1_dl7_t">公用需求彙總</b>　<span data-i18n="svd1_dl7_d">電力、氣壓、冷卻水與排氣的容量與接點位置。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd1_dl8_t">導入建議書</b>　<span data-i18n="svd1_dl8_d">分期導入順序、預估費用區間與風險提醒。</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section prod-detail" id="specs" aria-labelledby="specs-title">
       <div class="container">
         <header class="section-header" data-reveal>
           <p class="section-eyebrow" data-i18n="pd_eyebrow_specs">SPECIFICATIONS</p>
@@ -233,8 +317,30 @@
               <tr><th scope="row" data-i18n="svd1_s2_k">分析項目</th><td data-i18n="svd1_s2_v">節拍時間、設備稼動率、瓶頸工站、動線衝突</td></tr>
               <tr><th scope="row" data-i18n="svd1_s3_k">輸出格式</th><td data-i18n="svd1_s3_v">3D 模型、2D 施工圖、佈局圖、技術規格書</td></tr>
               <tr><th scope="row" data-i18n="svd1_s4_k">適用規模</th><td data-i18n="svd1_s4_v">單一工作站至整線規劃</td></tr>
+              <tr><th scope="row" data-i18n="svd1_s5_k">交付格式</th><td data-i18n="svd1_s5_v">原生檔 .par／.asm、中性格式 STEP、加工圖 .dxf／.dwg、文件 PDF</td></tr>
+              <tr><th scope="row" data-i18n="svd1_s6_k">建模基準</th><td data-i18n="svd1_s6_v">以現場實測尺寸建模，關鍵定位尺寸誤差控制在 ±5 mm 以內</td></tr>
+              <tr><th scope="row" data-i18n="svd1_s7_k">專案期程</th><td data-i18n="svd1_s7_v">一般 5-8 週，視站數與現況資料齊備程度而定</td></tr>
+              <tr><th scope="row" data-i18n="svd1_s8_k">後續銜接</th><td data-i18n="svd1_s8_v">模型可直接延用至單機自動化設計製造與機械手臂導入階段</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section prod-detail prod-detail--alt" id="limits" aria-labelledby="limits-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_limit">HONEST LIMITS</p>
+          <h2 class="section-title" id="limits-title" data-i18n="svc_limit_title">導入前提與限制</h2>
+        </header>
+        <div class="svc-limit" data-reveal>
+          <p class="svc-limit__lead" data-i18n="svd1_limlead">數位雙生不是每個案子都划算。以下情況我們會建議您先不要做，或改用更輕量的方式處理——把預算留給真正需要的地方。</p>
+          <ul class="svc-limit__list" role="list">
+            <li><b data-i18n="svd1_lim1_t">單機、動線單純的案子</b>　<span data-i18n="svd1_lim1_d">設備少於三台、物料路徑單一時，工程師的經驗判斷通常就夠，模擬的投入產出比不高。</span></li>
+            <li><b data-i18n="svd1_lim2_t">現況資料不齊</b>　<span data-i18n="svd1_lim2_d">沒有廠房實測圖、沒有既有設備規格，模型只能靠假設堆出來，結論的可信度會大幅下降。我們可以先協助現場量測，但這需要額外時間。</span></li>
+            <li><b data-i18n="svd1_lim3_t">人員操作時間難以完全建模</b>　<span data-i18n="svd1_lim3_d">手動工站的實際耗時受熟練度影響大，模擬值會與現場有落差。我們的做法是代入保守值，並在報告中標明哪些是模擬值、哪些是實測值。</span></li>
+            <li><b data-i18n="svd1_lim4_t">趕工期的專案</b>　<span data-i18n="svd1_lim4_d">模擬需要 5-8 週。如果設備已經在製造中，模擬剩下的價值主要是驗證而非改善，此時直接做現場改善通常更有效。</span></li>
+          </ul>
         </div>
       </div>
     </section>
@@ -257,6 +363,14 @@
           <details class="faq-item" data-reveal>
             <summary class="faq-item__q" data-i18n="svd1_q3">模擬結果和實際運作會有落差嗎？</summary>
             <div class="faq-item__a"><p data-i18n="svd1_a3">會有，主要來自人員操作時間與異常停機這類難以完全建模的因素。我們的做法是把這些以保守值代入，並在交付時標明哪些數字是模擬值、哪些是實測值。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd1_q4">模擬要花多久？會不會拖慢整個專案？</summary>
+            <div class="faq-item__a"><p data-i18n="svd1_a4">一般 5-8 週，而且可以和設備詢價、場地整備並行，通常不會變成要徑。真正會拖慢專案的，反而是動工後才發現要改機——那至少是以月計算的延誤。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd1_q5">模擬做完之後，圖面可以交給別家廠商施工嗎？</summary>
+            <div class="faq-item__a"><p data-i18n="svd1_a5">可以。我們交付的是原生檔加 STEP 中性格式與完整規格書，不綁定後續由誰施工。如果您評估後選擇由欣晨承接製造，前期建立的模型可直接延用，不需重做。</p></div>
           </details>
         </div>
       </div>

@@ -109,6 +109,22 @@
               "@type": "Answer",
               "text": "協作機器人免安全柵欄、佔地小、換線彈性高，但速度與負載較低；傳統工業機器人快且力大，但需要安全圍籬。工件重、節拍緊就選傳統型，多樣少量、需與人共站就選協作型。"
             }
+          },
+          {
+            "@type": "Question",
+            "name": "導入後我們自己的人維護得來嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "可以，前提是交付時要拿到可編輯的程式原始碼與完整註解——這是我們的標準交付內容。驗收前會分別對操作員與維修人員做訓練，日常點檢與點位微調由貴公司人員執行，複雜異常我們遠端或到場支援。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "舊的機械手臂能不能沿用？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "可以評估。控制器還在原廠支援期內、本體精度仍符合需求的，重新配置夾爪與程式通常比換新划算。但若控制器已停產、備品難尋，維修風險會比省下的錢更貴，這一點我們會據實告知。"
+            }
           }
         ]
       }
@@ -175,6 +191,38 @@
       </div>
     </section>
 
+    <section class="section prod-detail prod-detail--alt" id="outcomes" aria-labelledby="outcomes-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_outcomes">OUTCOMES</p>
+          <h2 class="section-title" id="outcomes-title" data-i18n="svc_metrics_title">典型導入成效</h2>
+        </header>
+        <ul class="svc-metrics" role="list" data-reveal>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd2_m1_v">1.5-3</span><span class="svc-metric__unit" data-i18n="svd2_m1_u">年</span></span>
+            <strong class="svc-metric__label" data-i18n="svd2_m1_l">典型投資回收期</strong>
+            <span class="svc-metric__note" data-i18n="svd2_m1_n">兩班制、取代一名搬運作業員的常見區間；單班低產量會明顯拉長。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd2_m2_v">±0.02</span><span class="svc-metric__unit" data-i18n="svd2_m2_u">mm</span></span>
+            <strong class="svc-metric__label" data-i18n="svd2_m2_l">重複定位精度</strong>
+            <span class="svc-metric__note" data-i18n="svd2_m2_n">以 FANUC LR Mate 200iD 等級機型為例，一致性遠優於人工作業。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd2_m3_v">24</span><span class="svc-metric__unit" data-i18n="svd2_m3_u">h</span></span>
+            <strong class="svc-metric__label" data-i18n="svd2_m3_l">連續運轉能力</strong>
+            <span class="svc-metric__note" data-i18n="svd2_m3_n">不受疲勞與換班影響，節拍穩定，排程才算得準。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd2_m4_v">2-4</span><span class="svc-metric__unit" data-i18n="svd2_m4_u">週</span></span>
+            <strong class="svc-metric__label" data-i18n="svd2_m4_l">現場調機時間</strong>
+            <span class="svc-metric__note" data-i18n="svd2_m4_n">路徑先以離線程式驗證過，進場後省下佔機試誤的時間。</span>
+          </li>
+        </ul>
+        <p class="svc-metrics__caveat" data-i18n="svc_metrics_caveat">以上為同類型專案的常見區間，實際幅度依工件、製程與現場條件而異。評估階段我們會依您的實際數據重新試算，不以區間值作為承諾。</p>
+      </div>
+    </section>
+
     <section class="section prod-detail" id="scope" aria-labelledby="scope-title">
       <div class="container">
         <header class="section-header" data-reveal>
@@ -182,10 +230,10 @@
           <h2 class="section-title" id="scope-title" data-i18n="svd2_scope_title">服務內容</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d2_p1">多品牌機械手臂選型與導入</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d2_p2">末端效應器（夾爪/工具）客製設計</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d2_p3">離線程式規劃與路徑最佳化</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d2_p4">人機協作（Cobot）安全系統整合</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d2_p1">多品牌機械手臂選型與導入</strong><p data-i18n="svd2_p1_d">依負載、工作半徑、節拍與精度需求比對機型，不預設品牌。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d2_p2">末端效應器（夾爪/工具）客製設計</strong><p data-i18n="svd2_p2_d">夾爪、吸盤與專用工具自行設計製造，工件換型時改這裡最快。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d2_p3">離線程式規劃與路徑最佳化</strong><p data-i18n="svd2_p3_d">在電腦上先把路徑跑過一遍，縮短現場佔用設備的調試時間。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d2_p4">人機協作（Cobot）安全系統整合</strong><p data-i18n="svd2_p4_d">安全柵欄、光柵或協作模式的風險評估與配置。</p></li>
         </ul>
       </div>
     </section>
@@ -197,10 +245,10 @@
           <h2 class="section-title" id="flow-title" data-i18n="svd2_flow_title">服務流程</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd2_f1_t">STEP 1　應用評估與選型</strong><p data-i18n="svd2_f1_d">依工件重量、節拍、工作半徑與精度需求，選定機型與軸數。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd2_f2_t">STEP 2　末端工具設計</strong><p data-i18n="svd2_f2_d">針對工件特性設計夾爪、吸盤或專用工具，並做干涉驗證。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd2_f3_t">STEP 3　路徑規劃與離線編程</strong><p data-i18n="svd2_f3_d">先以離線程式驗證路徑，減少現場佔機調試時間。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd2_f4_t">STEP 4　安全整合與驗收</strong><p data-i18n="svd2_f4_d">配置安全柵欄或協作安全功能，完成試車與人員培訓。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd2_f1_dur">約 1-2 週</span><strong data-i18n="svd2_f1_t">STEP 1　應用評估與選型</strong><p data-i18n="svd2_f1_d">依工件重量、節拍、工作半徑與精度需求，選定機型與軸數。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd2_f2_dur">約 2-4 週</span><strong data-i18n="svd2_f2_t">STEP 2　末端工具設計</strong><p data-i18n="svd2_f2_d">針對工件特性設計夾爪、吸盤或專用工具，並做干涉驗證。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd2_f3_dur">約 2-3 週</span><strong data-i18n="svd2_f3_t">STEP 3　路徑規劃與離線編程</strong><p data-i18n="svd2_f3_d">先以離線程式驗證路徑，減少現場佔機調試時間。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd2_f4_dur">約 2-4 週</span><strong data-i18n="svd2_f4_t">STEP 4　安全整合與驗收</strong><p data-i18n="svd2_f4_d">配置安全柵欄或協作安全功能，完成試車與人員培訓。</p></li>
         </ul>
       </div>
     </section>
@@ -212,15 +260,51 @@
           <h2 class="section-title" id="cases-title" data-i18n="svd2_cases_title">適用情境</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd2_c1">搬運重複性高、人員易疲勞或受傷的工序</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd2_c2">需要穩定節拍的上下料、碼垛、取放作業</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd2_c3">焊接、塗膠等要求路徑一致性的製程</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd2_c4">產線空間有限，需以第七軸延伸機械手臂的工作範圍</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd2_c1">搬運重複性高、人員易疲勞或受傷的工序</strong><p data-i18n="svd2_c1_d">高溫、重物、粉塵環境，人員流動率高、職災風險也高的工站優先。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd2_c2">需要穩定節拍的上下料、碼垛、取放作業</strong><p data-i18n="svd2_c2_d">節拍一致，排程與產能預估才算得準。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd2_c3">焊接、塗膠等要求路徑一致性的製程</strong><p data-i18n="svd2_c3_d">路徑由程式決定，膠寬與焊道不隨人員熟練度變動。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd2_c4">產線空間有限，需以第七軸延伸機械手臂的工作範圍</strong><p data-i18n="svd2_c4_d">加裝線性走行軸後，一台手臂可服務多個工站，省設備也省地。</p></li>
         </ul>
       </div>
     </section>
 
-    <section class="section prod-detail prod-detail--alt" id="specs" aria-labelledby="specs-title">
+    <section class="section prod-detail prod-detail--alt" id="deliverables" aria-labelledby="deliver-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_deliver">DELIVERABLES</p>
+          <h2 class="section-title" id="deliver-title" data-i18n="svc_deliver_title">交付清單</h2>
+        </header>
+        <p class="svc-section-lead" data-reveal data-i18n="svc_deliver_lead">專案結案時您會拿到以下文件與項目。圖面、資料與原始檔完整交付，日後要自行維護或轉由其他廠商接手都不受限制。</p>
+        <ul class="svc-deliver" role="list" data-reveal>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd2_dl1_t">機構設計圖面</b>　<span data-i18n="svd2_dl1_d">末端工具與周邊機構的 3D 原生檔、2D 加工圖與零件清單。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd2_dl2_t">末端效應器實品</b>　<span data-i18n="svd2_dl2_d">夾爪／吸盤／專用治具，含備品與易損件清單。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd2_dl3_t">機器人程式</b>　<span data-i18n="svd2_dl3_d">主程式與副程式，含中文註解與點位對照表。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd2_dl4_t">PLC／HMI 程式原始碼</b>　<span data-i18n="svd2_dl4_d">交付可編輯的原始檔，不是只給編譯檔，日後可自行維護。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd2_dl5_t">電控配線圖</b>　<span data-i18n="svd2_dl5_d">控制盤內部配線、I/O 配置與端子編號對照。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd2_dl6_t">安全風險評估報告</b>　<span data-i18n="svd2_dl6_d">依 ISO 10218 與 ISO/TS 15066 原則進行的危害辨識與防護配置說明。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd2_dl7_t">操作與保養手冊</b>　<span data-i18n="svd2_dl7_d">中文手冊，含日常點檢、定期保養週期與耗材規格。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd2_dl8_t">教育訓練與驗收報告</b>　<span data-i18n="svd2_dl8_d">操作員與維修人員分開訓練，含 FAT／SAT 測試紀錄。</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section prod-detail" id="specs" aria-labelledby="specs-title">
       <div class="container">
         <header class="section-header" data-reveal>
           <p class="section-eyebrow" data-i18n="pd_eyebrow_specs">SPECIFICATIONS</p>
@@ -233,8 +317,30 @@
               <tr><th scope="row" data-i18n="svd2_s2_k">應用類型</th><td data-i18n="svd2_s2_v">搬運、上下料、碼垛、焊接、塗膠、鎖螺絲、檢測取像</td></tr>
               <tr><th scope="row" data-i18n="svd2_s3_k">末端工具</th><td data-i18n="svd2_s3_v">氣動／電動夾爪、真空吸盤、專用治具，皆可客製</td></tr>
               <tr><th scope="row" data-i18n="svd2_s4_k">延伸軸</th><td data-i18n="svd2_s4_v">第七軸線性走行軸設計製造，延伸工作範圍</td></tr>
+              <tr><th scope="row" data-i18n="svd2_s5_k">控制平台</th><td data-i18n="svd2_s5_v">FANUC R-30iB 等機器人控制器；周邊以三菱 iQ-F FX5U／iQ-R 系列 PLC 統合</td></tr>
+              <tr><th scope="row" data-i18n="svd2_s6_k">通訊介面</th><td data-i18n="svd2_s6_v">Modbus TCP、EtherNet/IP、CC-Link IE 與數位 I/O，可對接既有產線系統</td></tr>
+              <tr><th scope="row" data-i18n="svd2_s7_k">人機介面</th><td data-i18n="svd2_s7_v">Pro-face（GP-Pro EX）觸控螢幕，中／日／英介面可切換</td></tr>
+              <tr><th scope="row" data-i18n="svd2_s8_k">安全設計</th><td data-i18n="svd2_s8_v">安全柵欄、安全光柵、雙手啟動、安全繼電器，或協作模式下的力矩限制</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section prod-detail prod-detail--alt" id="limits" aria-labelledby="limits-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_limit">HONEST LIMITS</p>
+          <h2 class="section-title" id="limits-title" data-i18n="svc_limit_title">導入前提與限制</h2>
+        </header>
+        <div class="svc-limit" data-reveal>
+          <p class="svc-limit__lead" data-i18n="svd2_limlead">機械手臂不是所有工序都該導入。以下情況我們會先建議您別做，或改用更簡單的方式——花錯地方的自動化，比沒做更傷。</p>
+          <ul class="svc-limit__list" role="list">
+            <li><b data-i18n="svd2_lim1_t">單班、低產量的工站</b>　<span data-i18n="svd2_lim1_d">回收期可能拉長到五年以上。這種情況下，改善治具或動線的效益通常比買手臂高。</span></li>
+            <li><b data-i18n="svd2_lim2_t">工件種類極多、批量極小</b>　<span data-i18n="svd2_lim2_d">每次換型都要重新教點位與換夾爪，換線時間可能吃掉自動化省下的時間。可先評估協作型手臂或快換夾具。</span></li>
+            <li><b data-i18n="svd2_lim3_t">上游來料位置不穩定</b>　<span data-i18n="svd2_lim3_d">手臂沒有視覺就只能抓固定位置。如果來料是散堆或位置飄移，要先解決供料方式或加裝視覺，成本會明顯增加。</span></li>
+            <li><b data-i18n="svd2_lim4_t">現場尚未標準化的工序</b>　<span data-i18n="svd2_lim4_d">作業方式每個班別都不一樣時，先做標準化再談自動化。把混亂的流程自動化，只會更快地產出不良品。</span></li>
+          </ul>
         </div>
       </div>
     </section>
@@ -257,6 +363,14 @@
           <details class="faq-item" data-reveal>
             <summary class="faq-item__q" data-i18n="svd2_q3">協作機器人和傳統工業機器人怎麼選？</summary>
             <div class="faq-item__a"><p data-i18n="svd2_a3">協作機器人免安全柵欄、佔地小、換線彈性高，但速度與負載較低；傳統工業機器人快且力大，但需要安全圍籬。工件重、節拍緊就選傳統型，多樣少量、需與人共站就選協作型。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd2_q4">導入後我們自己的人維護得來嗎？</summary>
+            <div class="faq-item__a"><p data-i18n="svd2_a4">可以，前提是交付時要拿到可編輯的程式原始碼與完整註解——這是我們的標準交付內容。驗收前會分別對操作員與維修人員做訓練，日常點檢與點位微調由貴公司人員執行，複雜異常我們遠端或到場支援。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd2_q5">舊的機械手臂能不能沿用？</summary>
+            <div class="faq-item__a"><p data-i18n="svd2_a5">可以評估。控制器還在原廠支援期內、本體精度仍符合需求的，重新配置夾爪與程式通常比換新划算。但若控制器已停產、備品難尋，維修風險會比省下的錢更貴，這一點我們會據實告知。</p></div>
           </details>
         </div>
       </div>

@@ -109,6 +109,22 @@
               "@type": "Answer",
               "text": "可以，常見做法是共用底座加可更換的定位模組。前提是工件之間有共通的基準面；差異太大時，分開設計反而更划算。"
             }
+          },
+          {
+            "@type": "Question",
+            "name": "夾治具的費用大概佔整個自動化專案的多少？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "比例不高，但影響最大。以單站自動化為例，夾治具常佔總費用的一成上下，卻決定了整站的精度上限。在這裡省錢，後面往往要用好幾倍的調機時間補回來——這是我們看過最常見的誤判。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "可以只做設計，加工我們自己找廠商嗎？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "可以。我們會交付完整的 3D 圖面、加工圖與材質熱處理要求，您可以自行發包。但要提醒：夾具的精度常常落在組裝與試裝階段，分開發包時這部分的責任界線要先談清楚，避免出問題時互推。"
+            }
           }
         ]
       }
@@ -175,6 +191,38 @@
       </div>
     </section>
 
+    <section class="section prod-detail prod-detail--alt" id="outcomes" aria-labelledby="outcomes-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_outcomes">OUTCOMES</p>
+          <h2 class="section-title" id="outcomes-title" data-i18n="svc_metrics_title">典型導入成效</h2>
+        </header>
+        <ul class="svc-metrics" role="list" data-reveal>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd5_m1_v">±0.02</span><span class="svc-metric__unit" data-i18n="svd5_m1_u">mm</span></span>
+            <strong class="svc-metric__label" data-i18n="svd5_m1_l">重複定位精度</strong>
+            <span class="svc-metric__note" data-i18n="svd5_m1_n">定位基準穩定，加工與檢測的結果才有一致性可言。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd5_m2_v">4-8</span><span class="svc-metric__unit" data-i18n="svd5_m2_u">週</span></span>
+            <strong class="svc-metric__label" data-i18n="svd5_m2_l">典型交期</strong>
+            <span class="svc-metric__note" data-i18n="svd5_m2_n">單件夾具 4 週內常見；多工件共用的模組化夾具約 6-8 週。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd5_m3_v">100</span><span class="svc-metric__unit" data-i18n="svd5_m3_u">%</span></span>
+            <strong class="svc-metric__label" data-i18n="svd5_m3_l">試裝驗證後交付</strong>
+            <span class="svc-metric__note" data-i18n="svd5_m3_n">每一套都以實際工件試裝、量測重複定位精度合格才出貨。</span>
+          </li>
+          <li class="svc-metric">
+            <span class="svc-metric__fig"><span class="svc-metric__num" data-i18n="svd5_m4_v">3</span><span class="svc-metric__unit" data-i18n="svd5_m4_u">類</span></span>
+            <strong class="svc-metric__label" data-i18n="svd5_m4_l">常用材質</strong>
+            <span class="svc-metric__note" data-i18n="svd5_m4_n">鋁合金、工具鋼、不鏽鋼，依剛性、耐磨與換線頻率取捨。</span>
+          </li>
+        </ul>
+        <p class="svc-metrics__caveat" data-i18n="svc_metrics_caveat">以上為同類型專案的常見區間，實際幅度依工件、製程與現場條件而異。評估階段我們會依您的實際數據重新試算，不以區間值作為承諾。</p>
+      </div>
+    </section>
+
     <section class="section prod-detail" id="scope" aria-labelledby="scope-title">
       <div class="container">
         <header class="section-header" data-reveal>
@@ -182,10 +230,10 @@
           <h2 class="section-title" id="scope-title" data-i18n="svd5_scope_title">服務內容</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d5_p1">機加工夾具、焊接治具、組裝工裝</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d5_p2">材質選用：鋁合金、工具鋼、不鏽鋼</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d5_p3">重複定位精度：±0.02mm</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="srv_d5_p4">快拆設計，縮短換線時間</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d5_p1">機加工夾具、焊接治具、組裝工裝</strong><p data-i18n="svd5_p1_d">依加工力、熱變形與操作方式分別設計，不是同一套結構換尺寸。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d5_p2">材質選用：鋁合金、工具鋼、不鏽鋼</strong><p data-i18n="svd5_p2_d">以輕量換取換線速度，或以剛性與耐磨換取壽命，依使用頻率取捨。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d5_p3">重複定位精度：±0.02mm</strong><p data-i18n="svd5_p3_d">以定位銷、V 型塊與基準面組合達成，並於試裝時實測驗證。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="srv_d5_p4">快拆設計，縮短換線時間</strong><p data-i18n="svd5_p4_d">少量多樣的產線，換線時間省下來的往往比加工時間還多。</p></li>
         </ul>
       </div>
     </section>
@@ -197,10 +245,10 @@
           <h2 class="section-title" id="flow-title" data-i18n="svd5_flow_title">服務流程</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd5_f1_t">STEP 1　工件分析與定位設計</strong><p data-i18n="svd5_f1_d">分析工件形狀、基準面與加工需求，決定定位與夾持方式。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd5_f2_t">STEP 2　結構設計與材質選用</strong><p data-i18n="svd5_f2_d">完成夾具結構設計，依剛性與耐磨需求選材。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd5_f3_t">STEP 3　精密加工與組裝</strong><p data-i18n="svd5_f3_d">加工製造並組裝，確認各定位面的尺寸精度。</p></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd5_f4_t">STEP 4　試裝驗證與精度確認</strong><p data-i18n="svd5_f4_d">實機試裝，驗證重複定位精度並微調。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd5_f1_dur">約 3-5 天</span><strong data-i18n="svd5_f1_t">STEP 1　工件分析與定位設計</strong><p data-i18n="svd5_f1_d">分析工件形狀、基準面與加工需求，決定定位與夾持方式。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd5_f2_dur">約 1-2 週</span><strong data-i18n="svd5_f2_t">STEP 2　結構設計與材質選用</strong><p data-i18n="svd5_f2_d">完成夾具結構設計，依剛性與耐磨需求選材。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd5_f3_dur">約 2-4 週</span><strong data-i18n="svd5_f3_t">STEP 3　精密加工與組裝</strong><p data-i18n="svd5_f3_d">加工製造並組裝，確認各定位面的尺寸精度。</p></li>
+            <li class="prod-detail__type-item"><span class="step-dur" data-i18n="svd5_f4_dur">約 3-5 天</span><strong data-i18n="svd5_f4_t">STEP 4　試裝驗證與精度確認</strong><p data-i18n="svd5_f4_d">實機試裝，驗證重複定位精度並微調。</p></li>
         </ul>
       </div>
     </section>
@@ -212,15 +260,51 @@
           <h2 class="section-title" id="cases-title" data-i18n="svd5_cases_title">適用情境</h2>
         </header>
         <ul class="prod-detail__type-list" data-reveal>
-            <li class="prod-detail__type-item"><strong data-i18n="svd5_c1">人工定位造成加工位置不一致、良率不穩</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd5_c2">換線時間過長，想改為快拆設計</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd5_c3">多款工件共線生產，需要可換模組的共用夾具</strong></li>
-            <li class="prod-detail__type-item"><strong data-i18n="svd5_c4">檢測或組裝工序需要穩定的定位基準</strong></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd5_c1">人工定位造成加工位置不一致、良率不穩</strong><p data-i18n="svd5_c1_d">良率的上限由定位決定，機台精度再高也補不回來。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd5_c2">換線時間過長，想改為快拆設計</strong><p data-i18n="svd5_c2_d">換線頻繁的工廠，這是投報率最快看得到的改善之一。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd5_c3">多款工件共線生產，需要可換模組的共用夾具</strong><p data-i18n="svd5_c3_d">共用底座加可換定位模組，省下重複製作整套夾具的費用。</p></li>
+            <li class="prod-detail__type-item"><strong data-i18n="svd5_c4">檢測或組裝工序需要穩定的定位基準</strong><p data-i18n="svd5_c4_d">量測與組裝若各自取基準，誤差會一路累積到成品。</p></li>
         </ul>
       </div>
     </section>
 
-    <section class="section prod-detail prod-detail--alt" id="specs" aria-labelledby="specs-title">
+    <section class="section prod-detail prod-detail--alt" id="deliverables" aria-labelledby="deliver-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_deliver">DELIVERABLES</p>
+          <h2 class="section-title" id="deliver-title" data-i18n="svc_deliver_title">交付清單</h2>
+        </header>
+        <p class="svc-section-lead" data-reveal data-i18n="svc_deliver_lead">專案結案時您會拿到以下文件與項目。圖面、資料與原始檔完整交付，日後要自行維護或轉由其他廠商接手都不受限制。</p>
+        <ul class="svc-deliver" role="list" data-reveal>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd5_dl1_t">夾具 3D 圖面</b>　<span data-i18n="svd5_dl1_d">Solid Edge 原生檔與 STEP 中性格式，含組立爆炸圖。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd5_dl2_t">零件加工圖</b>　<span data-i18n="svd5_dl2_d">.dxf／.dwg 圖面，標註公差、材質與表面處理要求。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd5_dl3_t">夾具實品</b>　<span data-i18n="svd5_dl3_d">完成精密加工、組裝與試裝的成品。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd5_dl4_t">精度實測報告</b>　<span data-i18n="svd5_dl4_d">重複定位精度的實測數據與量測方式說明。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd5_dl5_t">定位基準說明</b>　<span data-i18n="svd5_dl5_d">基準面、定位點與夾持點的設定理由，供後續改款參考。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd5_dl6_t">操作說明</b>　<span data-i18n="svd5_dl6_d">裝夾順序、扭力要求與常見錯誤提醒，可直接張貼於工站旁。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd5_dl7_t">易損件清單</b>　<span data-i18n="svd5_dl7_d">定位銷、夾鉗與襯套的規格與建議更換週期。</span></span>
+          </li>
+          <li class="svc-deliver__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10.5 4 4 8-9"/></svg>
+            <span><b data-i18n="svd5_dl8_t">後續改款支援</b>　<span data-i18n="svd5_dl8_d">工件改版時可在既有基礎上修改，不必重做整套。</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section prod-detail" id="specs" aria-labelledby="specs-title">
       <div class="container">
         <header class="section-header" data-reveal>
           <p class="section-eyebrow" data-i18n="pd_eyebrow_specs">SPECIFICATIONS</p>
@@ -233,8 +317,30 @@
               <tr><th scope="row" data-i18n="svd5_s2_k">材質選用</th><td data-i18n="svd5_s2_v">鋁合金、工具鋼、不鏽鋼，依剛性與耐磨需求選擇</td></tr>
               <tr><th scope="row" data-i18n="svd5_s3_k">重複定位精度</th><td data-i18n="svd5_s3_v">±0.02mm</td></tr>
               <tr><th scope="row" data-i18n="svd5_s4_k">換線設計</th><td data-i18n="svd5_s4_v">快拆結構，大幅縮短換模與換線時間</td></tr>
+              <tr><th scope="row" data-i18n="svd5_s5_k">加工能力</th><td data-i18n="svd5_s5_v">精密機加工、鈑金與表面處理（陽極、發黑、鍍硬鉻），整合協力廠完成</td></tr>
+              <tr><th scope="row" data-i18n="svd5_s6_k">典型交期</th><td data-i18n="svd5_s6_v">單件夾具約 4 週；多工件共用的模組化夾具約 6-8 週</td></tr>
+              <tr><th scope="row" data-i18n="svd5_s7_k">設計軟體</th><td data-i18n="svd5_s7_v">Solid Edge，交付原生檔（.par／.asm）、STEP 與加工圖（.dxf／.dwg）</td></tr>
+              <tr><th scope="row" data-i18n="svd5_s8_k">驗證方式</th><td data-i18n="svd5_s8_v">出貨前以實際工件試裝，量測重複定位精度並留存實測紀錄</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section prod-detail prod-detail--alt" id="limits" aria-labelledby="limits-title">
+      <div class="container">
+        <header class="section-header" data-reveal>
+          <p class="section-eyebrow" data-i18n="svc_eb_limit">HONEST LIMITS</p>
+          <h2 class="section-title" id="limits-title" data-i18n="svc_limit_title">導入前提與限制</h2>
+        </header>
+        <div class="svc-limit" data-reveal>
+          <p class="svc-limit__lead" data-i18n="svd5_limlead">夾治具看起來簡單，但做錯方向很花錢。以下是我們會先跟您確認的幾件事。</p>
+          <ul class="svc-limit__list" role="list">
+            <li><b data-i18n="svd5_lim1_t">工件基準面本身不穩定</b>　<span data-i18n="svd5_lim1_d">鑄件毛胚或變形量大的工件，定位基準先天不穩，夾具再精密也壓不住。這種情況要先處理前製程，或改用自適應的夾持方式。</span></li>
+            <li><b data-i18n="svd5_lim2_t">工件差異過大卻想共用</b>　<span data-i18n="svd5_lim2_d">共用的前提是工件之間有共通基準面。差異太大時硬要共用，結構會複雜、精度會下降，分開設計反而便宜。</span></li>
+            <li><b data-i18n="svd5_lim3_t">夾持力與工件剛性衝突</b>　<span data-i18n="svd5_lim3_d">薄件或軟質工件夾緊就變形、放鬆就位移。這類工件需要重新設計支撐分布，設計時間會比一般夾具長。</span></li>
+            <li><b data-i18n="svd5_lim4_t">圖面尚未定版就開工</b>　<span data-i18n="svd5_lim4_d">工件圖面還會改時製作夾具，改版後往往整套報廢。建議等圖面凍結，或先以簡易治具過渡。</span></li>
+          </ul>
         </div>
       </div>
     </section>
@@ -257,6 +363,14 @@
           <details class="faq-item" data-reveal>
             <summary class="faq-item__q" data-i18n="svd5_q3">一款夾具可以對應多種工件嗎？</summary>
             <div class="faq-item__a"><p data-i18n="svd5_a3">可以，常見做法是共用底座加可更換的定位模組。前提是工件之間有共通的基準面；差異太大時，分開設計反而更划算。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd5_q4">夾治具的費用大概佔整個自動化專案的多少？</summary>
+            <div class="faq-item__a"><p data-i18n="svd5_a4">比例不高，但影響最大。以單站自動化為例，夾治具常佔總費用的一成上下，卻決定了整站的精度上限。在這裡省錢，後面往往要用好幾倍的調機時間補回來——這是我們看過最常見的誤判。</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary class="faq-item__q" data-i18n="svd5_q5">可以只做設計，加工我們自己找廠商嗎？</summary>
+            <div class="faq-item__a"><p data-i18n="svd5_a5">可以。我們會交付完整的 3D 圖面、加工圖與材質熱處理要求，您可以自行發包。但要提醒：夾具的精度常常落在組裝與試裝階段，分開發包時這部分的責任界線要先談清楚，避免出問題時互推。</p></div>
           </details>
         </div>
       </div>
