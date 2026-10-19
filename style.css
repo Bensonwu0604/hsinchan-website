@@ -1931,11 +1931,11 @@ h1, h2, h3, h4, h5, h6 {
 .footer__nav-list {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 1.15rem;
 }
 
 .footer__link {
-  font-size: 1rem;
+  font-size: 1.15rem;
   color: var(--c-text-muted);
   transition: color var(--t-base), padding-left var(--t-slow);
   padding: 0.12rem 0;
