@@ -1861,7 +1861,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__logo-zh {
   font-family: var(--font-display);
-  font-size: 1.45rem;
+  /* 與標語同字級，讓品牌區塊的兩行有一致的分量 */
+  font-size: clamp(1.35rem, 1.9vw, 1.75rem);
   font-weight: 700;
   letter-spacing: 0.05em;
   color: var(--c-text);
