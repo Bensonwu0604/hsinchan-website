@@ -1889,23 +1889,14 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.06em;
 }
 
-/* 聯絡資訊卡片：原本只是浮在白底上的一串文字，
-   給它一個底座才有結構，也把右半邊的空白收攏 */
-.footer__contact {
-  background: var(--c-surface);
-  border: 1px solid var(--c-border);
-  border-radius: 10px;
-  padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.5rem, 2.5vw, 2.25rem);
-}
-
 .footer__section-title {
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  /* 與聯絡內容同字級；中文用 0.24em 字距會變成「聯 絡 資 訊」，過於鬆散 */
+  font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--c-gold);
-  margin-bottom: 1.5rem;
+  letter-spacing: 0.04em;
+  color: var(--c-text);
+  margin-bottom: 1.25rem;
 }
 
 .footer__nav-list {
@@ -1944,12 +1935,8 @@ h1, h2, h3, h4, h5, h6 {
 .footer__contact-item svg {
   width: 18px; height: 18px;
   flex-shrink: 0;
-  box-sizing: content-box;
-  padding: 7px;
-  background: #ffffff;
-  border: 1px solid var(--c-border);
-  border-radius: 50%;
-  color: var(--c-navy);
+  margin-top: 0.22rem;
+  color: var(--c-navy-light);
 }
 
 .footer__email-link {
