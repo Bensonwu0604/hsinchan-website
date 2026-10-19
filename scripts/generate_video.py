@@ -1224,7 +1224,10 @@ def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_st
                 "defaultLanguage": "zh-TW",
             },
             "status": {
-                "privacyStatus":           "private" if UPLOAD_TEST else "public",
+                # 測試用 unlisted（中文介面「不公開」）而非 private（「私人」）：
+                # private 只有頻道擁有者登入後看得到，審片的人拿到連結也打不開；
+                # unlisted 憑連結就能看，但不進搜尋、不出現在頻道頁。
+                "privacyStatus":           "unlisted" if UPLOAD_TEST else "public",
                 "selfDeclaredMadeForKids": False,
             },
         },
