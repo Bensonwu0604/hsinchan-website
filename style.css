@@ -1821,9 +1821,23 @@ h1, h2, h3, h4, h5, h6 {
 .footer__main { padding-block: clamp(1.75rem, 3vw, 2.75rem); }
 
 .footer__grid {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+/* 兩側的標語各佔一份彈性空間，中間欄位群因此停在正中央，
+   不受左右標語實際字寬影響 */
+.footer__brand { flex: 1 1 0; min-width: 0; }
+.footer__brand--end { text-align: right; }
+
+/* 產品資訊 / 服務項目 / 聯絡資訊 三欄靠攏成一組 */
+.footer__cols {
+  flex: 0 1 auto;
   display: grid;
-  grid-template-columns: 0.9fr 1fr 1.15fr 1.25fr;
-  gap: clamp(1.75rem, 3vw, 3rem);
+  grid-template-columns: repeat(3, auto);
+  gap: clamp(2rem, 4.5vw, 4.5rem);
   align-items: start;
 }
 
@@ -1843,6 +1857,7 @@ h1, h2, h3, h4, h5, h6 {
    不觸發 layout 重算，對效能幾乎沒有影響。
    全站的 prefers-reduced-motion 規則會自動把它停下來。 */
 .footer__tagline--accent {
+  display: inline-block;
   color: var(--c-navy-vivid);
   background-image: linear-gradient(100deg,
     var(--c-navy-vivid) 0%,
@@ -4263,12 +4278,20 @@ h1, h2, h3, h4, h5, h6 {
 .footer__legal-link:hover { color: var(--c-text); }
 
 
-/* 頁尾四欄的收斂斷點（四欄純文字在 1100px 以上都放得下）*/
+/* 頁尾的收斂斷點。1100px 以下換行：兩個標語留在同一列的左右兩端，
+   三個欄位群落到下一列，仍維持「標語夾住內容」的結構。 */
 @media (max-width: 1100px) {
-  .footer__grid { grid-template-columns: 1fr 1fr; gap: 2rem clamp(1.5rem, 4vw, 3rem); }
+  .footer__grid { flex-wrap: wrap; gap: 2rem clamp(1.5rem, 4vw, 3rem); }
+  .footer__cols {
+    order: 3;
+    flex: 1 1 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem clamp(2rem, 5vw, 4rem);
+  }
 }
 @media (max-width: 600px) {
-  .footer__grid { grid-template-columns: 1fr; gap: 1.75rem; }
+  .footer__grid { gap: 1.5rem; }
+  .footer__cols { grid-template-columns: 1fr; gap: 1.75rem; }
 }
 
 
