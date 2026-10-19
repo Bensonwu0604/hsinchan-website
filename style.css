@@ -1799,21 +1799,40 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ─── 18. FOOTER ────────────────────────────────────────────────────────── */
+/* 深色頁尾：為整頁收尾提供視覺重量，也與影片頻道的深色視覺語言一致 */
 .site-footer {
-  background: #ffffff;
-  border-top: 1px solid rgba(43,75,107,0.12);
+  --fdim:   rgba(207, 224, 243, 0.62);
+  --fbright: #eaf2fb;
+  background:
+    radial-gradient(120% 90% at 12% 0%, rgba(74,122,181,0.20) 0%, transparent 55%),
+    linear-gradient(180deg, #16283a 0%, #0d1823 100%);
   position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-/* Gradient separator */
+/* 頂緣一道高光，讓深色區塊與上方內容之間有明確的分界 */
 .site-footer::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(90deg,
-    transparent 0%, var(--c-navy) 30%, var(--c-gold-dim) 50%, var(--c-navy) 70%, transparent 100%
+    transparent 0%, var(--c-navy-vivid) 30%, #7fb0e8 50%, var(--c-navy-vivid) 70%, transparent 100%
   );
+}
+
+/* 細網格紋理：科技感的來源，透明度壓到幾乎看不見才不會干擾文字 */
+.site-footer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(126,170,222,0.05) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(0deg,  rgba(126,170,222,0.05) 0 1px, transparent 1px 64px);
+  mask-image: radial-gradient(130% 100% at 50% 0%, #000 0%, transparent 72%);
 }
 
 .footer__main { padding-block: clamp(3rem, 6vw, 5rem); }
@@ -1840,8 +1859,15 @@ h1, h2, h3, h4, h5, h6 {
   width: auto;
   flex-shrink: 0;
   object-fit: contain;
-  transition: opacity var(--t-base);
+  /* Logo 是白底 JPG，深色上會變成突兀的白方塊；
+     給它一個淺色圓角底座，反而成為刻意的視覺安排 */
+  padding: 5px 7px;
+  background: #f2f6fb;
+  border-radius: 6px;
+  transition: opacity var(--t-base), box-shadow var(--t-base);
 }
+
+.footer__logo:hover .footer__logo-img { box-shadow: 0 0 0 3px rgba(127,176,232,0.28); }
 
 .footer__logo:hover .footer__logo-img { opacity: 0.80; }
 
@@ -1856,17 +1882,17 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: var(--c-text);
+  color: var(--fbright);
   transition: color var(--t-base);
 }
 
-.footer__logo:hover .footer__logo-zh { color: var(--c-gold); }
+.footer__logo:hover .footer__logo-zh { color: #7fb0e8; }
 
 .footer__logo-en {
   font-family: var(--font-display);
   font-size: 0.72rem;
   letter-spacing: 0.1em;
-  color: var(--c-text-muted);
+  color: var(--fdim);
   text-transform: uppercase;
 }
 
@@ -1875,15 +1901,15 @@ h1, h2, h3, h4, h5, h6 {
   font-size: clamp(1.1rem, 2vw, 1.45rem);
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--c-text-muted);
+  color: var(--fbright);
   line-height: 1.2;
 }
 
-.footer__tagline--accent { color: var(--c-navy-vivid); margin-bottom: 1rem; }
+.footer__tagline--accent { color: #7fb0e8; margin-bottom: 1rem; }
 
 .footer__est {
   font-size: 0.85rem;
-  color: var(--c-text-dim);
+  color: var(--fdim);
   letter-spacing: 0.06em;
 }
 
@@ -1894,7 +1920,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--c-gold);
+  color: #7fb0e8;
   margin-bottom: 1.25rem;
 }
 
@@ -1926,30 +1952,30 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: flex-start;
   gap: 0.8rem;
-  font-size: 1.1rem;
-  color: var(--c-text-muted);
-  line-height: 1.5;
+  font-size: 1.05rem;
+  color: var(--fdim);
+  line-height: 1.6;
 }
 
 .footer__contact-item svg {
   width: 17px; height: 17px;
   flex-shrink: 0;
-  margin-top: 0.2rem;
-  color: var(--c-navy-light);
+  margin-top: 0.25rem;
+  color: #5f8fc7;
 }
 
 .footer__email-link {
-  color: var(--c-text-muted);
+  color: var(--fdim);
   transition: color var(--t-base);
 }
 
-.footer__email-link:hover { color: var(--c-gold); text-decoration: underline; text-underline-offset: 3px; }
+.footer__email-link:hover { color: var(--fbright); text-decoration: underline; text-underline-offset: 3px; }
 
 /* Bottom bar */
 .footer__bottom {
-  border-top: 1px solid rgba(43,75,107,0.10);
+  border-top: 1px solid rgba(127,176,232,0.14);
   padding-block: 1.25rem;
-  background: #f5f7fa;
+  background: rgba(0,0,0,0.22);
 }
 
 .footer__bottom-inner {
@@ -1962,7 +1988,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__copyright {
   font-size: 0.85rem;
-  color: var(--c-text-dim);
+  color: rgba(207,224,243,0.52);
   letter-spacing: 0.03em;
 }
 
@@ -1991,6 +2017,31 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer__fb-link:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 2px; }
 .footer__fb-link .icon-fb { width: 13px; height: 13px; }
+
+/* 深色頁尾中的互動元件：邊框與文字要改用亮色，否則在深底上幾乎看不見 */
+.site-footer .footer__fb-link {
+  color: rgba(207,224,243,0.72);
+  border-color: rgba(127,176,232,0.26);
+}
+.site-footer .footer__fb-link:hover {
+  color: #eaf2fb;
+  border-color: rgba(127,176,232,0.55);
+  background: rgba(127,176,232,0.12);
+}
+
+.site-footer .lang-btn {
+  color: rgba(207,224,243,0.62);
+  border-color: rgba(127,176,232,0.22);
+}
+.site-footer .lang-btn:hover { color: #eaf2fb; border-color: rgba(127,176,232,0.5); }
+.site-footer .lang-btn--active {
+  color: #0d1823;
+  background: #7fb0e8;
+  border-color: #7fb0e8;
+}
+
+.site-footer .footer__legal-link { color: rgba(207,224,243,0.62); }
+.site-footer .footer__legal-link:hover { color: #eaf2fb; }
 
 /* ─── 19. RESPONSIVE — TABLET / iPAD (≤ 1366px) ───────────────────────── */
 @media (max-width: 1366px) {
