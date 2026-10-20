@@ -102,8 +102,29 @@ if short_token.startswith("EAA") is False:
     if input("   仍要繼續嗎？[y/N] ").strip().lower() not in ("y", "yes"):
         raise SystemExit(1)
 
+# ── ⓪ 先單獨驗證編號與密鑰 ──────────────────────────────────────────
+# client_credentials 只用到應用程式本身的憑證，與使用者權杖無關。
+# 先跑這一步，失敗就確定是密鑰問題，不必再猜權杖。
+print("\n⓪ 驗證應用程式編號與密鑰…")
+try:
+    api("oauth/access_token",
+        grant_type="client_credentials",
+        client_id=app_id,
+        client_secret=app_secret)
+except SystemExit:
+    print("\n   這一步只用到應用程式編號與密鑰，與短效權杖無關。")
+    print("   失敗代表兩者之一不正確，最常見的是密鑰。")
+    print()
+    print("   正確取得方式：")
+    print("   應用程式後台 → 設定 → 基本資料 → 應用程式密鑰 → 按「顯示」")
+    print("   （可能需要重新輸入 Facebook 密碼）→ 用複製按鈕複製")
+    print()
+    print("   密鑰是 32 個小寫十六進位字元，與應用程式編號完全不同。")
+    raise
+print("   ✅ 應用程式憑證正確")
+
 # ── ① 短效 → 長效使用者權杖（約 60 天）──────────────────────────────
-print("\n① 換取長效使用者權杖…")
+print("① 換取長效使用者權杖…")
 long_user = api("oauth/access_token",
                 grant_type="fb_exchange_token",
                 client_id=app_id,
