@@ -18,7 +18,6 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from getpass import getpass
 from pathlib import Path
 
 GRAPH = "https://graph.facebook.com/v25.0"
@@ -74,9 +73,29 @@ print()
 print("應用程式編號與密鑰在：應用程式後台 → 設定 → 基本資料")
 print()
 
-app_id = input("App ID              : ").strip()
-app_secret = getpass("App Secret（不顯示）: ").strip()
-short_token = getpass("短效使用者權杖（不顯示）: ").strip()
+CRED_FILE = Path(__file__).resolve().parent / "fb_credentials.json"
+
+if CRED_FILE.exists():
+    # Windows 終端機的隱藏輸入不吃 Ctrl+V，貼上會變成單一控制字元，
+    # 看起來像密鑰錯誤，其實是根本沒輸入進去。用檔案最穩。
+    cred = json.loads(CRED_FILE.read_text(encoding="utf-8"))
+    app_id = str(cred.get("app_id", "")).strip()
+    app_secret = str(cred.get("app_secret", "")).strip()
+    short_token = str(cred.get("short_token", "")).strip()
+    print(f"✅ 已讀取 {CRED_FILE.name}")
+    print(f"   App ID {app_id}　密鑰長度 {len(app_secret)}　權杖長度 {len(short_token)}")
+else:
+    print("建議改用檔案輸入，避免終端機貼上失效：")
+    print(f"  在 {CRED_FILE} 建立以下內容")
+    print('  {"app_id": "...", "app_secret": "...", "short_token": "..."}')
+    print("  （此檔已列入 .gitignore，不會被提交）")
+    print()
+    print("或直接在這裡輸入。注意：輸入內容會顯示在畫面上，")
+    print("因為隱藏輸入在 Windows 無法正常貼上。")
+    print()
+    app_id = input("App ID       : ").strip()
+    app_secret = input("App Secret   : ").strip()
+    short_token = input("短效使用者權杖 : ").strip()
 
 if not (app_id and app_secret and short_token):
     raise SystemExit("❌ 三項都必須填寫")

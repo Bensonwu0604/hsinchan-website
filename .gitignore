@@ -41,3 +41,4 @@ __pycache__/
 *.pyc
 scripts/fonts/
 scripts/client_secrets.json
+scripts/fb_credentials.json
