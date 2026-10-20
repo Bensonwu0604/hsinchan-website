@@ -88,19 +88,18 @@ if not app_id.isdigit():
 if app_secret == app_id:
     raise SystemExit("❌ 你貼的是應用程式「編號」，不是「密鑰」。\n"
                      "   密鑰在：應用程式後台 → 設定 → 基本資料 → 應用程式密鑰 → 按「顯示」")
+if app_secret.startswith("EAA"):
+    raise SystemExit("❌ 你貼的是存取權杖，不是應用程式密鑰。\n"
+                     "   密鑰在：應用程式後台 → 設定 → 基本資料 → 應用程式密鑰 → 按「顯示」")
+
+# 以下只是觀察，不阻擋。Meta 文件載明憑證長度會隨時間調整，
+# 任何寫死的格式規則都可能把正確的值誤判成錯的。
+# 真正有權威的是下面第 ⓪ 步——直接問 Facebook。
 if not re.fullmatch(r"[0-9a-f]{32}", app_secret):
-    print(f"\n⚠️  應用程式密鑰格式不符：長度 {len(app_secret)}，"
-          f"預期 32 個小寫十六進位字元（0-9 a-f）")
-    if app_secret.startswith("EAA"):
-        print("   這看起來是存取權杖，不是應用程式密鑰")
-    elif len(app_secret) > 40:
-        print("   太長了，可能把權杖或別的值貼進來了")
-    if input("   仍要繼續嗎？[y/N] ").strip().lower() not in ("y", "yes"):
-        raise SystemExit(1)
-if short_token.startswith("EAA") is False:
-    print(f"\n⚠️  短效權杖通常以 EAA 開頭，你輸入的不是（長度 {len(short_token)}）")
-    if input("   仍要繼續嗎？[y/N] ").strip().lower() not in ("y", "yes"):
-        raise SystemExit(1)
+    print(f"\n（註：密鑰長度 {len(app_secret)}，與常見的 32 字元十六進位格式不同。"
+          "這不一定是錯的，接著由 Facebook 驗證。）")
+if not short_token.startswith("EAA"):
+    print(f"（註：短效權杖通常以 EAA 開頭，你輸入的不是，長度 {len(short_token)}。）")
 
 # ── ⓪ 先單獨驗證編號與密鑰 ──────────────────────────────────────────
 # client_credentials 只用到應用程式本身的憑證，與使用者權杖無關。
