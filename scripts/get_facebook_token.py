@@ -14,6 +14,7 @@ import json
 import shutil
 import subprocess
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from getpass import getpass
@@ -26,11 +27,35 @@ NEEDED = {"pages_manage_posts", "pages_read_engagement"}
 
 
 def api(path, **params):
+    """呼叫 Graph API。
+
+    4xx 時 urlopen 會丟 HTTPError 而不是回傳內容，但 Facebook 真正的
+    錯誤說明就在那個回應的 body 裡。必須接住並讀出來，否則只會看到
+    一句沒有資訊的 Bad Request。
+    """
     url = f"{GRAPH}/{path}?" + urllib.parse.urlencode(params)
-    with urllib.request.urlopen(url, timeout=30) as r:
-        data = json.loads(r.read())
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:
+            data = json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        try:
+            data = json.loads(e.read())
+        except Exception:                                    # noqa: BLE001
+            raise SystemExit(f"\n❌ HTTP {e.code}：{e.reason}") from None
     if "error" in data:
-        raise SystemExit(f"\n❌ Graph API 錯誤：{data['error'].get('message')}")
+        err = data["error"]
+        print(f"\n❌ Graph API 錯誤：{err.get('message')}")
+        if err.get("error_user_msg"):
+            print(f"   {err['error_user_msg']}")
+        print(f"   type={err.get('type')}  code={err.get('code')}"
+              f"  subcode={err.get('error_subcode')}")
+        print()
+        print("   常見原因：")
+        print("   · 應用程式密鑰貼錯，或貼成了應用程式編號")
+        print("   · 短效權杖是用別的應用程式產生的")
+        print("   · 短效權杖已過期（Explorer 產生後數小時內要用掉）")
+        print("   · 權杖選成了「粉絲專頁存取權杖」，這裡需要「用戶存取權杖」")
+        raise SystemExit(1)
     return data
 
 
