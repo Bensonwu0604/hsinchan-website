@@ -11,6 +11,7 @@ Graph Explorer 直接給的是短效使用者權杖，數小時後就失效，
 """
 
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -81,6 +82,25 @@ if not (app_id and app_secret and short_token):
     raise SystemExit("❌ 三項都必須填寫")
 if not app_id.isdigit():
     raise SystemExit("❌ App ID 應為純數字，你可能貼成了別的值")
+
+# 密鑰是隱藏輸入，貼錯當下看不出來，先用格式擋掉最常見的幾種錯誤。
+# 只回報長度與型態，不顯示內容。
+if app_secret == app_id:
+    raise SystemExit("❌ 你貼的是應用程式「編號」，不是「密鑰」。\n"
+                     "   密鑰在：應用程式後台 → 設定 → 基本資料 → 應用程式密鑰 → 按「顯示」")
+if not re.fullmatch(r"[0-9a-f]{32}", app_secret):
+    print(f"\n⚠️  應用程式密鑰格式不符：長度 {len(app_secret)}，"
+          f"預期 32 個小寫十六進位字元（0-9 a-f）")
+    if app_secret.startswith("EAA"):
+        print("   這看起來是存取權杖，不是應用程式密鑰")
+    elif len(app_secret) > 40:
+        print("   太長了，可能把權杖或別的值貼進來了")
+    if input("   仍要繼續嗎？[y/N] ").strip().lower() not in ("y", "yes"):
+        raise SystemExit(1)
+if short_token.startswith("EAA") is False:
+    print(f"\n⚠️  短效權杖通常以 EAA 開頭，你輸入的不是（長度 {len(short_token)}）")
+    if input("   仍要繼續嗎？[y/N] ").strip().lower() not in ("y", "yes"):
+        raise SystemExit(1)
 
 # ── ① 短效 → 長效使用者權杖（約 60 天）──────────────────────────────
 print("\n① 換取長效使用者權杖…")
