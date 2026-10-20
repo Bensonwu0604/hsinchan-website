@@ -151,13 +151,43 @@ long_user = api("oauth/access_token",
 print("   ✅ 已取得")
 
 # ── ② 長效使用者權杖 → 粉專權杖（這一個才永不過期）──────────────────
-print("② 取得粉專權杖…")
-page_token = api(PAGE_ID, fields="access_token", access_token=long_user).get("access_token")
-if not page_token:
+# 不直接用寫死的 ID 去取：那樣失敗時只會回 subcode=33，分不清是
+# ID 錯了還是沒權限。先列出這個帳號實際管理的粉專，答案自己會浮出來。
+print("② 列出此帳號管理的粉專…")
+accounts = api("me/accounts", access_token=long_user, limit=100).get("data", [])
+
+if not accounts:
     raise SystemExit(
-        "❌ 這個帳號沒有該粉專的管理權限，或權限未勾選 pages_show_list。\n"
-        f"   粉專 ID：{PAGE_ID}")
-print("   ✅ 已取得")
+        "\n❌ 這個 Facebook 帳號沒有管理任何粉絲專頁。\n"
+        "   可能原因：\n"
+        "   · 授權時沒有勾選 pages_show_list\n"
+        "   · 授權視窗出現粉專清單時沒有勾選欣晨工業\n"
+        "   · 這個帳號確實不是該粉專的管理員，要用粉專擁有者的帳號\n"
+        "     （粉專設定 → 粉絲專頁管理人員 可以確認）")
+
+print(f"   找到 {len(accounts)} 個粉專：")
+for i, a in enumerate(accounts, 1):
+    mark = "  ← 設定中的目標" if a["id"] == PAGE_ID else ""
+    print(f"     {i}. {a.get('name')}（ID {a['id']}）{mark}")
+
+target = next((a for a in accounts if a["id"] == PAGE_ID), None)
+if target is None:
+    print(f"\n   ⚠️  清單中沒有設定的粉專 ID {PAGE_ID}")
+    if len(accounts) == 1:
+        target = accounts[0]
+        print(f"   只有一個粉專，改用：{target.get('name')}（ID {target['id']}）")
+    else:
+        choice = input("   要用哪一個？輸入編號：").strip()
+        if not choice.isdigit() or not 1 <= int(choice) <= len(accounts):
+            raise SystemExit("❌ 編號不正確")
+        target = accounts[int(choice) - 1]
+    print(f"\n   注意：GitHub 的 FB_PAGE_ID 目前是 {PAGE_ID}，")
+    print(f"   若要改用 {target['id']}，記得一併更新該 secret。")
+
+page_token = target.get("access_token")
+if not page_token:
+    raise SystemExit("❌ 取不到該粉專的存取權杖，請確認已授權 pages_manage_posts")
+print(f"   ✅ 已取得粉專權杖：{target.get('name')}")
 
 # ── ③ 驗證：必須永不過期，且具備發文權限 ───────────────────────────
 print("③ 驗證權杖…")
