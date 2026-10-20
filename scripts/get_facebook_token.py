@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+"""一次性執行：取得「永不過期」的 Facebook 粉專存取權杖
+
+Graph Explorer 直接給的是短效使用者權杖，數小時後就失效，
+自動發文會在某個週二無聲無息地停掉。真正要的是粉專權杖，
+而且要先把使用者權杖換成長效版本，換出來的粉專權杖才不會過期。
+
+流程：短效使用者權杖 → 長效使用者權杖 → 粉專權杖 → 驗證永不過期
+
+執行：python get_facebook_token.py
+"""
+
+import json
+import shutil
+import subprocess
+import sys
+import urllib.parse
+import urllib.request
+from getpass import getpass
+from pathlib import Path
+
+GRAPH = "https://graph.facebook.com/v25.0"
+REPO = "Bensonwu0604/hsinchan-website"
+PAGE_ID = "100069099361989"          # 欣晨工業粉專，公開資訊
+NEEDED = {"pages_manage_posts", "pages_read_engagement"}
+
+
+def api(path, **params):
+    url = f"{GRAPH}/{path}?" + urllib.parse.urlencode(params)
+    with urllib.request.urlopen(url, timeout=30) as r:
+        data = json.loads(r.read())
+    if "error" in data:
+        raise SystemExit(f"\n❌ Graph API 錯誤：{data['error'].get('message')}")
+    return data
+
+
+print("=" * 60)
+print("  欣晨工業 Facebook 粉專權杖取得工具")
+print("=" * 60)
+print()
+print("前置步驟（在瀏覽器完成）：")
+print("1. 前往 https://developers.facebook.com/tools/explorer")
+print("2. 右上角選擇你的應用程式")
+print("3. 權限勾選：pages_manage_posts、pages_read_engagement、pages_show_list")
+print("4. 按「Generate Access Token」並完成授權")
+print("5. 複製產生的權杖（這是短效的，本工具會把它換成永久的）")
+print()
+print("應用程式編號與密鑰在：應用程式後台 → 設定 → 基本資料")
+print()
+
+app_id = input("App ID              : ").strip()
+app_secret = getpass("App Secret（不顯示）: ").strip()
+short_token = getpass("短效使用者權杖（不顯示）: ").strip()
+
+if not (app_id and app_secret and short_token):
+    raise SystemExit("❌ 三項都必須填寫")
+if not app_id.isdigit():
+    raise SystemExit("❌ App ID 應為純數字，你可能貼成了別的值")
+
+# ── ① 短效 → 長效使用者權杖（約 60 天）──────────────────────────────
+print("\n① 換取長效使用者權杖…")
+long_user = api("oauth/access_token",
+                grant_type="fb_exchange_token",
+                client_id=app_id,
+                client_secret=app_secret,
+                fb_exchange_token=short_token)["access_token"]
+print("   ✅ 已取得")
+
+# ── ② 長效使用者權杖 → 粉專權杖（這一個才永不過期）──────────────────
+print("② 取得粉專權杖…")
+page_token = api(PAGE_ID, fields="access_token", access_token=long_user).get("access_token")
+if not page_token:
+    raise SystemExit(
+        "❌ 這個帳號沒有該粉專的管理權限，或權限未勾選 pages_show_list。\n"
+        f"   粉專 ID：{PAGE_ID}")
+print("   ✅ 已取得")
+
+# ── ③ 驗證：必須永不過期，且具備發文權限 ───────────────────────────
+print("③ 驗證權杖…")
+info = api("debug_token", input_token=page_token,
+           access_token=f"{app_id}|{app_secret}")["data"]
+
+expires = info.get("expires_at", -1)
+scopes = set(info.get("scopes", []))
+ok = True
+
+if expires == 0:
+    print("   ✅ 有效期限：永不過期")
+else:
+    ok = False
+    print(f"   ❌ 有效期限：{expires}（應為 0）")
+    print("      代表來源使用者權杖不是長效的，請重新產生短效權杖後再跑一次")
+
+missing = NEEDED - scopes
+if missing:
+    ok = False
+    print(f"   ❌ 缺少權限：{'、'.join(sorted(missing))}")
+else:
+    print(f"   ✅ 權限齊備：{'、'.join(sorted(NEEDED))}")
+
+if info.get("is_valid"):
+    print("   ✅ 權杖有效")
+else:
+    ok = False
+    print("   ❌ 權杖無效")
+
+if not ok:
+    raise SystemExit("\n驗證未通過，權杖不會寫入 GitHub。請依上面訊息修正後重跑。")
+
+
+# ── ④ 寫入 GitHub Secrets ────────────────────────────────────────────
+def find_gh():
+    found = shutil.which("gh")
+    if found:
+        return found
+    for c in (r"C:\Program Files\GitHub CLI\gh.exe",
+              Path.home() / "AppData/Local/Programs/GitHub CLI/gh.exe"):
+        if Path(c).exists():
+            return str(c)
+    return None
+
+
+gh = find_gh()
+if gh:
+    print()
+    if input(f"寫入 {REPO} 的 FB_ACCESS_TOKEN？[Y/n] ").strip().lower() in ("", "y", "yes"):
+        # 用 stdin 傳值，不要用 --body：命令列參數會進 shell 歷史紀錄
+        r = subprocess.run([gh, "secret", "set", "FB_ACCESS_TOKEN", "--repo", REPO],
+                           input=page_token, text=True, capture_output=True)
+        if r.returncode == 0:
+            print("   ✅ FB_ACCESS_TOKEN 已寫入")
+            print("\n完成。Facebook 上傳鏈路的憑證已齊備。")
+            raise SystemExit(0)
+        print(f"   ❌ 寫入失敗：{r.stderr.strip()}")
+
+print()
+print("手動設定（在你自己的終端機執行，貼上時不會顯示）：")
+print(f"   gh secret set FB_ACCESS_TOKEN --repo {REPO}")
+print()
+print(f"權杖：{page_token[:8]}…（長度 {len(page_token)}）")
+print("完整值未顯示，避免留在終端機紀錄中。加 --show 可印出完整值。")
+
+if "--show" in sys.argv:
+    print(f"\nFB_ACCESS_TOKEN = {page_token}")

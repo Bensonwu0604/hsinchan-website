@@ -1,8 +1,13 @@
 name: 試作 Podcast 影片（每3天自動執行）
 
 on:
-  schedule:
-    - cron: '0 3 * * 2,5'
+  # 排程已停用（2026-10-20）。
+  # 這支流程每週二、五各跑一次，呼叫 claude-sonnet-4-6 與 OpenAI tts-1，
+  # 產出的只是一個沒人下載的試作檔，卻與正式影片流程共用同一份
+  # Anthropic 額度，是 2026-10 額度提前用盡的主因之一。
+  # 要重新啟用：把下面兩行的註解拿掉。
+  # schedule:
+  #   - cron: '0 3 * * 2,5'
   push:
     paths:
       - 'scripts/test_podcast.py'
