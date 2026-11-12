@@ -34,6 +34,8 @@ INDEX = ROOT / "index.html"
 SITEMAP = ROOT / "sitemap.xml"
 BASE = "https://www.hsinchan.com/"
 CHANNEL = "https://www.youtube.com/@欣晨工業有限公司"
+# 頻道的永久網址。@帳號代稱可以改名，UC 開頭的頻道 ID 不會變。
+CHANNEL_PERMANENT = "https://www.youtube.com/channel/UC4AcgKzO2uL9CyxEfzv3hMQ"
 MARK_START = "<!-- LATEST-EPISODE:START -->"
 MARK_END = "<!-- LATEST-EPISODE:END -->"
 
@@ -433,25 +435,44 @@ def update_index(db):
     INDEX.write_bytes(s.replace("\r\n", "\n").encode("utf-8"))
 
 
+VIDEO_NS = 'xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"'
+
+
 def update_sitemap(db):
+    """各集文章頁寫入 sitemap，並附 Google 影片 sitemap 擴充欄位
+
+    影片 sitemap 是 Google 官方用來發現影片的管道：縮圖、時長、
+    發布日與播放器網址都直接給，不必等爬蟲自己從頁面推斷。
+    每次整批重寫各集的區塊，舊格式的項目也會一併更新。
+    """
     s = SITEMAP.read_text(encoding="utf-8")
-    added = 0
+    if VIDEO_NS not in s:
+        s = s.replace("<urlset ", f"<urlset {VIDEO_NS}\n        ", 1)
+    s = re.sub(r"\n  <url>\s*<loc>https://www\.hsinchan\.com/video-[^<]+</loc>.*?</url>\n",
+               "\n", s, flags=re.S)
+
+    blocks = []
     for ep in db["episodes"]:
-        loc = f"{BASE}{page_url(ep)}"
-        if f"<loc>{loc}</loc>" in s:
-            continue
-        s = s.replace("</urlset>", f"""
-  <url>
-    <loc>{loc}</loc>
+        desc = e((ep.get("intro") or ep.get("summary") or ep["title"])[:2000])
+        blocks.append(f"""  <url>
+    <loc>{BASE}{page_url(ep)}</loc>
     <lastmod>{ep['published']}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-</urlset>""")
-        added += 1
+    <video:video>
+      <video:thumbnail_loc>https://i.ytimg.com/vi/{ep['id']}/maxresdefault.jpg</video:thumbnail_loc>
+      <video:title>{e(ep['title'])}</video:title>
+      <video:description>{desc}</video:description>
+      <video:player_loc>https://www.youtube.com/embed/{ep['id']}</video:player_loc>
+      <video:duration>{int(ep['seconds'])}</video:duration>
+      <video:publication_date>{ep['published']}T10:30:00+08:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:uploader info="{CHANNEL_PERMANENT}">欣晨工業有限公司</video:uploader>
+    </video:video>
+  </url>""")
+    s = s.replace("</urlset>", "\n".join(blocks) + "\n</urlset>")
     SITEMAP.write_bytes(s.replace("\r\n", "\n").encode("utf-8"))
-    if added:
-        print(f"   sitemap 新增 {added} 筆")
+    print(f"   sitemap：{len(blocks)} 集含影片擴充欄位")
 
 
 def write(path, text):

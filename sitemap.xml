@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+<urlset xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
@@ -235,5 +236,15 @@
     <lastmod>2026-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <video:video>
+      <video:thumbnail_loc>https://i.ytimg.com/vi/Cgn7qaZ5iR0/maxresdefault.jpg</video:thumbnail_loc>
+      <video:title>裝了智慧電表卻沒省電？先算能耗理論下限，再決定電表裝哪裡</video:title>
+      <video:description>多數工廠裝了智慧電表卻省不下電，因為先裝設備才想要量什麼。本集先算出製程的能耗理論下限，再回頭決定電表該裝在哪幾個點。</video:description>
+      <video:player_loc>https://www.youtube.com/embed/Cgn7qaZ5iR0</video:player_loc>
+      <video:duration>888</video:duration>
+      <video:publication_date>2026-11-03T10:30:00+08:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:uploader info="https://www.youtube.com/channel/UC4AcgKzO2uL9CyxEfzv3hMQ">欣晨工業有限公司</video:uploader>
+    </video:video>
   </url>
 </urlset>
