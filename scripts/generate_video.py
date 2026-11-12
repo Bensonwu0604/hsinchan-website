@@ -948,6 +948,61 @@ def normalize_assets(script):
     for beat in script["reflection_beats"]:
         fix(beat)
 
+# 馬斯克五步演算法的辨識詞。只用來檢查「順序」，不是檢查用字，
+# 所以每一步收錄多種常見說法。
+MUSK_STEPS = [
+    ("質疑要求", ("質疑", "誰訂的", "為什麼要", "問清楚", "挑戰假設", "憑什麼")),
+    ("刪除",     ("刪除", "刪掉", "砍掉", "拿掉", "移除", "去掉", "取消")),
+    ("簡化",     ("簡化", "優化", "精簡")),
+    ("加快速度", ("加快", "加速", "縮短", "提速")),
+    ("自動化",   ("自動化", "自動執行", "機械手臂", "無人化")),
+]
+
+
+def _check_musk_order(script):
+    """檢查 sop_steps 是否依照馬斯克五步演算法排列
+
+    提示詞要求了順序，但要求不等於產出照做。最該防的失誤是
+    「直接從第 5 步開始」——那正是本節目反覆批評的事，自己卻犯，
+    說服力會整個垮掉。
+
+    只檢查相對順序，不檢查用字，也不要求五步全部出現：
+    短篇 SOP 合理地可能只涵蓋其中幾步。
+    """
+    steps = script.get("sop_steps") or []
+    text = [str(s) for s in steps]
+
+    # 每一步第一次出現在第幾條 sop_step
+    pos = {}
+    for idx, (name, words) in enumerate(MUSK_STEPS):
+        for i, s in enumerate(text):
+            if any(w in s for w in words):
+                pos[idx] = i
+                break
+
+    if len(pos) < 2:
+        raise ValueError(
+            "sop_steps 看不出馬斯克五步演算法的痕跡（質疑→刪除→簡化→加快→自動化）。"
+            "請依這五步的順序重寫執行步驟，先質疑與刪除，最後才談自動化。")
+
+    found = sorted(pos.items())
+    for (a_idx, a_pos), (b_idx, b_pos) in zip(found, found[1:]):
+        if b_pos < a_pos:
+            raise ValueError(
+                f"sop_steps 的順序不對：「{MUSK_STEPS[b_idx][0]}」出現在第 {b_pos + 1} 條，"
+                f"卻排在「{MUSK_STEPS[a_idx][0]}」（第 {a_pos + 1} 條）之前。"
+                "五步演算法有嚴格先後，必須是 質疑→刪除→簡化→加快→自動化。")
+
+    # 最該防的單一失誤：還沒質疑與刪除就先講自動化
+    auto = pos.get(4)
+    if auto is not None:
+        earlier = [pos[i] for i in (0, 1) if i in pos]
+        if earlier and auto <= min(earlier):
+            raise ValueError(
+                f"sop_steps 第 {auto + 1} 條就談自動化，但質疑與刪除還沒出現。"
+                "本節目的核心主張正是「不要從第 5 步開始」，執行步驟不能自己違反。")
+
+
 def validate_script(script, check_length=True):
     """上線前先驗證腳本結構
 
@@ -988,6 +1043,7 @@ def validate_script(script, check_length=True):
             _check_dialogue(beat["dialogue"], f"dimensions[{d}].beats[{j}]")
 
     normalize_assets(script)
+    _check_musk_order(script)
 
     # 片長檢查的目的是約束 Claude 的產出；用現成腳本測試流程時不適用
     est = estimate_script_seconds(script)
@@ -1018,6 +1074,10 @@ def _tts_openai(text, voice, out_path):
     Path(out_path).write_bytes(resp.read())
 
 
+# 中途改用備援的句子，收工時一併回報，方便判斷 edge-tts 是否該整個換掉
+TTS_FALLBACK_LINES = []
+
+
 def synthesize_line(text, voice, out_path, retries=TTS_RETRIES):
     """生成單句語音
 
@@ -1043,6 +1103,20 @@ def synthesize_line(text, voice, out_path, retries=TTS_RETRIES):
             wait = TTS_BACKOFF * attempt
             print(f"   ⚠️  配音失敗（第 {attempt}/{retries} 次）：{last_err} — {wait}秒後重試")
             time.sleep(wait)
+
+    # 同一來源連續失敗代表不是偶發網路問題。改用備援把這句補起來，
+    # 整支影片才不會因為一句話報銷——一句聲線不同，遠優於當週沒有影片。
+    if ACTIVE_TTS["provider"] == "edge":
+        print(f"   ⚠️  edge-tts 連續 {retries} 次失敗，這句改用 OpenAI 備援")
+        try:
+            _tts_openai(text, VOICES["openai"].get(
+                "A" if voice == VOICES["edge"]["A"] else "B"), out_path)
+            if Path(out_path).exists() and Path(out_path).stat().st_size > 0:
+                TTS_FALLBACK_LINES.append(text[:30])
+                return
+        except Exception as e:                  # noqa: BLE001
+            last_err = e
+
     raise RuntimeError(f"配音連續 {retries} 次失敗：{last_err}")
 
 def make_silence_clip(duration, out_path):
@@ -1286,7 +1360,11 @@ def preflight_check():
     if ACTIVE_TTS["provider"] == "edge":
         probe = Path(tempfile.gettempdir()) / "_tts_probe.mp3"
         try:
-            _tts_edge("測試", VOICES["edge"]["A"], probe)
+            # 探測句要和真實台詞長度相當。先前用「測試」兩個字，短字串過得了、
+            # 真實長度的句子卻失敗（2026-11-10 就是這樣整支報銷），
+            # 等於探測形同虛設。
+            _tts_edge("第一性原理的作法是，先問這條規格是誰訂的、為什麼，"
+                      "再決定要不要刪掉它。", VOICES["edge"]["A"], probe)
             if not (probe.exists() and probe.stat().st_size > 0):
                 raise RuntimeError("edge-tts 回傳空音檔")
             print("🎙️  配音來源：edge-tts（台灣中文原生語音）\n")
@@ -1656,6 +1734,11 @@ def main():
         )
         # 字幕軌必須在影片上傳完成、拿到 video_id 之後才能掛上去
         upload_captions(yt_id, srt_files)
+
+        if TTS_FALLBACK_LINES:
+            print(f"\n⚠️  有 {len(TTS_FALLBACK_LINES)} 句改用 OpenAI 備援配音，"
+                  "該段聲線與其餘不同。")
+            print("   若持續發生，建議把預設配音來源改為 OpenAI。")
 
         print(f"\n🎉 完成！{date_str} 影片已發布")
         if fb_id: print(f"   Facebook Video ID : {fb_id}")
