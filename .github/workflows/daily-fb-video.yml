@@ -84,6 +84,9 @@ jobs:
         env:
           ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY:     ${{ secrets.OPENAI_API_KEY }}
+          # 未設定時自動略過 Azure，改試 edge-tts，再退到 OpenAI
+          AZURE_SPEECH_KEY:    ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
           FB_PAGE_ID:         ${{ secrets.FB_PAGE_ID }}
           FB_ACCESS_TOKEN:    ${{ secrets.FB_ACCESS_TOKEN }}
           YT_CLIENT_ID:       ${{ secrets.YT_CLIENT_ID }}

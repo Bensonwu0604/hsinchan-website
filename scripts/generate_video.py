@@ -97,19 +97,28 @@ SCRIPT_EST_MAX = 15.5 * 60    # 粗估高於此值才重寫。估算誤差約 ±
 MAX_RATE_ADJ   = 15           # 語速調整上限 ±15%（再多就不自然）
 
 # tts-1-hd 比 tts-1 貴一倍，但整支影片也只差約 $0.04，為成片品質值得
-# 配音來源：edge-tts 用的 zh-TW-*Neural 是微軟 Azure 的官方台灣中文語音，
-# 母語腔調且免費；OpenAI 的聲線是英語母語，唸中文會有明顯外國腔。
-# 但 edge-tts 走非官方免費端點，所以保留 OpenAI 作為端點不可用時的備援，
+# 配音來源，依序嘗試：
+#   azure  —— 微軟 Azure 語音服務官方 API。與 edge-tts 是同一組台灣中文語音
+#             （雲哲、曉臻），但走正式端點、有服務保證。免費層每月 50 萬字元，
+#             每週一集約 4 千字元，用量不到 5%。需設定 AZURE_SPEECH_KEY / REGION。
+#   edge   —— 同一組語音的非官方免費端點。2026-11 實測大量拒絕請求
+#             （連續請求成功率約 1/4，與內容無關），只作為次要選項。
+#   openai —— 端點穩定，但聲線是英語母語，唸中文有外國腔，最後備援。
 # 由 preflight 探測一次後決定整支影片的來源，避免同一支影片混用兩種聲線。
-TTS_PROVIDER = os.environ.get("TTS_PROVIDER", "edge")
+AZURE_SPEECH_KEY    = os.environ.get("AZURE_SPEECH_KEY", "")
+AZURE_SPEECH_REGION = os.environ.get("AZURE_SPEECH_REGION", "")
+TTS_PROVIDER = os.environ.get("TTS_PROVIDER",
+                              "azure" if AZURE_SPEECH_KEY and AZURE_SPEECH_REGION else "edge")
 TTS_MODEL = os.environ.get("TTS_MODEL", "tts-1-hd")   # 僅 OpenAI 備援時使用
 TTS_SPEED = float(os.environ.get("TTS_SPEED", "1.0"))
+_TW_VOICES = {"A": os.environ.get("HOST_A_VOICE", "zh-TW-YunJheNeural"),
+              "B": os.environ.get("HOST_B_VOICE", "zh-TW-HsiaoChenNeural")}
 VOICES = {
-    "edge":   {"A": os.environ.get("HOST_A_VOICE", "zh-TW-YunJheNeural"),
-               "B": os.environ.get("HOST_B_VOICE", "zh-TW-HsiaoChenNeural")},
+    "azure":  dict(_TW_VOICES),
+    "edge":   dict(_TW_VOICES),
     "openai": {"A": "onyx", "B": "nova"},
 }
-HOST_VOICES = VOICES[TTS_PROVIDER if TTS_PROVIDER in VOICES else "edge"]
+HOST_VOICES = dict(VOICES[TTS_PROVIDER if TTS_PROVIDER in VOICES else "edge"])
 # preflight 探測後填入，整支影片共用同一個來源
 ACTIVE_TTS = {"provider": TTS_PROVIDER if TTS_PROVIDER in VOICES else "edge"}
 HOST_LABELS = {"A": "主持人 A", "B": "主持人 B"}
@@ -1186,6 +1195,27 @@ def _tts_edge(text, voice, out_path):
     asyncio.run(_run())
 
 
+def _tts_azure(text, voice, out_path):
+    """Azure 語音服務 REST API：與 edge-tts 相同的台灣中文語音，正式端點"""
+    from xml.sax.saxutils import escape
+    ssml = (f"<speak version='1.0' xml:lang='zh-TW'>"
+            f"<voice name='{voice}'>{escape(text)}</voice></speak>")
+    resp = requests.post(
+        f"https://{AZURE_SPEECH_REGION}.tts.speech.microsoft.com/cognitiveservices/v1",
+        headers={
+            "Ocp-Apim-Subscription-Key": AZURE_SPEECH_KEY,
+            "Content-Type": "application/ssml+xml",
+            "X-Microsoft-OutputFormat": "audio-24khz-48kbitrate-mono-mp3",
+            "User-Agent": "hsinchan-video",
+        },
+        data=ssml.encode("utf-8"),
+        timeout=60,
+    )
+    if resp.status_code != 200:
+        raise RuntimeError(f"Azure TTS HTTP {resp.status_code}：{resp.text[:160]}")
+    Path(out_path).write_bytes(resp.content)
+
+
 def _tts_openai(text, voice, out_path):
     """OpenAI TTS：端點穩定但聲線是英語母語，唸中文有外國腔，僅作備援"""
     from openai import OpenAI
@@ -1211,7 +1241,8 @@ def synthesize_line(text, voice, out_path, retries=TTS_RETRIES):
     if not text:
         raise ValueError("旁白台詞為空，無法配音")
 
-    fn = _tts_edge if ACTIVE_TTS["provider"] == "edge" else _tts_openai
+    provider = ACTIVE_TTS["provider"]
+    fn = {"azure": _tts_azure, "edge": _tts_edge}.get(provider, _tts_openai)
     last_err = None
     for attempt in range(1, retries + 1):
         try:
@@ -1228,11 +1259,11 @@ def synthesize_line(text, voice, out_path, retries=TTS_RETRIES):
 
     # 同一來源連續失敗代表不是偶發網路問題。改用備援把這句補起來，
     # 整支影片才不會因為一句話報銷——一句聲線不同，遠優於當週沒有影片。
-    if ACTIVE_TTS["provider"] == "edge":
-        print(f"   ⚠️  edge-tts 連續 {retries} 次失敗，這句改用 OpenAI 備援")
+    if provider != "openai":
+        print(f"   ⚠️  {provider} 連續 {retries} 次失敗，這句改用 OpenAI 備援")
         try:
             _tts_openai(text, VOICES["openai"].get(
-                "A" if voice == VOICES["edge"]["A"] else "B"), out_path)
+                "A" if voice == VOICES[provider]["A"] else "B"), out_path)
             if Path(out_path).exists() and Path(out_path).stat().st_size > 0:
                 TTS_FALLBACK_LINES.append(text[:30])
                 return
@@ -1504,28 +1535,45 @@ def preflight_check():
         ) from None
     print("   ✅ 金鑰可用")
 
-    # 探測配音來源：edge-tts 腔調自然但走非官方端點，先試一句短的確認可用；
-    # 不通就整支改用 OpenAI，而不是跑到一半才發現、或讓同一支影片混用兩種聲線。
-    if ACTIVE_TTS["provider"] == "edge":
-        probe = Path(tempfile.gettempdir()) / "_tts_probe.mp3"
+    # 探測配音來源：依 azure → edge → openai 的順序，第一個通過的就用到底，
+    # 而不是跑到一半才發現、或讓同一支影片混用兩種聲線。
+    # 探測句要和真實台詞長度相當（先前用「測試」兩字，短句過、長句敗，
+    # 2026-11-10 因此整支報銷）。edge-tts 目前約 1/4 成功率，單次通過
+    # 說明不了什麼，要連續三句都通過才採用。
+    PROBES = ["第一性原理的作法是，先問這條規格是誰訂的、為什麼，再決定要不要刪掉它。",
+              "很多工廠花了三年做智慧製造，問他們哪裡變聰明了，卻答不出來。",
+              "先找出一個每天都在做的決策，再決定要量哪一個點。"]
+    LABEL = {"azure": "Azure 語音服務（台灣中文原生語音）",
+             "edge": "edge-tts（台灣中文原生語音，非官方端點）",
+             "openai": "OpenAI TTS（備援，中文腔調較不自然）"}
+    order = ["azure", "edge", "openai"]
+    order = order[order.index(ACTIVE_TTS["provider"]):] if ACTIVE_TTS["provider"] in order else order
+    if not (AZURE_SPEECH_KEY and AZURE_SPEECH_REGION) and "azure" in order:
+        order.remove("azure")
+        print("   （未設定 AZURE_SPEECH_KEY，略過 Azure 語音服務）")
+
+    probe = Path(tempfile.gettempdir()) / "_tts_probe.mp3"
+    for name in order:
+        if name == "openai":
+            chosen = "openai"
+            break
+        fn = _tts_azure if name == "azure" else _tts_edge
         try:
-            # 探測句要和真實台詞長度相當。先前用「測試」兩個字，短字串過得了、
-            # 真實長度的句子卻失敗（2026-11-10 就是這樣整支報銷），
-            # 等於探測形同虛設。
-            _tts_edge("第一性原理的作法是，先問這條規格是誰訂的、為什麼，"
-                      "再決定要不要刪掉它。", VOICES["edge"]["A"], probe)
-            if not (probe.exists() and probe.stat().st_size > 0):
-                raise RuntimeError("edge-tts 回傳空音檔")
-            print("🎙️  配音來源：edge-tts（台灣中文原生語音）\n")
+            for sentence in (PROBES if name == "edge" else PROBES[:1]):
+                probe.unlink(missing_ok=True)
+                fn(sentence, VOICES[name]["A"], probe)
+                if not (probe.exists() and probe.stat().st_size > 0):
+                    raise RuntimeError("回傳空音檔")
+            chosen = name
+            break
         except Exception as e:                  # noqa: BLE001
-            ACTIVE_TTS["provider"] = "openai"
-            HOST_VOICES.update(VOICES["openai"])
-            print(f"   ⚠️  edge-tts 無法使用（{str(e)[:80]}），改用 OpenAI TTS")
-            print("🎙️  配音來源：OpenAI TTS（備援，中文腔調較不自然）\n")
+            print(f"   ⚠️  {name} 無法使用（{str(e)[:80]}），改試下一個來源")
         finally:
             probe.unlink(missing_ok=True)
-    else:
-        print(f"🎙️  配音來源：{ACTIVE_TTS['provider']}\n")
+
+    ACTIVE_TTS["provider"] = chosen
+    HOST_VOICES.update(VOICES[chosen])
+    print(f"🎙️  配音來源：{LABEL[chosen]}\n")
 
 def _hms(seconds):
     """YouTube 章節格式：未滿一小時用 M:SS，超過才用 H:MM:SS"""
