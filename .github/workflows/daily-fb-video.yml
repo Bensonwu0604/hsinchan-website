@@ -37,6 +37,9 @@ jobs:
   generate-and-post:
     name: 生成智慧製造長片並發布至 FB + YouTube
     runs-on: ubuntu-latest
+    # 發布後要把新的一集寫回 videos.json 並重建 videos.html
+    permissions:
+      contents: write
     timeout-minutes: 90
 
     steps:
@@ -85,6 +88,34 @@ jobs:
           DRY_RUN:            ${{ inputs.dry_run || 'false' }}
           FIXTURE_SCRIPT:     ${{ inputs.use_fixture == 'true' && 'fixture_script.json' || '' }}
           UPLOAD_TEST:        ${{ inputs.upload_test || 'false' }}
+
+      # 發布成功後把新的一集加進官網的影片頁。失敗不中斷：影片已經
+      # 上線了，官網晚一步更新不該讓整個工作流程標記為失敗。
+      - name: Update website video page
+        if: ${{ success() && inputs.dry_run != 'true' && inputs.upload_test != 'true' }}
+        continue-on-error: true
+        run: |
+          if [ ! -f scripts/_published.json ]; then
+            echo "沒有 _published.json，略過"; exit 0
+          fi
+          python - <<'EOF'
+          import json, subprocess, pathlib
+          e = json.loads(pathlib.Path("scripts/_published.json").read_text(encoding="utf-8"))
+          subprocess.run(["python", "build_videos_page.py",
+                          "--add", e["id"], "--title", e["title"],
+                          "--date", e["published"], "--seconds", str(e["seconds"]),
+                          "--summary", e.get("summary", "")],
+                         cwd="scripts", check=True)
+          EOF
+          rm -f scripts/_published.json
+          if git diff --quiet videos.json videos.html; then
+            echo "影片頁無變動"; exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add videos.json videos.html
+          git commit -m "chore: 影片頁新增一集（自動）"
+          git push
 
       - name: Upload video artifact (dry run only)
         if: ${{ inputs.dry_run == 'true' }}

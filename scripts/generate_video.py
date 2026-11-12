@@ -1755,6 +1755,19 @@ def main():
         # 字幕軌必須在影片上傳完成、拿到 video_id 之後才能掛上去
         upload_captions(yt_id, srt_files)
 
+        # 把這一集寫下來，交由工作流程更新官網的影片頁。
+        # 不在這裡直接改 HTML：產生頁面與產生影片是兩件事，
+        # 分開才能單獨重建頁面而不必重跑整支影片。
+        if yt_id and not UPLOAD_TEST:
+            Path("_published.json").write_text(json.dumps({
+                "id": yt_id,
+                "title": script["video_title"],
+                "published": date_str,
+                "seconds": int(total_duration),
+                "summary": (script.get("key_points") or [""])[0],
+            }, ensure_ascii=False), encoding="utf-8")
+            print("📝 已記錄本集資訊，供官網影片頁更新")
+
         if TTS_FALLBACK_LINES:
             print(f"\n⚠️  有 {len(TTS_FALLBACK_LINES)} 句改用 OpenAI 備援配音，"
                   "該段聲線與其餘不同。")
