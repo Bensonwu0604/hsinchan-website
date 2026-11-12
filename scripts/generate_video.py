@@ -1454,6 +1454,19 @@ def _short_cut_time(cues, hook_duration):
     return max(ends) + 0.3 if ends else limit
 
 
+_NO_LINE_START = "，。、；：？！）」』…—"
+
+
+def _wrap_cjk(draw, text, font, max_width):
+    """中文斷行：標點不放在行首，改掛在上一行行尾（避頭點）"""
+    lines = wrap_text(draw, text, font, max_width)
+    for i in range(1, len(lines)):
+        while lines[i] and lines[i][0] in _NO_LINE_START:
+            lines[i - 1] += lines[i][0]
+            lines[i] = lines[i][1:]
+    return [l for l in lines if l]
+
+
 def _short_canvas(bold_path, reg_path):
     """所有短片共用的直式底圖：頂端色條與底部導流到完整版"""
     bg = Image.new("RGB", (SHORT_W, SHORT_H), BG)
@@ -1478,7 +1491,7 @@ def _short_subtitles(cues, bold_path, tmp, prefix):
     for i, (a, b, txt) in enumerate(cues):
         im = Image.new("RGBA", (SHORT_W, 360), (0, 0, 0, 0))
         sd = ImageDraw.Draw(im)
-        lines = wrap_text(sd, txt, f_sub, SHORT_W - 160)[:4]
+        lines = _wrap_cjk(sd, txt, f_sub, SHORT_W - 160)[:4]
         box_h = 76 * len(lines) + 40
         sd.rounded_rectangle([50, 0, SHORT_W - 50, box_h], radius=18, fill=(0, 0, 0, 170))
         for j, line in enumerate(lines):
@@ -1534,7 +1547,7 @@ def make_short(hook_clip, cues, ep_title, out_path, bold_path, reg_path, tmp):
     bg, d = _short_canvas(bold_path, reg_path)
     f_eyebrow = ImageFont.truetype(bold_path, 40)
     f_title = ImageFont.truetype(DISPLAY_FONT or bold_path, 66)
-    lines = wrap_text(d, ep_title, f_title, SHORT_W - 120)[:4]
+    lines = _wrap_cjk(d, ep_title, f_title, SHORT_W - 120)[:4]
     # 節目名＋片名整組在上方區域（約 60–600）垂直置中，避免下方留一大塊空白
     y = 60 + (540 - (80 + 90 * len(lines))) // 2
     d.text((60, y), "第一性原理拆解智慧製造", font=f_eyebrow, fill=ACCENT_LT)
@@ -1584,7 +1597,7 @@ def make_short_from_script(sh, out_path, bold_path, reg_path, tmp):
             cx = 60 + k * 44
             d.ellipse([cx, 225, cx + 22, 247], fill=ACCENT if k <= n else DARK_GRAY)
         f_main = ImageFont.truetype(DISPLAY_FONT or bold_path, 84)
-        main_lines = wrap_text(d, text, f_main, SHORT_W - 120)[:6]
+        main_lines = _wrap_cjk(d, text, f_main, SHORT_W - 120)[:6]
         # 標籤＋重點整組在 300–1260 之間垂直置中：重點只有一兩行時，
         # 不會在字幕上方留下一大片空白
         y = 300 + (960 - (124 + 116 * len(main_lines))) // 2
