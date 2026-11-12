@@ -5,7 +5,7 @@
       → FFmpeg 逐段合成（Ken Burns 效果）→ 串接 → 上傳 Facebook + YouTube
 """
 
-import os, sys, json, base64, subprocess, tempfile, textwrap, math, time
+import os, sys, json, base64, re, subprocess, tempfile, textwrap, math, time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -1825,6 +1825,14 @@ def main():
                 "published": date_str,
                 "seconds": int(total_duration),
                 "summary": (script.get("key_points") or [""])[0],
+                # 以下供官網產生該集的文章頁。影片 Google 只看得到標題與說明，
+                # 文字內容才是搜尋與 LLM 引用真正吃得到的東西。
+                "intro": script["fb_caption"].split("#")[0].strip(),
+                "key_points": script.get("key_points", []),
+                "sop_steps": script.get("sop_steps", []),
+                "benefits": script.get("benefits", []),
+                "chapters": [[label, int(t)] for label, t in chapters],
+                "tags": re.findall(r"#(\S+)", script["fb_caption"]),
             }, ensure_ascii=False), encoding="utf-8")
             print("📝 已記錄本集資訊，供官網影片頁更新")
 

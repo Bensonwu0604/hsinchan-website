@@ -1369,6 +1369,14 @@ const translations = {
     svd7_lim4_d: "進水硬度、懸浮物與水溫會影響產氣效率與模組壽命。評估階段需要貴公司提供現況水質分析報告。",
     footer_view_all: "查看全部 →",
     nav_videos: "影片",
+    ep_latest: "最新一集",
+    ep_all: "全部集數",
+    ep_read: "閱讀重點與 SOP",
+    ep_subscribe: "訂閱 YouTube 頻道",
+    ep_keypoints: "本集重點",
+    ep_sop: "導入 SOP：明天就能開始",
+    ep_benefits: "執行效益",
+    ep_chapters: "章節",
   },
 
   ja: {
@@ -2715,6 +2723,14 @@ const translations = {
     svd7_lim4_d: '原水の硬度、懸濁物質、水温は、ガス発生効率とモジュールの寿命に影響します。評価段階では、貴社の現状水質分析報告書のご提供が必要です。',
     footer_view_all: "すべて見る →",
     nav_videos: "動画",
+    ep_latest: "最新エピソード",
+    ep_all: "全エピソード",
+    ep_read: "要点とSOPを読む",
+    ep_subscribe: "YouTubeチャンネル登録",
+    ep_keypoints: "今回の要点",
+    ep_sop: "導入SOP：明日から始められる手順",
+    ep_benefits: "期待できる効果",
+    ep_chapters: "チャプター",
   },
 
   en: {
@@ -4061,6 +4077,14 @@ const translations = {
     svd7_lim4_d: 'Inlet hardness, suspended solids, and water temperature affect gas generation efficiency and module service life. The assessment stage requires a current water quality analysis report from your facility.',
     footer_view_all: "View All →",
     nav_videos: "Videos",
+    ep_latest: "Latest episode",
+    ep_all: "All episodes",
+    ep_read: "Read key points & SOP",
+    ep_subscribe: "Subscribe on YouTube",
+    ep_keypoints: "Key points",
+    ep_sop: "SOP: steps you can start tomorrow",
+    ep_benefits: "Expected benefits",
+    ep_chapters: "Chapters",
   },
 };
 

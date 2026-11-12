@@ -98,23 +98,17 @@ jobs:
           if [ ! -f scripts/_published.json ]; then
             echo "沒有 _published.json，略過"; exit 0
           fi
-          python - <<'EOF'
-          import json, subprocess, pathlib
-          e = json.loads(pathlib.Path("scripts/_published.json").read_text(encoding="utf-8"))
-          subprocess.run(["python", "build_videos_page.py",
-                          "--add", e["id"], "--title", e["title"],
-                          "--date", e["published"], "--seconds", str(e["seconds"]),
-                          "--summary", e.get("summary", "")],
-                         cwd="scripts", check=True)
-          EOF
+          (cd scripts && python build_videos_page.py --from-json _published.json)
           rm -f scripts/_published.json
-          if git diff --quiet videos.json videos.html; then
+          git add videos.json videos.html video-*.html index.html sitemap.xml
+          if git diff --cached --quiet; then
             echo "影片頁無變動"; exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add videos.json videos.html
-          git commit -m "chore: 影片頁新增一集（自動）"
+          git commit -m "chore: 新增一集文章頁並更新首頁最新一集（自動）"
+          # 同一時段可能有其他推送（例如翻譯工作流程），先拉再推
+          git pull --rebase origin main
           git push
 
       - name: Upload video artifact (dry run only)
