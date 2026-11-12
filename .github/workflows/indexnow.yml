@@ -1,0 +1,48 @@
+name: 通知 Bing（IndexNow）網頁已更新
+
+# 網站檔案有推送時，把改到的頁面提交給 IndexNow，Bing 不必等爬蟲巡到。
+# 注意：其他工作流程用 GITHUB_TOKEN 推送的 commit 不會觸發這裡
+#（GitHub 防止工作流程互相連鎖觸發），所以每週影片工作流程
+# 另外在自己的步驟裡提交新一集的頁面。
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - 'sitemap.xml'
+      - 'llms.txt'
+      - 'llms-full.txt'
+  workflow_dispatch:
+    inputs:
+      all:
+        description: '提交 sitemap 中的全部網址'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # --wait：先等 Vercel 部署完、網址回 200 才提交
+      - name: Submit to IndexNow
+        run: |
+          if [ "${{ inputs.all }}" = "true" ]; then
+            python scripts/indexnow.py --all --wait
+          elif [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            python scripts/indexnow.py --since ${{ github.event.before }} --wait
+          else
+            python scripts/indexnow.py --since HEAD~1 --wait
+          fi

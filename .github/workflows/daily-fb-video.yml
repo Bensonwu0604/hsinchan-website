@@ -107,9 +107,13 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: 新增一集文章頁並更新首頁最新一集（自動）"
+          CHANGED=$(git diff --name-only HEAD~1 HEAD | tr '\n' ' ')
           # 同一時段可能有其他推送（例如翻譯工作流程），先拉再推
           git pull --rebase origin main
           git push
+          # 機器人推送不會觸發 indexnow.yml，這裡自己通知 Bing。
+          # 等 Vercel 部署完成再提交；失敗不影響本次發布。
+          python scripts/indexnow.py --files $CHANGED --wait || true
 
       - name: Upload video artifact (dry run only)
         if: ${{ inputs.dry_run == 'true' }}
