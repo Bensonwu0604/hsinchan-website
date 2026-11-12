@@ -665,6 +665,27 @@ def extract_script_json(msg):
     return raw[start:end + 1] if start != -1 and end > start else raw
 
 
+# Claude Opus 5.5 單價（美元／百萬 token）與網頁搜尋單次費用。
+# 只用來在日誌裡估算每次花費，實際帳單以 Anthropic Console 為準。
+OPUS_IN_PER_M, OPUS_OUT_PER_M, SEARCH_EACH = 4.0, 20.0, 0.01
+SCRIPT_COST_USD = []   # 每次呼叫的估算花費，含被驗證擋下而重試的
+
+
+def _log_script_cost(msg, attempt):
+    """印出這次腳本生成的實際用量與估算花費
+
+    思考 token 計入 output_tokens。重試的每一次都是完整費用，
+    所以逐次記錄，收工時加總，才看得出驗證失敗的真實代價。
+    """
+    u = msg.usage
+    searches = getattr(getattr(u, "server_tool_use", None), "web_search_requests", 0) or 0
+    cost = (u.input_tokens * OPUS_IN_PER_M + u.output_tokens * OPUS_OUT_PER_M) / 1e6 \
+        + searches * SEARCH_EACH
+    SCRIPT_COST_USD.append(cost)
+    print(f"   💲 第 {attempt} 次腳本：輸入 {u.input_tokens:,}　輸出 {u.output_tokens:,} tokens"
+          f"　搜尋 {searches} 次　≈ US${cost:.3f}")
+
+
 def generate_video_script(topic_title, topic_angle):
     print(f"🤖 呼叫 {SCRIPT_MODEL} 生成 12-14 分鐘長片腳本...")
     ac = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
@@ -888,6 +909,7 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
             messages=[{"role": "user", "content": prompt + feedback}],
         ) as stream:
             msg = stream.get_final_message()
+        _log_script_cost(msg, attempt)
 
         if msg.stop_reason == "max_tokens":
             last_err = "輸出被 max_tokens 截斷，JSON 不完整"
@@ -1843,6 +1865,10 @@ def main():
                 "tags": re.findall(r"#(\S+)", script["fb_caption"]),
             }, ensure_ascii=False), encoding="utf-8")
             print("📝 已記錄本集資訊，供官網影片頁更新")
+
+        if SCRIPT_COST_USD:
+            print(f"\n💲 腳本生成 {len(SCRIPT_COST_USD)} 次，合計 ≈ US${sum(SCRIPT_COST_USD):.2f}"
+                  "（字幕、配圖、備援配音另計；實際帳單以 Console 為準）")
 
         if TTS_FALLBACK_LINES:
             print(f"\n⚠️  有 {len(TTS_FALLBACK_LINES)} 句改用 OpenAI 備援配音，"
