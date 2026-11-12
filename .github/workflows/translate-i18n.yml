@@ -1,0 +1,60 @@
+name: 補齊日文／英文翻譯
+
+# 手動觸發。金鑰留在 Secrets，不必在本機設定環境變數，
+# 翻譯結果直接 commit 回倉庫，Vercel 隨即部署。
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '只列出待翻譯項目，不呼叫 API'
+        required: false
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+      model:
+        description: '翻譯模型'
+        required: false
+        default: 'claude-haiku-5-5'
+        type: string
+
+jobs:
+  translate:
+    name: 翻譯 main.js 中尚未翻譯的項目
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install anthropic
+
+      - name: Translate
+        run: python translate_i18n.py ${{ inputs.dry_run == 'true' && '--dry-run' || '' }}
+        working-directory: scripts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TRANSLATE_MODEL:   ${{ inputs.model }}
+
+      - name: Verify and commit
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          # main.js 是整站的翻譯來源，語法壞掉會讓每一頁都失去切換語言的能力
+          node --check main.js
+          python check_site.py || true
+          if git diff --quiet main.js; then
+            echo "沒有變更"; exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add main.js
+          git commit -m "chore: 補齊日文／英文翻譯（自動）"
+          git push

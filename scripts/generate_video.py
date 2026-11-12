@@ -967,6 +967,64 @@ MUSK_STEPS = [
 ]
 
 
+def _all_dialogue(script, include_outro=True):
+    """把整支腳本的台詞攤平成 (位置標籤, 文字) 清單"""
+    out = []
+    for who, text in script.get("hook_dialogue", []):
+        out.append(("hook", text))
+    for i, b in enumerate(script.get("concept_beats", []), 1):
+        for who, text in b.get("dialogue", []):
+            out.append((f"concept{i}", text))
+    for d, dim in enumerate(script.get("dimensions", []), 1):
+        for j, b in enumerate(dim.get("beats", []), 1):
+            for who, text in b.get("dialogue", []):
+                out.append((f"dim{d}.{j}", text))
+    for i, b in enumerate(script.get("reflection_beats", []), 1):
+        for who, text in b.get("dialogue", []):
+            out.append((f"reflect{i}", text))
+    if include_outro:
+        for who, text in script.get("outro_dialogue", []):
+            out.append(("outro", text))
+    return out
+
+
+def _check_first_principles(script):
+    """核心論述必須真的用第一性原理，不是只在標題提一次
+
+    節目的賣點就是這個。如果整支片只是案例介紹、沒有「把問題拆回
+    物理與成本的本質」這個動作，那它和市面上的智慧製造介紹沒有差別。
+    """
+    body = " ".join(t for _, t in _all_dialogue(script))
+    marks = ("第一性原理", "本質", "物理極限", "理論下限", "拆回", "根本限制")
+    if not any(m in body for m in marks):
+        raise ValueError(
+            "整支腳本找不到第一性原理的論述痕跡（第一性原理／本質／物理極限／理論下限）。"
+            "核心觀念段必須明確示範「把問題拆回物理與成本的本質」，不是只做案例介紹。")
+
+    # 對照組：有沒有點出「類比推理」這個要被取代的思路
+    if "類比" not in body and "別人" not in body and "業界慣例" not in body:
+        raise ValueError(
+            "腳本沒有點出「類比推理」這個對照組。第一性原理的說服力來自對比——"
+            "要先講清楚多數人用的是「別人這樣做所以我也這樣做」，再示範拆解。")
+
+
+def _check_hsinchan_placement(script):
+    """欣晨的內容只能出現在結尾
+
+    這是節目的信任基礎：前面十幾分鐘純粹講方法，不推銷。
+    中途出現公司名，整支片就變成業配，教育性蕩然無存。
+    """
+    bad = [(tag, text) for tag, text in _all_dialogue(script, include_outro=False)
+           if "欣晨" in text]
+    # 最後一個反思 beat 作為收束，提及一次是可以接受的銜接
+    bad = [(tag, text) for tag, text in bad if not tag.startswith("reflect2")]
+    if bad:
+        where = "、".join(tag for tag, _ in bad[:3])
+        raise ValueError(
+            f"欣晨工業在影片中段就出現了（{where}）。"
+            "依節目設定，欣晨的相關內容只能放在結尾，前面必須純粹講方法。")
+
+
 def _check_musk_order(script):
     """檢查 sop_steps 是否依照馬斯克五步演算法排列
 
@@ -1051,6 +1109,8 @@ def validate_script(script, check_length=True):
             _check_dialogue(beat["dialogue"], f"dimensions[{d}].beats[{j}]")
 
     normalize_assets(script)
+    _check_first_principles(script)
+    _check_hsinchan_placement(script)
     _check_musk_order(script)
 
     # 片長檢查的目的是約束 Claude 的產出；用現成腳本測試流程時不適用
