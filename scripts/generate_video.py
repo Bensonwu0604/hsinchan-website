@@ -1503,7 +1503,8 @@ def _short_subtitles(cues, bold_path, tmp, prefix):
     return out
 
 
-def _render_vertical(frame_path, audio_src, duration, subs, out_path, video_src=None):
+def _render_vertical(frame_path, audio_src, duration, subs, out_path, video_src=None,
+                     fade_in=True, fade_out=True):
     """直式底圖＋（選用）16:9 影片＋字幕疊圖 → 一段 1080×1920 片段
 
     編碼參數與長片片段一致（30fps、yuv420p、AAC 44.1k 雙聲道），
@@ -1524,10 +1525,14 @@ def _render_vertical(frame_path, audio_src, duration, subs, out_path, video_src=
     for i, (a, b, _) in enumerate(subs):
         chain.append(f"[s{i}][{i + first_sub}:v]overlay=0:{SHORT_SUB_Y}"
                      f":enable='between(t,{a:.2f},{b:.2f})'[s{i + 1}]")
+    # 段與段之間不淡出淡入：每段都暗一下，四十秒的短片會閃黑四次，
+    # 正好給觀眾滑走的時機。只在整支片的開頭與結尾淡入淡出。
     fade = max(duration - 0.4, 0)
-    chain.append(f"[s{len(subs)}]fade=in:st=0:d=0.25,fade=out:st={fade:.2f}:d=0.4[vout]")
-    chain.append(f"[{audio_idx}:a]atrim=0:{duration:.2f},apad=whole_dur={duration:.2f},"
-                 f"afade=out:st={fade:.2f}:d=0.4[aout]")
+    vf = [f for f in (f"fade=in:st=0:d=0.25" if fade_in else "",
+                      f"fade=out:st={fade:.2f}:d=0.4" if fade_out else "") if f]
+    chain.append(f"[s{len(subs)}]{','.join(vf) or 'null'}[vout]")
+    af = f",afade=out:st={fade:.2f}:d=0.4" if fade_out else ""
+    chain.append(f"[{audio_idx}:a]atrim=0:{duration:.2f},apad=whole_dur={duration:.2f}{af}[aout]")
     cmd = ["ffmpeg", "-y", *inputs,
            "-filter_complex", ";".join(chain),
            "-map", "[vout]", "-map", "[aout]", "-t", f"{duration:.2f}",
@@ -1612,7 +1617,8 @@ def make_short_from_script(sh, out_path, bold_path, reg_path, tmp):
 
         subs = _short_subtitles(cues, bold_path, tmp, f"short_{part}")
         clip = tmp / f"short_{part}.mp4"
-        _render_vertical(frame, audio, duration, subs, clip)
+        _render_vertical(frame, audio, duration, subs, clip,
+                         fade_in=(n == 0), fade_out=(part == SHORT_PARTS[-1]))
         clips.append(clip)
         total += duration
 
