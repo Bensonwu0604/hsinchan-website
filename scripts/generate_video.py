@@ -42,7 +42,8 @@ SCRIPT_RETRIES = 3  # 腳本生成/驗證失敗重試次數
 SCRIPT_MODEL = os.environ.get("SCRIPT_MODEL", "claude-opus-5-5")
 # 翻譯是機械性工作，不需要最強模型；用 Haiku 每支約 $0.05
 TRANSLATE_MODEL = os.environ.get("TRANSLATE_MODEL", "claude-haiku-4-5")
-SUBTITLE_LANGS = [x for x in os.environ.get("SUBTITLE_LANGS", "en,ja").split(",") if x]
+# 2026-11 起取消日文字幕，只留英文。要恢復就把預設值改回 "en,ja"。
+SUBTITLE_LANGS = [x for x in os.environ.get("SUBTITLE_LANGS", "en").split(",") if x]
 # 上傳測試模式：YouTube 以不公開狀態上傳、跳過 Facebook。
 # 用來驗證上傳與字幕 API 這條鏈路，而不讓任何東西公開。
 UPLOAD_TEST = os.environ.get("UPLOAD_TEST", "false").lower() == "true"

@@ -205,7 +205,7 @@ def build_index(db, header, footer):
         '          <p class="svc-section-lead">第一集即將發布，敬請期待。</p>'
 
     return head(f"{db['show']}｜欣晨工業有限公司",
-                f"欣晨工業每週發布的智慧製造教學影片《{db['show']}》。以第一性原理拆解製造現場的實際問題，附繁中、英文、日文字幕。",
+                f"欣晨工業每週發布的智慧製造教學影片《{db['show']}》。以第一性原理拆解製造現場的實際問題，附繁中、英文字幕。",
                 f"{BASE}videos.html", ld) + f"""
 <body>
   <a href="#main-content" class="skip-link">跳到主要內容 / Skip to content</a>
@@ -218,7 +218,7 @@ def build_index(db, header, footer):
         <div class="page-banner__content" data-reveal>
           <p class="section-eyebrow">FIRST PRINCIPLES OF SMART MFG</p>
           <h1 class="page-banner__title" id="page-title">{e(db['show'])}</h1>
-          <p class="page-banner__lead">每週一集，不講名詞、不賣設備。用第一性原理把智慧製造拆回物理與成本的本質，再依「質疑、刪除、簡化、加快、自動化」的順序談該怎麼做。每集附繁體中文、English、日本語字幕。</p>
+          <p class="page-banner__lead">每週一集，不講名詞、不賣設備。用第一性原理把智慧製造拆回物理與成本的本質，再依「質疑、刪除、簡化、加快、自動化」的順序談該怎麼做。每集附繁體中文、English 字幕。</p>
           <div class="page-banner__actions">
             <a href="{CHANNEL}" class="btn btn--accent" target="_blank" rel="noopener" data-i18n="ep_subscribe">訂閱 YouTube 頻道</a>
             <a href="contact.html" class="btn btn--outline" data-i18n="nav_contact">聯絡我們</a>
@@ -252,7 +252,7 @@ def build_index(db, header, footer):
           <li class="svc-deliver__item">{CHECK_SVG}
             <span><b>明天就能開始的 SOP</b>　每集附執行步驟與預期效益，依五步演算法排序。</span></li>
           <li class="svc-deliver__item">{CHECK_SVG}
-            <span><b>三語字幕</b>　繁體中文、English、日本語，方便跨境供應鏈的夥伴一起看。</span></li>
+            <span><b>中英字幕</b>　繁體中文與 English，方便跨國供應鏈的夥伴一起看。</span></li>
           <li class="svc-deliver__item">{CHECK_SVG}
             <span><b>不推銷</b>　欣晨的內容只出現在結尾，而且只在與主題真的相關時。</span></li>
         </ul>
@@ -349,7 +349,7 @@ def build_episode(db, ep, header, footer, prev_ep, next_ep):
           </nav>
           <p class="section-eyebrow">{e(db['show'])}　EP.{ep['no']}</p>
           <h1 class="page-banner__title ep-title" id="page-title">{e(title)}</h1>
-          <p class="ep-meta"><time datetime="{ep['published']}">{ep['published']}</time>　·　{mmss(ep['seconds'])}　·　繁中／English／日本語字幕</p>
+          <p class="ep-meta"><time datetime="{ep['published']}">{ep['published']}</time>　·　{mmss(ep['seconds'])}　·　繁中／English 字幕</p>
         </div>
       </div>
     </section>

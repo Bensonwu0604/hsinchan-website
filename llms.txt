@@ -20,7 +20,7 @@
   - [夾治具設計製造 Jig & Fixture Design](https://www.hsinchan.com/service-fixture-design.html): 成效指標、服務流程、交付清單、導入限制、FAQ
   - [設備智能化 Equipment Retrofit](https://www.hsinchan.com/service-smart-upgrade.html): 成效指標、服務流程、交付清單、導入限制、FAQ
   - [高濃度奈米氣泡流體產業應用 Nano-Bubble Application](https://www.hsinchan.com/service-nano-bubble.html): 成效指標、服務流程、交付清單、導入限制、FAQ
-- [影片 / Videos](https://www.hsinchan.com/videos.html): 每週智慧製造教學影片，節目《第一性原理拆解智慧製造》，附繁中／英／日字幕
+- [影片 / Videos](https://www.hsinchan.com/videos.html): 每週智慧製造教學影片，節目《第一性原理拆解智慧製造》，附繁中／英文字幕
 - [新技術討論 / Technology](https://www.hsinchan.com/technology.html): 半導體、電動車、機器人應用
 - [ESG永續發展 / ESG](https://www.hsinchan.com/esg.html): 產品與服務如何協助客戶落實環境、社會、治理目標
 - [人力資源 / Careers](https://www.hsinchan.com/careers.html): 職缺、福利、應徵方式
@@ -215,7 +215,7 @@
 - 形式：雙主持人對談，每集 10-15 分鐘
 - 頻率：每週一集（台灣時間週二上午發布）
 - 發布平台：[YouTube](https://www.youtube.com/@欣晨工業有限公司) 與 [Facebook](https://www.facebook.com/profile.php?id=100069099361989)
-- 字幕：繁體中文、English、日本語
+- 字幕：繁體中文、English
 - 全部集數：https://www.hsinchan.com/videos.html
 
 節目方法論：
