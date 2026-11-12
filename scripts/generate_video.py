@@ -1379,6 +1379,148 @@ def concat_clips(clip_paths, out_path):
     print(f"✅ 影片生成完成：{out_path}（{size_mb:.1f} MB）")
 
 # ── Facebook 影片上傳 ─────────────────────────────────────────────────────────
+# ── Shorts：把每集開場做成直式短片 ──────────────────────────────────────
+# 長片主要觸及已訂閱的人；Shorts 是 YouTube 主動推給新觀眾的格式。
+# 每集的 Hook 本來就是設計來抓注意力的一分鐘，直接拿來用。
+SHORT_W, SHORT_H = 1080, 1920
+SHORT_MAX_SEC    = 58.5      # Shorts 建議 60 秒內，留一點餘裕
+SHORT_VIDEO_Y    = 640       # 16:9 畫面在直式畫布中的位置
+SHORT_SUB_Y      = 1300      # 字幕區塊頂端
+
+
+def _short_cut_time(cues, hook_duration):
+    """在最後一句完整台詞結束時切，不讓短片停在半句話"""
+    limit = min(hook_duration, SHORT_MAX_SEC)
+    ends = [b for a, b, _ in cues if b <= limit + 0.05]
+    return max(ends) + 0.3 if ends else limit
+
+
+def make_short(hook_clip, cues, ep_title, out_path, bold_path, reg_path, tmp):
+    """Hook 片段 → 1080×1920 直式短片，字幕直接燒進畫面
+
+    Shorts 多半在靜音狀態下滑過，沒有字幕等於沒有內容。字幕用 Pillow
+    畫成圖再疊上去，與長片同一套字型，也不依賴 ffmpeg 的 libass 設定。
+    """
+    hook_duration = get_audio_duration(hook_clip)
+    T = _short_cut_time(cues, hook_duration)
+    cues = [(a, min(b, T), t) for a, b, t in cues if a < T]
+
+    # 底圖：上方節目名與片名、下方導流到完整版
+    bg = Image.new("RGB", (SHORT_W, SHORT_H), BG)
+    d = ImageDraw.Draw(bg)
+    d.rectangle([0, 0, SHORT_W, 10], fill=ACCENT)
+    f_eyebrow = ImageFont.truetype(bold_path, 40)
+    f_title = ImageFont.truetype(DISPLAY_FONT or bold_path, 66)
+    lines = wrap_text(d, ep_title, f_title, SHORT_W - 120)[:4]
+    # 節目名＋片名整組在上方區域（約 60–600）垂直置中，避免下方留一大塊空白
+    block_h = 80 + 90 * len(lines)
+    y = 60 + (540 - block_h) // 2
+    d.text((60, y), "第一性原理拆解智慧製造", font=f_eyebrow, fill=ACCENT_LT)
+    y += 80
+    for line in lines:
+        d.text((60, y), line, font=f_title, fill=WHITE)
+        y += 90
+    f_cta = ImageFont.truetype(reg_path, 36)
+    f_brand = ImageFont.truetype(bold_path, 38)
+    d.line([60, 1700, SHORT_W - 60, 1700], fill=DARK_GRAY, width=2)
+    d.text((60, 1730), "完整版請到 YouTube 搜尋「第一性原理拆解智慧製造」", font=f_cta, fill=GRAY)
+    d.text((60, 1800), "欣晨工業 Hsin-Chan Industrial", font=f_brand, fill=ACCENT_LT)
+    bg_path = tmp / "short_bg.png"
+    bg.save(bg_path)
+
+    # 每句字幕一張透明圖，深色底塊確保在任何畫面上都讀得到
+    f_sub = ImageFont.truetype(bold_path, 54)
+    sub_paths = []
+    for i, (a, b, txt) in enumerate(cues):
+        im = Image.new("RGBA", (SHORT_W, 360), (0, 0, 0, 0))
+        sd = ImageDraw.Draw(im)
+        sub_lines = wrap_text(sd, txt, f_sub, SHORT_W - 160)[:4]
+        line_h = 76
+        box_h = line_h * len(sub_lines) + 40
+        sd.rounded_rectangle([50, 0, SHORT_W - 50, box_h], radius=18, fill=(0, 0, 0, 170))
+        for j, line in enumerate(sub_lines):
+            w = sd.textbbox((0, 0), line, font=f_sub)[2]
+            sd.text(((SHORT_W - w) / 2, 20 + j * line_h), line, font=f_sub, fill=WHITE)
+        p = tmp / f"short_sub_{i:02d}.png"
+        im.save(p)
+        sub_paths.append((a, b, p))
+
+    inputs = ["-loop", "1", "-t", f"{T:.2f}", "-i", str(bg_path), "-i", str(hook_clip)]
+    for _, _, p in sub_paths:
+        inputs += ["-loop", "1", "-t", f"{T:.2f}", "-i", str(p)]
+    chain = [f"[1:v]scale={SHORT_W}:608,setsar=1[v]",
+             f"[0:v][v]overlay=0:{SHORT_VIDEO_Y}[s0]"]
+    for i, (a, b, _) in enumerate(sub_paths):
+        chain.append(f"[s{i}][{i + 2}:v]overlay=0:{SHORT_SUB_Y}"
+                     f":enable='between(t,{a:.2f},{b:.2f})'[s{i + 1}]")
+    fade = max(T - 0.6, 0)
+    chain.append(f"[s{len(sub_paths)}]fade=out:st={fade:.2f}:d=0.6[vout]")
+    chain.append(f"[1:a]atrim=0:{T:.2f},afade=out:st={fade:.2f}:d=0.6[aout]")
+
+    cmd = ["ffmpeg", "-y", *inputs,
+           "-filter_complex", ";".join(chain),
+           "-map", "[vout]", "-map", "[aout]", "-t", f"{T:.2f}",
+           "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-r", str(VIDEO_FPS),
+           "-c:a", "aac", "-b:a", "128k", str(out_path)]
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        raise RuntimeError(f"Shorts 合成失敗：{r.stderr[-600:]}")
+    print(f"📱 Shorts 完成：{T:.1f} 秒、{len(sub_paths)} 句字幕")
+    return T
+
+
+def _youtube_client():
+    client_id     = os.environ.get("YT_CLIENT_ID")
+    client_secret = os.environ.get("YT_CLIENT_SECRET")
+    refresh_token = os.environ.get("YT_REFRESH_TOKEN")
+    if not all([client_id, client_secret, refresh_token]):
+        return None
+    creds = Credentials(
+        token=None, refresh_token=refresh_token,
+        client_id=client_id, client_secret=client_secret,
+        token_uri="https://oauth2.googleapis.com/token", scopes=YT_SCOPES,
+    )
+    creds.refresh(GoogleRequest())
+    return build("youtube", "v3", credentials=creds, cache_discovery=False)
+
+
+def upload_short_to_youtube(short_path, ep_title, full_video_id, publish_at=None):
+    """上傳 Shorts 並導流到完整版
+
+    直式且三分鐘內的影片 YouTube 會自動歸為 Shorts；標題與說明加上
+    #Shorts 讓分類更確定。說明欄放完整版連結，看完短片的人才有路可走。
+    """
+    youtube = _youtube_client()
+    if not youtube:
+        return None
+    title = f"{ep_title} #Shorts"
+    if len(title) > 100:
+        title = ep_title[:90] + "… #Shorts"
+    desc = (f"完整版 👉 https://youtu.be/{full_video_id}\n\n"
+            f"《第一性原理拆解智慧製造》每週三上午 10:00 更新。\n"
+            f"🌐 {SITE_URL}\n\n#Shorts #智慧製造 #第一性原理 #欣晨工業")
+    status = {"privacyStatus": "unlisted" if UPLOAD_TEST else "public",
+              "selfDeclaredMadeForKids": False}
+    if publish_at and not UPLOAD_TEST:
+        status.update(privacyStatus="private",
+                      publishAt=publish_at.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+    req = youtube.videos().insert(
+        part="snippet,status",
+        body={"snippet": {"title": title, "description": desc, "categoryId": "28",
+                          "defaultLanguage": "zh-TW",
+                          "tags": ["Shorts", "智慧製造", "第一性原理", "欣晨工業"]},
+              "status": status},
+        media_body=MediaFileUpload(str(short_path), mimetype="video/mp4", resumable=True),
+    )
+    resp = None
+    while resp is None:
+        _, resp = req.next_chunk()
+    sid = resp.get("id")
+    when = f"已排程 {publish_at:%m/%d %H:%M} 發布" if publish_at and not UPLOAD_TEST else "上傳完成"
+    print(f"✅ Shorts {when}：https://youtube.com/shorts/{sid}")
+    return sid
+
+
 def upload_video_to_facebook(video_path, caption, publish_at=None):
     if UPLOAD_TEST:
         print("📤 上傳測試模式：跳過 Facebook（FB 沒有不公開上傳可用）")
@@ -1919,14 +2061,28 @@ def main():
             for lang, texts in translate_lines([c[2] for c in subtitles], SUBTITLE_LANGS).items():
                 srt_files[lang] = build_srt(subtitles, texts)
 
+        # 5b. Shorts：取開場 Hook 做成直式短片。失敗不影響長片發布。
+        short_path = tmp / f"hsinchan_short_{date_str}.mp4"
+        try:
+            hook_end = chapters[1][1] if len(chapters) > 1 else total_duration
+            make_short(clip_paths[0], [c for c in subtitles if c[0] < hook_end],
+                       script["video_title"], short_path, bold_path, reg_path, tmp)
+        except Exception as e:                          # noqa: BLE001
+            print(f"   ⚠️  Shorts 製作失敗，本週略過：{str(e)[:200]}")
+            short_path = None
+
         if dry_run:
             import shutil
             out = Path(f"hsinchan_video_{date_str}.mp4")
             shutil.copy(video_path, out)
             for lang, body in srt_files.items():
                 Path(f"hsinchan_video_{date_str}.{lang}.srt").write_text(body, encoding="utf-8")
+            if short_path:
+                shutil.copy(short_path, Path(f"hsinchan_short_{date_str}.mp4"))
             print(f"\n✅ Dry run 完成，影片儲存為：{out}")
             print(f"   字幕：{'、'.join(srt_files)}")
+            if short_path:
+                print(f"   Shorts：hsinchan_short_{date_str}.mp4")
             return
 
         # 6. 同時上傳 Facebook + YouTube
@@ -1945,6 +2101,16 @@ def main():
         )
         # 字幕軌必須在影片上傳完成、拿到 video_id 之後才能掛上去
         upload_captions(yt_id, srt_files)
+
+        # Shorts 排在週五中午：同一集在週中再推一次，而且此時完整版已公開，
+        # 短片說明欄的連結點得進去。立即發布模式則跟著立即上傳。
+        if short_path and yt_id:
+            short_at = ((publish_at + timedelta(days=2)).replace(hour=12)
+                        if publish_at else None)
+            try:
+                upload_short_to_youtube(short_path, script["video_title"], yt_id, short_at)
+            except Exception as e:                      # noqa: BLE001
+                print(f"   ⚠️  Shorts 上傳失敗（長片不受影響）：{str(e)[:200]}")
 
         # 把這一集寫下來，交由工作流程更新官網的影片頁。
         # 不在這裡直接改 HTML：產生頁面與產生影片是兩件事，

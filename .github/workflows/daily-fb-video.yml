@@ -131,4 +131,5 @@ jobs:
           path: |
             scripts/hsinchan_video_*.mp4
             scripts/hsinchan_video_*.srt
+            scripts/hsinchan_short_*.mp4
           retention-days: 3
