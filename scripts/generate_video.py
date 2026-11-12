@@ -701,6 +701,7 @@ def extract_script_json(msg):
 # Claude Opus 5.5 單價（美元／百萬 token）與網頁搜尋單次費用。
 # 只用來在日誌裡估算每次花費，實際帳單以 Anthropic Console 為準。
 OPUS_IN_PER_M, OPUS_OUT_PER_M, SEARCH_EACH = 4.0, 20.0, 0.01
+OPUS_CACHE_WRITE_PER_M, OPUS_CACHE_READ_PER_M = 5.0, 0.20   # 寫入 1.25 倍、讀取約 1/20
 SCRIPT_COST_USD = []   # 每次呼叫的估算花費，含被驗證擋下而重試的
 
 
@@ -712,11 +713,14 @@ def _log_script_cost(msg, attempt):
     """
     u = msg.usage
     searches = getattr(getattr(u, "server_tool_use", None), "web_search_requests", 0) or 0
-    cost = (u.input_tokens * OPUS_IN_PER_M + u.output_tokens * OPUS_OUT_PER_M) / 1e6 \
+    c_write = getattr(u, "cache_creation_input_tokens", 0) or 0
+    c_read = getattr(u, "cache_read_input_tokens", 0) or 0
+    cost = (u.input_tokens * OPUS_IN_PER_M + u.output_tokens * OPUS_OUT_PER_M
+            + c_write * OPUS_CACHE_WRITE_PER_M + c_read * OPUS_CACHE_READ_PER_M) / 1e6 \
         + searches * SEARCH_EACH
     SCRIPT_COST_USD.append(cost)
-    print(f"   💲 第 {attempt} 次腳本：輸入 {u.input_tokens:,}　輸出 {u.output_tokens:,} tokens"
-          f"　搜尋 {searches} 次　≈ US${cost:.3f}")
+    print(f"   💲 第 {attempt} 次腳本：輸入 {u.input_tokens:,}（快取寫入 {c_write:,}／讀取 {c_read:,}）"
+          f"　輸出 {u.output_tokens:,} tokens　搜尋 {searches} 次　≈ US${cost:.3f}")
 
 
 def generate_video_script(topic_title, topic_angle):
@@ -937,6 +941,10 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
             model=SCRIPT_MODEL,
             max_tokens=32000,
             output_config={"effort": "high"},
+            # 搜尋迴圈每一步都會重讀整段提示與先前的搜尋結果，2026-11-12 實測
+            # 單次輸入達 25–29 萬 token，佔花費一半以上。開啟快取讓重讀部分以
+            # 快取價計費；實際命中與否看 _log_script_cost 印出的 cache 欄位。
+            cache_control={"type": "ephemeral"},
             tools=[{"type": "web_search_20260209", "name": "web_search",
                     "max_uses": WEB_SEARCH_MAX_USES}],
             messages=[{"role": "user", "content": prompt + feedback}],
