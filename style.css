@@ -4539,3 +4539,94 @@ h1, h2, h3, h4, h5, h6 {
 .prod-detail .section-header:has(+ .svc-section-lead) { margin-bottom: 0.9rem; }
 .prod-detail .svc-section-lead + .prod-detail__table-wrap,
 .prod-detail .svc-section-lead + .svc-deliver { margin-top: 1.75rem; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   影片列表
+   ══════════════════════════════════════════════════════════════ */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: 2rem;
+}
+
+.video-card {
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--t-base), transform var(--t-base), box-shadow var(--t-base);
+}
+.video-card:hover {
+  border-color: var(--c-accent);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.video-card__thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--c-surface-2);
+}
+.video-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--t-slow);
+}
+.video-card:hover .video-card__thumb img { transform: scale(1.04); }
+
+/* 播放鍵用 YouTube 紅，一眼看得出是影片 */
+.video-card__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 2.6rem;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.55);
+  opacity: 0.92;
+  transition: transform var(--t-base), color var(--t-base);
+}
+.video-card:hover .video-card__play { transform: scale(1.12); color: #FF0000; }
+
+.video-card__dur {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: var(--radius-sm);
+  background: rgba(0,0,0,0.78);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.video-card__body { padding: 1.1rem 1.25rem 1.35rem; }
+
+.video-card__date {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: var(--c-text-dim);
+}
+
+.video-card__title {
+  margin: 0.45rem 0 0;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.55;
+}
+.video-card__title a { color: var(--c-text); text-decoration: none; }
+.video-card__title a:hover { color: var(--c-accent); }
+
+@media (max-width: 560px) {
+  .video-grid { grid-template-columns: 1fr; }
+}

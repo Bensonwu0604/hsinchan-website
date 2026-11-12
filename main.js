@@ -587,7 +587,7 @@ const translations = {
     contact_label_addr: '地址', contact_addr_value: '33841 桃園市大園區中正東路三段490號',
     contact_label_tel: '電話', contact_label_email: 'Email', contact_label_fax: '傳真',
     contact_label_fb: 'Facebook', contact_fb_value: '欣晨工業有限公司',
-    contact_label_yt: 'YouTube', contact_yt_value: '欣晨工業有限公司',
+    contact_label_yt: 'YouTube', contact_yt_value: '第一性原理拆解智慧製造',
     footer_privacy: '隱私權政策',
     contact_hours_title: '營業時間',
     contact_hours_weekday: '週一至週五　08:00 – 17:30',
@@ -1368,6 +1368,7 @@ const translations = {
     svd7_lim4_t: "水質條件須先確認",
     svd7_lim4_d: "進水硬度、懸浮物與水溫會影響產氣效率與模組壽命。評估階段需要貴公司提供現況水質分析報告。",
     footer_view_all: "查看全部 →",
+    nav_videos: "影片",
   },
 
   ja: {
@@ -1932,7 +1933,7 @@ const translations = {
     contact_label_addr: '住所', contact_addr_value: '桃園市大園区中正東路三段490号',
     contact_label_tel: '電話', contact_label_email: 'メール', contact_label_fax: 'FAX',
     contact_label_fb: 'Facebook', contact_fb_value: '欣晨工業有限公司（フェイスブック）',
-    contact_label_yt: 'YouTube', contact_yt_value: '欣晨工業有限公司（ユーチューブ）',
+    contact_label_yt: 'YouTube', contact_yt_value: '第一性原理で読み解くスマート製造',
     footer_privacy: 'プライバシーポリシー',
     contact_hours_title: '営業時間',
     contact_hours_weekday: '月曜〜金曜　08:00 – 17:30',
@@ -2713,6 +2714,7 @@ const translations = {
     svd7_lim4_t: "水質條件須先確認",
     svd7_lim4_d: "進水硬度、懸浮物與水溫會影響產氣效率與模組壽命。評估階段需要貴公司提供現況水質分析報告。",
     footer_view_all: "すべて見る →",
+    nav_videos: "動画",
   },
 
   en: {
@@ -3277,7 +3279,7 @@ const translations = {
     contact_label_addr: 'Address', contact_addr_value: 'No. 490, Sec. 3, Zhongzheng E. Rd., Dayuan Dist., Taoyuan City 33841, Taiwan',
     contact_label_tel: 'Phone', contact_label_email: 'Email', contact_label_fax: 'Fax',
     contact_label_fb: 'Facebook', contact_fb_value: 'Hsin-Chan Industrial Co., Ltd.',
-    contact_label_yt: 'YouTube', contact_yt_value: 'Hsin-Chan Industrial Co., Ltd.',
+    contact_label_yt: 'YouTube', contact_yt_value: 'First Principles of Smart Mfg',
     footer_privacy: 'Privacy Policy',
     contact_hours_title: 'Business Hours',
     contact_hours_weekday: 'Monday – Friday　08:00 – 17:30',
@@ -4058,6 +4060,7 @@ const translations = {
     svd7_lim4_t: "水質條件須先確認",
     svd7_lim4_d: "進水硬度、懸浮物與水溫會影響產氣效率與模組壽命。評估階段需要貴公司提供現況水質分析報告。",
     footer_view_all: "View All →",
+    nav_videos: "Videos",
   },
 };
 
