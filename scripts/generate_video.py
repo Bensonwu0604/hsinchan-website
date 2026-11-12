@@ -105,8 +105,10 @@ MAX_RATE_ADJ   = 15           # 語速調整上限 ±15%（再多就不自然）
 #             （連續請求成功率約 1/4，與內容無關），只作為次要選項。
 #   openai —— 端點穩定，但聲線是英語母語，唸中文有外國腔，最後備援。
 # 由 preflight 探測一次後決定整支影片的來源，避免同一支影片混用兩種聲線。
-AZURE_SPEECH_KEY    = os.environ.get("AZURE_SPEECH_KEY", "")
-AZURE_SPEECH_REGION = os.environ.get("AZURE_SPEECH_REGION", "")
+# 去掉頭尾空白：從終端機貼上或剪貼簿導入時，常夾帶看不見的換行，
+# 放進 HTTP 標頭會直接被拒絕
+AZURE_SPEECH_KEY    = os.environ.get("AZURE_SPEECH_KEY", "").strip()
+AZURE_SPEECH_REGION = os.environ.get("AZURE_SPEECH_REGION", "").strip()
 TTS_PROVIDER = os.environ.get("TTS_PROVIDER",
                               "azure" if AZURE_SPEECH_KEY and AZURE_SPEECH_REGION else "edge")
 TTS_MODEL = os.environ.get("TTS_MODEL", "tts-1-hd")   # 僅 OpenAI 備援時使用
