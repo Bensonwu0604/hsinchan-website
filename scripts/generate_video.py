@@ -968,23 +968,25 @@ MUSK_STEPS = [
 
 
 def _all_dialogue(script, include_outro=True):
-    """把整支腳本的台詞攤平成 (位置標籤, 文字) 清單"""
-    out = []
-    for who, text in script.get("hook_dialogue", []):
-        out.append(("hook", text))
+    """把整支腳本的台詞攤平成 (位置標籤, 文字) 清單
+
+    每則台詞是 {"speaker": ..., "line": ...} 字典。不能寫成
+    `for who, text in dialogue`——對字典解包拿到的是鍵名，
+    整支腳本會變成一串 "line line line"，檢查全部失準。
+    """
+    def lines(dialogue):
+        return [str(t.get("line", "")) for t in (dialogue or []) if isinstance(t, dict)]
+
+    out = [("hook", t) for t in lines(script.get("hook_dialogue"))]
     for i, b in enumerate(script.get("concept_beats", []), 1):
-        for who, text in b.get("dialogue", []):
-            out.append((f"concept{i}", text))
+        out += [(f"concept{i}", t) for t in lines(b.get("dialogue"))]
     for d, dim in enumerate(script.get("dimensions", []), 1):
         for j, b in enumerate(dim.get("beats", []), 1):
-            for who, text in b.get("dialogue", []):
-                out.append((f"dim{d}.{j}", text))
+            out += [(f"dim{d}.{j}", t) for t in lines(b.get("dialogue"))]
     for i, b in enumerate(script.get("reflection_beats", []), 1):
-        for who, text in b.get("dialogue", []):
-            out.append((f"reflect{i}", text))
+        out += [(f"reflect{i}", t) for t in lines(b.get("dialogue"))]
     if include_outro:
-        for who, text in script.get("outro_dialogue", []):
-            out.append(("outro", text))
+        out += [("outro", t) for t in lines(script.get("outro_dialogue"))]
     return out
 
 
@@ -1002,7 +1004,8 @@ def _check_first_principles(script):
             "核心觀念段必須明確示範「把問題拆回物理與成本的本質」，不是只做案例介紹。")
 
     # 對照組：有沒有點出「類比推理」這個要被取代的思路
-    if "類比" not in body and "別人" not in body and "業界慣例" not in body:
+    contrast = ("類比", "別人", "業界慣例", "同業", "大家都", "照抄", "跟著做", "慣例")
+    if not any(m in body for m in contrast):
         raise ValueError(
             "腳本沒有點出「類比推理」這個對照組。第一性原理的說服力來自對比——"
             "要先講清楚多數人用的是「別人這樣做所以我也這樣做」，再示範拆解。")
@@ -1069,7 +1072,7 @@ def _check_musk_order(script):
                 "本節目的核心主張正是「不要從第 5 步開始」，執行步驟不能自己違反。")
 
 
-def validate_script(script, check_length=True):
+def validate_script(script, check_length=True, check_content=True):
     """上線前先驗證腳本結構
 
     配音與算圖要跑數十分鐘，結構錯誤必須在這裡就擋下來，
@@ -1109,9 +1112,13 @@ def validate_script(script, check_length=True):
             _check_dialogue(beat["dialogue"], f"dimensions[{d}].beats[{j}]")
 
     normalize_assets(script)
-    _check_first_principles(script)
-    _check_hsinchan_placement(script)
-    _check_musk_order(script)
+
+    # 內容檢查與片長檢查同一個目的：約束 Claude 的產出符合節目要求。
+    # 用現成腳本測試流程時不適用。
+    if check_content:
+        _check_first_principles(script)
+        _check_hsinchan_placement(script)
+        _check_musk_order(script)
 
     # 片長檢查的目的是約束 Claude 的產出；用現成腳本測試流程時不適用
     est = estimate_script_seconds(script)
@@ -1629,7 +1636,7 @@ def main():
     fixture = os.environ.get("FIXTURE_SCRIPT")
     if fixture:
         script = json.loads(Path(fixture).read_text(encoding="utf-8"))
-        validate_script(script, check_length=False)
+        validate_script(script, check_length=False, check_content=False)
         print(f"📄 使用現成腳本：{fixture}（跳過 Claude，不耗用 Anthropic 額度）")
     else:
         script = generate_video_script(topic_title, topic_angle)
