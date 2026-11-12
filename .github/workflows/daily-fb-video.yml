@@ -1,17 +1,15 @@
 name: 每週智慧製造 FB + YouTube 影片自動發文
 
 on:
-  # 每週一次：台灣時間星期二 10:30（UTC 02:30）
+  # 每週一集，週三上午 10:00（台灣時間）上線。
   #
-  # 2026-10-20 啟用。啟用前已完成：真實內容試跑並人工檢視
-  # （run 39264001957，13.8 分鐘）、YouTube 上傳與三語字幕實測
-  # （run 39260073168）、Facebook 粉專權杖驗證為永不過期。
-  #
-  # 注意：Anthropic 額度於 2026-11-01 才恢復，因此 10/27 那一次
-  # 會在腳本生成階段失敗（不會產生也不會發布任何內容）。
-  # 第一次實際發布預計為 11/03。
+  # 這裡在「週二」10:00 執行，產生影片後以排程方式上傳，由 YouTube
+  #（publishAt）與 Facebook（scheduled_publish_time）在週三 10:00 自行發布。
+  # 不直接排在週三 10:00 執行，是因為 GitHub 排程實測延遲 5.5–7.5 小時，
+  # 影片會拖到下午五、六點才上線。提前一天產生，延遲再久也趕得上。
+  # 官網的該集頁面由 publish-site.yml 在週三上線後才放出。
   schedule:
-    - cron: '30 2 * * 2'
+    - cron: '0 2 * * 2'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -28,6 +26,12 @@ on:
         options: ['false', 'true']
       upload_test:
         description: '上傳測試（YouTube 設為不公開、跳過 Facebook）'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+      publish_now:
+        description: '立即發布（不排到週三 10:00）'
         required: false
         default: 'false'
         type: choice
@@ -88,6 +92,7 @@ jobs:
           DRY_RUN:            ${{ inputs.dry_run || 'false' }}
           FIXTURE_SCRIPT:     ${{ inputs.use_fixture == 'true' && 'fixture_script.json' || '' }}
           UPLOAD_TEST:        ${{ inputs.upload_test || 'false' }}
+          PUBLISH_NOW:        ${{ inputs.publish_now || 'false' }}
 
       # 發布成功後把新的一集加進官網的影片頁。失敗不中斷：影片已經
       # 上線了，官網晚一步更新不該讓整個工作流程標記為失敗。

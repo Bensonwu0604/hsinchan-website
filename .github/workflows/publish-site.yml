@@ -1,0 +1,47 @@
+name: 官網放出本週影片
+
+# 影片週二就排程上傳了，但要到週三 10:00 才公開。官網的該集頁面、
+# 首頁「最新一集」與 sitemap 必須等影片公開後才出現，否則嵌入的
+# 會是一支私人影片。
+#
+# 週三台灣時間 10:15 到 20:15 每小時檢查一次（UTC 02:15–12:15）。
+# GitHub 排程常延遲數小時，多排幾次確保當天一定有一次在 10:00 之後
+# 執行；沒有該放出的集數時，重建結果與現況相同，不會產生 commit。
+on:
+  schedule:
+    - cron: '15 2-12 * * 3'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Rebuild video pages
+        run: python build_videos_page.py
+        working-directory: scripts
+
+      - name: Commit and notify Bing
+        run: |
+          git add videos.json videos.html video-*.html index.html sitemap.xml
+          if git diff --cached --quiet; then
+            echo "沒有新上線的集數"; exit 0
+          fi
+          CHANGED=$(git diff --cached --name-only | tr '\n' ' ')
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: 官網放出本週影片（自動）"
+          git pull --rebase origin main
+          git push
+          # 機器人推送不會觸發 indexnow.yml，這裡自己通知
+          python scripts/indexnow.py --files $CHANGED --wait || true

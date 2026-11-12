@@ -52,6 +52,30 @@ UPLOAD_TEST = os.environ.get("UPLOAD_TEST", "false").lower() == "true"
 # YouTube、Facebook 歸成同一個實體。
 # 注意：Facebook 這裡用的是「公開網址的 ID」，與 API 發文用的 FB_PAGE_ID
 # 不同——同一個粉專在新版粉絲專頁體驗下有兩組 ID。
+# ── 發布時間 ──────────────────────────────────────────────────────────
+# 每週三上午 10:00（台灣時間）準時上線。
+# 不靠 GitHub 排程在那個時間點執行：實測排程會延遲 5.5–7.5 小時。
+# 改為前一天先產生並上傳，交給 YouTube（publishAt）與 Facebook
+# （scheduled_publish_time）在指定時間自行發布，時間才會準。
+TW_TZ          = timezone(timedelta(hours=8))
+PUBLISH_WEEKDAY = 2          # 週一=0，週三=2
+PUBLISH_HOUR    = 10
+PUBLISH_NOW     = os.environ.get("PUBLISH_NOW", "false").lower() == "true"
+
+
+def next_publish_time(now=None):
+    """下一個週三 10:00；離現在不到 30 分鐘就順延一週
+
+    Facebook 要求排程時間至少在 10 分鐘之後，再留些上傳與處理的餘裕。
+    """
+    now = now or datetime.now(TW_TZ)
+    t = now.replace(hour=PUBLISH_HOUR, minute=0, second=0, microsecond=0)
+    t += timedelta(days=(PUBLISH_WEEKDAY - now.weekday()) % 7)
+    if t - now < timedelta(minutes=30):
+        t += timedelta(days=7)
+    return t
+
+
 SITE_URL       = "https://www.hsinchan.com"
 FB_PAGE_URL    = "https://www.facebook.com/profile.php?id=100069099361989"
 YT_CHANNEL_URL = "https://www.youtube.com/@欣晨工業有限公司"
@@ -1314,7 +1338,7 @@ def concat_clips(clip_paths, out_path):
     print(f"✅ 影片生成完成：{out_path}（{size_mb:.1f} MB）")
 
 # ── Facebook 影片上傳 ─────────────────────────────────────────────────────────
-def upload_video_to_facebook(video_path, caption):
+def upload_video_to_facebook(video_path, caption, publish_at=None):
     if UPLOAD_TEST:
         print("📤 上傳測試模式：跳過 Facebook（FB 沒有不公開上傳可用）")
         return None
@@ -1332,22 +1356,30 @@ def upload_video_to_facebook(video_path, caption):
         f"📍 台灣桃園市大園區中正東路三段490號"
     )
 
+    form = {"description": caption, "access_token": token}
+    if publish_at:
+        # 兩個欄位必須同時送。只送 scheduled_publish_time 而 published 維持
+        # 預設 true，Facebook 會直接發布並默默忽略排程時間。
+        form["published"] = "false"
+        form["scheduled_publish_time"] = str(int(publish_at.timestamp()))
+
     print("📤 上傳影片到 Facebook...")
     with open(video_path, "rb") as vf:
         resp = requests.post(
             f"https://graph-video.facebook.com/v25.0/{page_id}/videos",
-            data={"description": caption, "access_token": token},
+            data=form,
             files={"source": ("video.mp4", vf, "video/mp4")},
             timeout=180,
         )
     data = resp.json()
     if "error" in data:
         raise RuntimeError(f"Facebook API 錯誤：{data['error']['message']}")
-    print(f"✅ Facebook 影片發布成功！Video ID：{data.get('id')}")
+    when = f"已排程 {publish_at:%m/%d %H:%M} 發布" if publish_at else "發布成功"
+    print(f"✅ Facebook 影片{when}！Video ID：{data.get('id')}")
     return data.get("id")
 
 # ── YouTube 影片上傳 ───────────────────────────────────────────────────────────
-def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_str):
+def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_str, publish_at=None):
     client_id     = os.environ.get("YT_CLIENT_ID")
     client_secret = os.environ.get("YT_CLIENT_SECRET")
     refresh_token = os.environ.get("YT_REFRESH_TOKEN")
@@ -1413,6 +1445,11 @@ def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_st
                 # unlisted 憑連結就能看，但不進搜尋、不出現在頻道頁。
                 "privacyStatus":           "unlisted" if UPLOAD_TEST else "public",
                 "selfDeclaredMadeForKids": False,
+                # 排程發布：YouTube 規定此時須為 private，到 publishAt 自動轉公開
+                **({"privacyStatus": "private",
+                    "publishAt": publish_at.astimezone(timezone.utc)
+                                           .strftime("%Y-%m-%dT%H:%M:%SZ")}
+                   if publish_at and not UPLOAD_TEST else {}),
             },
         },
         media_body=media,
@@ -1427,7 +1464,9 @@ def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_st
             print(f"   上傳中... {pct}%", end="\r")
 
     video_id = response.get("id")
-    print(f"\n✅ YouTube 影片發布成功！https://youtu.be/{video_id}")
+    when = (f"已排程 {publish_at:%m/%d %H:%M} 發布" if publish_at and not UPLOAD_TEST
+            else "發布成功")
+    print(f"\n✅ YouTube 影片{when}！https://youtu.be/{video_id}")
     return video_id
 
 def preflight_check():
@@ -1836,11 +1875,15 @@ def main():
         print("\n── 上傳至各平台 ────────────────────────────")
         if UPLOAD_TEST:
             print("⚠️  上傳測試模式：YouTube 設為不公開、跳過 Facebook")
+        publish_at = None if (UPLOAD_TEST or PUBLISH_NOW) else next_publish_time()
+        if publish_at:
+            print(f"🗓️  排程發布：{publish_at:%Y-%m-%d}（週{'一二三四五六日'[publish_at.weekday()]}）"
+                  f"{publish_at:%H:%M} 台灣時間")
         description = build_description(script, chapters)
-        fb_id = upload_video_to_facebook(str(video_path), description)
+        fb_id = upload_video_to_facebook(str(video_path), description, publish_at)
         yt_id = upload_video_to_youtube(
             str(video_path), script["video_title"],
-            description, topic_tag, date_str
+            description, topic_tag, date_str, publish_at
         )
         # 字幕軌必須在影片上傳完成、拿到 video_id 之後才能掛上去
         upload_captions(yt_id, srt_files)
@@ -1852,7 +1895,10 @@ def main():
             Path("_published.json").write_text(json.dumps({
                 "id": yt_id,
                 "title": script["video_title"],
-                "published": date_str,
+                # 官網以實際上線時間為準：排程發布時，影片要到週三才公開，
+                # 在那之前官網不能出現這一集，否則嵌入的是一支私人影片。
+                "published": (publish_at or datetime.now(TW_TZ)).strftime("%Y-%m-%d"),
+                "publish_at": (publish_at or datetime.now(TW_TZ)).isoformat(),
                 "seconds": int(total_duration),
                 "summary": (script.get("key_points") or [""])[0],
                 # 以下供官網產生該集的文章頁。影片 Google 只看得到標題與說明，
@@ -1875,7 +1921,8 @@ def main():
                   "該段聲線與其餘不同。")
             print("   若持續發生，建議把預設配音來源改為 OpenAI。")
 
-        print(f"\n🎉 完成！{date_str} 影片已發布")
+        print(f"\n🎉 完成！" + (f"影片將於 {publish_at:%m/%d %H:%M} 自動發布" if publish_at
+                               else f"{date_str} 影片已發布"))
         if fb_id: print(f"   Facebook Video ID : {fb_id}")
         if yt_id: print(f"   YouTube Video ID  : {yt_id}  (https://youtu.be/{yt_id})")
 

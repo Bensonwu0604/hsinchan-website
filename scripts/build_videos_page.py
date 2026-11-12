@@ -24,7 +24,7 @@ import argparse
 import html
 import json
 import re
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -74,6 +74,14 @@ def add_episode(db, ep):
     db["episodes"].append(ep)
     db["episodes"].sort(key=lambda x: x["published"], reverse=True)
     return True
+
+
+def is_live(ep):
+    """沒有 publish_at 的舊資料一律視為已上線"""
+    at = ep.get("publish_at")
+    if not at:
+        return True
+    return datetime.fromisoformat(at) <= datetime.now(timezone.utc)
 
 
 def number_episodes(db):
@@ -503,6 +511,13 @@ def main():
 
     number_episodes(db)
     save(db)
+
+    # 排程發布的集數在上線前不出現在官網：影片此時仍是私人狀態，
+    # 嵌入只會顯示「無法播放」。週三的發布工作流程會再重建一次。
+    hidden = [ep for ep in db["episodes"] if not is_live(ep)]
+    for ep in hidden:
+        print(f"   ⏳ 尚未上線，暫不顯示：{ep['title'][:24]}（{ep.get('publish_at')}）")
+    db = dict(db, episodes=[ep for ep in db["episodes"] if is_live(ep)])
 
     header, footer = chrome()
     eps_old_first = sorted(db["episodes"], key=lambda x: x["published"])
