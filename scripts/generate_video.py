@@ -874,6 +874,12 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
   "key_points": ["本集重點1", "本集重點2", "..."],
   "sop_steps": ["步驟1", "步驟2", "..."],
   "benefits": ["效益1", "效益2", "..."],
+  "short": {{
+    "problem": "一句話點出問題",
+    "benefit": "一句話講效益",
+    "steps": [ {{"tag":"質疑","text":"..."}}, {{"tag":"刪除","text":"..."}}, {{"tag":"簡化","text":"..."}} ],
+    "dialogue": [ {{"speaker":"A","line":"...","part":"problem"}}, {{"speaker":"B","line":"...","part":"benefit"}}, ... ]
+  }},
   "fb_caption": "Facebook 貼文說明（300-400字）。這是觀眾滑過動態牆時唯一會先看到的文字，要能獨立成立。結構：第一行用一句反直覺的鉤子讓人停下來（不要寫「本集介紹…」這種開頭）；中段用 2-3 句說明這集拆解了什麼、觀眾會學到哪個可複用的思考工具；接著一句不推銷的可信度陳述（欣晨 30 年精密製造的實作視角）；最後用影片的互動問句邀請留言。專業、不說教、不用驚嘆號堆疊。\\n\\n#hashtag1 #hashtag2 #hashtag3 #hashtag4 #hashtag5"
 }}
 
@@ -927,7 +933,15 @@ A/B 要交替來回（不是A講完全部再B講全部）。字數都是口語�
     不要寫成抽象原則，要寫成一個廠務主管看得懂、能排進行程的動作。
   * benefits：3-5 條執行後的實際效益。要講清楚「省到什麼、省多少量級、多久看得到」，
     無法量化時就講可驗證的狀態改變，不要寫「提升競爭力」這種無法檢驗的話。
-- 欣晨工業的置入規則見前述【行銷目標】，嚴格遵守「最多 3 次、只在應用 beat、必須自然銜接」
+- short 是 YouTube Shorts 直式短片的腳本，約 45-56 秒，必須獨立成立（沒看過長片也看得懂）。
+  **順序固定：問題 → 效益 → 執行步驟**。先讓觀眾知道為什麼值得看完，再講怎麼做。
+  * problem：一句話點出本集要解決的問題，帶具體數字或場景，30 字以內，會以大字顯示在畫面上
+  * benefit：一句話講做對之後的效益，要有量級或看得到成果的時間，30 字以內
+  * steps：**恰好 3 個**，從 sop_steps 中挑最關鍵的，維持五步演算法的先後（質疑→刪除→簡化→加快→自動化；不必五步都有，但順序不能倒，也不能從自動化開始）。
+    tag 只能是「質疑／刪除／簡化／加快／自動化」之一；text 22 字以內
+  * dialogue：雙主持人台詞，每句標 part（problem／benefit／step1／step2／step3），依此順序排列，
+    總字數 190-240 字；第一句就要抓住人；最後一句導向完整版長片；**不要提欣晨**
+- 欣晨工業的置入規則見前述【行銷目標】：正片四幕完全不提，只有第五幕結語可以帶出，一到兩句、必須自然銜接
 - 只輸出JSON，不要前言說明"""
 
     last_err = None
@@ -1138,6 +1152,49 @@ def _check_musk_order(script):
                 "本節目的核心主張正是「不要從第 5 步開始」，執行步驟不能自己違反。")
 
 
+SHORT_PARTS = ["problem", "benefit", "step1", "step2", "step3"]
+SHORT_TAGS = [name for name, _ in MUSK_STEPS]   # 質疑要求、刪除、簡化、加快速度、自動化
+
+
+def _short_tag_index(tag):
+    for i, (name, words) in enumerate(MUSK_STEPS):
+        if tag in (name, name[:2]) or tag in words:
+            return i
+    return None
+
+
+def _check_short(script):
+    """Shorts 腳本：問題 → 效益 → 三個依五步順序的步驟"""
+    sh = script.get("short")
+    if not isinstance(sh, dict):
+        raise ValueError("缺少 short（Shorts 短片腳本）")
+    for k in ("problem", "benefit", "steps", "dialogue"):
+        if not sh.get(k):
+            raise ValueError(f"short 缺少 {k}")
+    steps = sh["steps"]
+    if len(steps) != 3:
+        raise ValueError(f"short.steps 必須正好 3 個，收到 {len(steps)}")
+    idx = [_short_tag_index(str(s.get("tag", ""))) for s in steps]
+    if None in idx:
+        raise ValueError("short.steps 的 tag 只能是 質疑／刪除／簡化／加快／自動化")
+    if idx != sorted(idx):
+        raise ValueError("short.steps 順序不對，必須依 質疑→刪除→簡化→加快→自動化 排列")
+    if idx[0] == 4:
+        raise ValueError("short.steps 不能從自動化開始")
+    _check_dialogue(sh["dialogue"], "short.dialogue")
+    parts = [t.get("part") for t in sh["dialogue"]]
+    if any(p not in SHORT_PARTS for p in parts):
+        raise ValueError("short.dialogue 的 part 只能是 problem／benefit／step1／step2／step3")
+    order = [SHORT_PARTS.index(p) for p in parts]
+    if order != sorted(order) or set(parts) != set(SHORT_PARTS):
+        raise ValueError("short.dialogue 必須依 問題→效益→step1→step2→step3 排列，且每段都要有")
+    chars = sum(len(t["line"]) for t in sh["dialogue"])
+    if not 150 <= chars <= 270:
+        raise ValueError(f"short.dialogue 總字數 {chars}，應為 190-240 字（約 45-56 秒）")
+    if any("欣晨" in t["line"] for t in sh["dialogue"]):
+        raise ValueError("short 不要提到欣晨，導向完整版即可")
+
+
 def validate_script(script, check_length=True, check_content=True):
     """上線前先驗證腳本結構
 
@@ -1185,6 +1242,8 @@ def validate_script(script, check_length=True, check_content=True):
         _check_first_principles(script)
         _check_hsinchan_placement(script)
         _check_musk_order(script)
+        # short 不在這裡擋：它不合格不值得重生整支腳本（每次約 US$2），
+        # 主流程會改用開場 Hook 做短片。
 
     # 片長檢查的目的是約束 Claude 的產出；用現成腳本測試流程時不適用
     est = estimate_script_seconds(script)
@@ -1395,78 +1454,158 @@ def _short_cut_time(cues, hook_duration):
     return max(ends) + 0.3 if ends else limit
 
 
-def make_short(hook_clip, cues, ep_title, out_path, bold_path, reg_path, tmp):
-    """Hook 片段 → 1080×1920 直式短片，字幕直接燒進畫面
+def _short_canvas(bold_path, reg_path):
+    """所有短片共用的直式底圖：頂端色條與底部導流到完整版"""
+    bg = Image.new("RGB", (SHORT_W, SHORT_H), BG)
+    d = ImageDraw.Draw(bg)
+    d.rectangle([0, 0, SHORT_W, 10], fill=ACCENT)
+    d.line([60, 1700, SHORT_W - 60, 1700], fill=DARK_GRAY, width=2)
+    d.text((60, 1730), "完整版請到 YouTube 搜尋「第一性原理拆解智慧製造」",
+           font=ImageFont.truetype(reg_path, 36), fill=GRAY)
+    d.text((60, 1800), "欣晨工業 Hsin-Chan Industrial",
+           font=ImageFont.truetype(bold_path, 38), fill=ACCENT_LT)
+    return bg, d
 
-    Shorts 多半在靜音狀態下滑過，沒有字幕等於沒有內容。字幕用 Pillow
-    畫成圖再疊上去，與長片同一套字型，也不依賴 ffmpeg 的 libass 設定。
+
+def _short_subtitles(cues, bold_path, tmp, prefix):
+    """每句字幕一張透明圖，深色底塊確保在任何畫面上都讀得到
+
+    Shorts 多半在靜音狀態下滑過，沒有字幕等於沒有內容。用 Pillow 畫成圖
+    再疊上去，與長片同一套字型，也不依賴 ffmpeg 的 libass 設定。
     """
+    f_sub = ImageFont.truetype(bold_path, 54)
+    out = []
+    for i, (a, b, txt) in enumerate(cues):
+        im = Image.new("RGBA", (SHORT_W, 360), (0, 0, 0, 0))
+        sd = ImageDraw.Draw(im)
+        lines = wrap_text(sd, txt, f_sub, SHORT_W - 160)[:4]
+        box_h = 76 * len(lines) + 40
+        sd.rounded_rectangle([50, 0, SHORT_W - 50, box_h], radius=18, fill=(0, 0, 0, 170))
+        for j, line in enumerate(lines):
+            w = sd.textbbox((0, 0), line, font=f_sub)[2]
+            sd.text(((SHORT_W - w) / 2, 20 + j * 76), line, font=f_sub, fill=WHITE)
+        p = tmp / f"{prefix}_sub_{i:02d}.png"
+        im.save(p)
+        out.append((a, b, p))
+    return out
+
+
+def _render_vertical(frame_path, audio_src, duration, subs, out_path, video_src=None):
+    """直式底圖＋（選用）16:9 影片＋字幕疊圖 → 一段 1080×1920 片段
+
+    編碼參數與長片片段一致（30fps、yuv420p、AAC 44.1k 雙聲道），
+    多段短片可以直接 stream copy 串接。
+    """
+    inputs = ["-loop", "1", "-t", f"{duration:.2f}", "-i", str(frame_path)]
+    if video_src:
+        inputs += ["-i", str(video_src)]
+        audio_idx, first_sub = 1, 2
+        chain = [f"[1:v]scale={SHORT_W}:608,setsar=1[v]",
+                 f"[0:v][v]overlay=0:{SHORT_VIDEO_Y}[s0]"]
+    else:
+        inputs += ["-i", str(audio_src)]
+        audio_idx, first_sub = 1, 2
+        chain = ["[0:v]null[s0]"]
+    for _, _, p in subs:
+        inputs += ["-loop", "1", "-t", f"{duration:.2f}", "-i", str(p)]
+    for i, (a, b, _) in enumerate(subs):
+        chain.append(f"[s{i}][{i + first_sub}:v]overlay=0:{SHORT_SUB_Y}"
+                     f":enable='between(t,{a:.2f},{b:.2f})'[s{i + 1}]")
+    fade = max(duration - 0.4, 0)
+    chain.append(f"[s{len(subs)}]fade=in:st=0:d=0.25,fade=out:st={fade:.2f}:d=0.4[vout]")
+    chain.append(f"[{audio_idx}:a]atrim=0:{duration:.2f},apad=whole_dur={duration:.2f},"
+                 f"afade=out:st={fade:.2f}:d=0.4[aout]")
+    cmd = ["ffmpeg", "-y", *inputs,
+           "-filter_complex", ";".join(chain),
+           "-map", "[vout]", "-map", "[aout]", "-t", f"{duration:.2f}",
+           "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-r", str(VIDEO_FPS),
+           "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-ac", "2", str(out_path)]
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        raise RuntimeError(f"Shorts 合成失敗：{r.stderr[-600:]}")
+
+
+def make_short(hook_clip, cues, ep_title, out_path, bold_path, reg_path, tmp):
+    """備援版：直接拿開場 Hook 做直式短片（腳本沒有 short 段落時使用）"""
     hook_duration = get_audio_duration(hook_clip)
     T = _short_cut_time(cues, hook_duration)
     cues = [(a, min(b, T), t) for a, b, t in cues if a < T]
 
-    # 底圖：上方節目名與片名、下方導流到完整版
-    bg = Image.new("RGB", (SHORT_W, SHORT_H), BG)
-    d = ImageDraw.Draw(bg)
-    d.rectangle([0, 0, SHORT_W, 10], fill=ACCENT)
+    bg, d = _short_canvas(bold_path, reg_path)
     f_eyebrow = ImageFont.truetype(bold_path, 40)
     f_title = ImageFont.truetype(DISPLAY_FONT or bold_path, 66)
     lines = wrap_text(d, ep_title, f_title, SHORT_W - 120)[:4]
     # 節目名＋片名整組在上方區域（約 60–600）垂直置中，避免下方留一大塊空白
-    block_h = 80 + 90 * len(lines)
-    y = 60 + (540 - block_h) // 2
+    y = 60 + (540 - (80 + 90 * len(lines))) // 2
     d.text((60, y), "第一性原理拆解智慧製造", font=f_eyebrow, fill=ACCENT_LT)
     y += 80
     for line in lines:
         d.text((60, y), line, font=f_title, fill=WHITE)
         y += 90
-    f_cta = ImageFont.truetype(reg_path, 36)
-    f_brand = ImageFont.truetype(bold_path, 38)
-    d.line([60, 1700, SHORT_W - 60, 1700], fill=DARK_GRAY, width=2)
-    d.text((60, 1730), "完整版請到 YouTube 搜尋「第一性原理拆解智慧製造」", font=f_cta, fill=GRAY)
-    d.text((60, 1800), "欣晨工業 Hsin-Chan Industrial", font=f_brand, fill=ACCENT_LT)
-    bg_path = tmp / "short_bg.png"
-    bg.save(bg_path)
+    frame = tmp / "short_bg.png"
+    bg.save(frame)
 
-    # 每句字幕一張透明圖，深色底塊確保在任何畫面上都讀得到
-    f_sub = ImageFont.truetype(bold_path, 54)
-    sub_paths = []
-    for i, (a, b, txt) in enumerate(cues):
-        im = Image.new("RGBA", (SHORT_W, 360), (0, 0, 0, 0))
-        sd = ImageDraw.Draw(im)
-        sub_lines = wrap_text(sd, txt, f_sub, SHORT_W - 160)[:4]
-        line_h = 76
-        box_h = line_h * len(sub_lines) + 40
-        sd.rounded_rectangle([50, 0, SHORT_W - 50, box_h], radius=18, fill=(0, 0, 0, 170))
-        for j, line in enumerate(sub_lines):
-            w = sd.textbbox((0, 0), line, font=f_sub)[2]
-            sd.text(((SHORT_W - w) / 2, 20 + j * line_h), line, font=f_sub, fill=WHITE)
-        p = tmp / f"short_sub_{i:02d}.png"
-        im.save(p)
-        sub_paths.append((a, b, p))
-
-    inputs = ["-loop", "1", "-t", f"{T:.2f}", "-i", str(bg_path), "-i", str(hook_clip)]
-    for _, _, p in sub_paths:
-        inputs += ["-loop", "1", "-t", f"{T:.2f}", "-i", str(p)]
-    chain = [f"[1:v]scale={SHORT_W}:608,setsar=1[v]",
-             f"[0:v][v]overlay=0:{SHORT_VIDEO_Y}[s0]"]
-    for i, (a, b, _) in enumerate(sub_paths):
-        chain.append(f"[s{i}][{i + 2}:v]overlay=0:{SHORT_SUB_Y}"
-                     f":enable='between(t,{a:.2f},{b:.2f})'[s{i + 1}]")
-    fade = max(T - 0.6, 0)
-    chain.append(f"[s{len(sub_paths)}]fade=out:st={fade:.2f}:d=0.6[vout]")
-    chain.append(f"[1:a]atrim=0:{T:.2f},afade=out:st={fade:.2f}:d=0.6[aout]")
-
-    cmd = ["ffmpeg", "-y", *inputs,
-           "-filter_complex", ";".join(chain),
-           "-map", "[vout]", "-map", "[aout]", "-t", f"{T:.2f}",
-           "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-r", str(VIDEO_FPS),
-           "-c:a", "aac", "-b:a", "128k", str(out_path)]
-    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
-    if r.returncode != 0:
-        raise RuntimeError(f"Shorts 合成失敗：{r.stderr[-600:]}")
-    print(f"📱 Shorts 完成：{T:.1f} 秒、{len(sub_paths)} 句字幕")
+    subs = _short_subtitles(cues, bold_path, tmp, "short")
+    _render_vertical(frame, hook_clip, T, subs, out_path, video_src=hook_clip)
+    print(f"📱 Shorts 完成（開場版）：{T:.1f} 秒、{len(subs)} 句字幕")
     return T
+
+
+SHORT_LABELS = {"problem": "問題", "benefit": "效益"}
+
+
+def make_short_from_script(sh, out_path, bold_path, reg_path, tmp):
+    """主要版本：問題 → 效益 → 三個執行步驟，每段一張大字卡
+
+    順序刻意把效益放在步驟之前：先讓觀眾知道為什麼值得看完，再講怎麼做。
+    每段畫面上的大字是重點本身，旁白負責展開，底部燒進旁白字幕。
+    """
+    steps = sh["steps"]
+    clips, total = [], 0.0
+    for n, part in enumerate(SHORT_PARTS):
+        dialogue = [t for t in sh["dialogue"] if t.get("part") == part]
+        if not dialogue:
+            continue
+        audio, cues = synthesize_dialogue(dialogue, tmp, f"short_{part}")
+        duration = get_audio_duration(audio) + 0.25
+
+        if part in SHORT_LABELS:
+            label, text, color = SHORT_LABELS[part], sh[part], ACCENT_LT
+        else:
+            i = int(part[-1]) - 1
+            tag = str(steps[i].get("tag", ""))
+            label, text, color = f"STEP {i + 1}｜{tag}", str(steps[i].get("text", "")), WHITE
+
+        bg, d = _short_canvas(bold_path, reg_path)
+        d.text((60, 150), "第一性原理拆解智慧製造",
+               font=ImageFont.truetype(bold_path, 38), fill=GRAY)
+        # 進度點：觀眾知道還剩幾段，比較願意看完
+        for k in range(len(SHORT_PARTS)):
+            cx = 60 + k * 44
+            d.ellipse([cx, 225, cx + 22, 247], fill=ACCENT if k <= n else DARK_GRAY)
+        f_main = ImageFont.truetype(DISPLAY_FONT or bold_path, 84)
+        main_lines = wrap_text(d, text, f_main, SHORT_W - 120)[:6]
+        # 標籤＋重點整組在 300–1260 之間垂直置中：重點只有一兩行時，
+        # 不會在字幕上方留下一大片空白
+        y = 300 + (960 - (124 + 116 * len(main_lines))) // 2
+        d.text((60, y), label, font=ImageFont.truetype(bold_path, 64),
+               fill=color if part in SHORT_LABELS else ACCENT_LT)
+        y += 124
+        for line in main_lines:
+            d.text((60, y), line, font=f_main, fill=WHITE)
+            y += 116
+        frame = tmp / f"short_{part}.png"
+        bg.save(frame)
+
+        subs = _short_subtitles(cues, bold_path, tmp, f"short_{part}")
+        clip = tmp / f"short_{part}.mp4"
+        _render_vertical(frame, audio, duration, subs, clip)
+        clips.append(clip)
+        total += duration
+
+    concat_clips(clips, out_path)
+    print(f"📱 Shorts 完成（問題→效益→步驟）：{total:.1f} 秒、{len(clips)} 段")
+    return total
 
 
 def _youtube_client():
@@ -2061,12 +2200,18 @@ def main():
             for lang, texts in translate_lines([c[2] for c in subtitles], SUBTITLE_LANGS).items():
                 srt_files[lang] = build_srt(subtitles, texts)
 
-        # 5b. Shorts：取開場 Hook 做成直式短片。失敗不影響長片發布。
+        # 5b. Shorts：優先用腳本的 short 段落（問題 → 效益 → 執行步驟）；
+        # 沒有或不合格時退回用開場 Hook。任何失敗都不影響長片發布。
         short_path = tmp / f"hsinchan_short_{date_str}.mp4"
         try:
-            hook_end = chapters[1][1] if len(chapters) > 1 else total_duration
-            make_short(clip_paths[0], [c for c in subtitles if c[0] < hook_end],
-                       script["video_title"], short_path, bold_path, reg_path, tmp)
+            try:
+                _check_short(script)
+                make_short_from_script(script["short"], short_path, bold_path, reg_path, tmp)
+            except ValueError as e:
+                print(f"   ⚠️  short 段落不合格（{str(e)[:80]}），改用開場 Hook 製作 Shorts")
+                hook_end = chapters[1][1] if len(chapters) > 1 else total_duration
+                make_short(clip_paths[0], [c for c in subtitles if c[0] < hook_end],
+                           script["video_title"], short_path, bold_path, reg_path, tmp)
         except Exception as e:                          # noqa: BLE001
             print(f"   ⚠️  Shorts 製作失敗，本週略過：{str(e)[:200]}")
             short_path = None
