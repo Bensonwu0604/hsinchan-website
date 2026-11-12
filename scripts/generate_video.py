@@ -46,6 +46,14 @@ SUBTITLE_LANGS = [x for x in os.environ.get("SUBTITLE_LANGS", "en,ja").split(","
 # 上傳測試模式：YouTube 以不公開狀態上傳、跳過 Facebook。
 # 用來驗證上傳與字幕 API 這條鏈路，而不讓任何東西公開。
 UPLOAD_TEST = os.environ.get("UPLOAD_TEST", "false").lower() == "true"
+
+# 三個據點的公開網址。每則貼文都互相指向，讓搜尋引擎與 LLM 把官網、
+# YouTube、Facebook 歸成同一個實體。
+# 注意：Facebook 這裡用的是「公開網址的 ID」，與 API 發文用的 FB_PAGE_ID
+# 不同——同一個粉專在新版粉絲專頁體驗下有兩組 ID。
+SITE_URL       = "https://www.hsinchan.com"
+FB_PAGE_URL    = "https://www.facebook.com/profile.php?id=100069099361989"
+YT_CHANNEL_URL = "https://www.youtube.com/@欣晨工業有限公司"
 # captions.insert 需要 force-ssl，比單純上傳影片的權限更大
 YT_SCOPES = ["https://www.googleapis.com/auth/youtube.upload",
              "https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -1223,6 +1231,17 @@ def upload_video_to_facebook(video_path, caption):
     page_id = os.environ["FB_PAGE_ID"]
     token   = os.environ["FB_ACCESS_TOKEN"]
 
+    # 貼文本身要帶上官網與 YouTube。三個據點互相指向，搜尋引擎與
+    # LLM 才會把它們歸成同一個實體，而不是三個不相干的東西。
+    caption = caption + (
+        f"\n\n─────────────────────────────\n"
+        f"欣晨工業有限公司｜Hsin-Chan Industrial Co., Ltd.\n"
+        f"🌐 官網 https://www.hsinchan.com\n"
+        f"▶️ YouTube {YT_CHANNEL_URL}\n"
+        f"📞 +886-3-381-4497\n"
+        f"📍 台灣桃園市大園區中正東路三段490號"
+    )
+
     print("📤 上傳影片到 Facebook...")
     with open(video_path, "rb") as vf:
         resp = requests.post(
@@ -1272,7 +1291,8 @@ def upload_video_to_youtube(video_path, slide_title, caption, topic_tag, date_st
         f"{caption}\n\n"
         f"─────────────────────────────\n"
         f"欣晨工業有限公司｜Hsin-Chan Industrial Co., Ltd.\n"
-        f"🌐 https://www.hsinchan.com\n"
+        f"🌐 官網 https://www.hsinchan.com\n"
+        f"📘 Facebook {FB_PAGE_URL}\n"
         f"📞 +886-3-381-4497\n"
         f"📍 台灣桃園市大園區中正東路三段490號\n"
         f"⏰ 週一至週五 08:00–17:30\n\n"
