@@ -232,6 +232,28 @@
   </url>
 
   <url>
+    <loc>https://www.hsinchan.com/video-kLHpNIu_sis.html</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <video:video>
+      <video:thumbnail_loc>https://i.ytimg.com/vi/kLHpNIu_sis/maxresdefault.jpg</video:thumbnail_loc>
+      <video:title>PLC數據沒接回機台等於白收：中小廠第一個月只做一條閉環</video:title>
+      <video:description>你的 PLC 裡什麼數據都有，不良品卻還是一車一車報廢——問題通常不是數據太少，而是資訊回到機台的時間太晚。
+
+這一集，我們用第一性原理拆解 PLC 數據擷取與閉環控制的因果關係：只收數據不回饋，是一本昂貴的日記；沒有數據的自動調整，則是賭博。我們推導出一個可以帶回任何產線的式子——不良品數量約等於產速乘以回饋延遲，並示範一個隨時能問的問題：「這個數據點，會改變誰的哪一個決定？」最後把中小型工廠的導入路徑拆成第一個月與第一年：先質疑、先刪除，只接一條迴路，等關係驗證穩定，才談自動回寫 PLC。
+
+欣晨工業從 1996 年投入熱電偶與工業加熱器至今，這集是我們從閉環最前端量測的實作視角整理出的思考方式。
+
+你的產線上，從不良發生到被發現，中間隔了幾件產品？歡迎留言分享你的現場經驗。</video:description>
+      <video:player_loc>https://www.youtube.com/embed/kLHpNIu_sis</video:player_loc>
+      <video:duration>887</video:duration>
+      <video:publication_date>2026-11-18T10:30:00+08:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:uploader info="https://www.youtube.com/channel/UC4AcgKzO2uL9CyxEfzv3hMQ">欣晨工業有限公司</video:uploader>
+    </video:video>
+  </url>
+  <url>
     <loc>https://www.hsinchan.com/video-Cgn7qaZ5iR0.html</loc>
     <lastmod>2026-11-03</lastmod>
     <changefreq>monthly</changefreq>
